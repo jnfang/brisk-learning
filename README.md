@@ -1,5 +1,15 @@
+## Set up front-end
+```
+npm build
+npm run dev
+```
 
-## Set up
-1. [Install Docker](https://docs.docker.com/get-docker/) on your machine.
-1. Build your container: `docker build -t nextjs-docker .`.
-1. Run your container: `docker run -p 3000:3000 nextjs-docker`.
+
+## Set up back-end server
+1. Set up virtual env
+```
+```
+1. Run `python app.py`
+1. View local API at `localhost:8080`
+
+## Deployment
