@@ -3,3 +3,5 @@ old-docker/
 key.json
 
 env/
+
+.env

@@ -2,6 +2,9 @@
 
 .next/
 
+brisk-fe/node_modules/
+
+
 .vscode/*
 !.vscode/extensions.json
 venv/
