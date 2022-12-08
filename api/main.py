@@ -1,18 +1,24 @@
 # app.py
 
 # Required imports
+import logging
 import os
 from flask import Flask, request, jsonify, render_template, abort
 from firebase_admin import db, credentials, initialize_app
 import openai
-import logging
+
 import time
 from datetime import datetime
+import google.cloud.logging as glogging
 
 # Initialize Flask app
 
 app = Flask(__name__)
-logging.basicConfig(filename='output.log', level=logging.DEBUG)
+client = glogging.Client()
+client.setup_logging()
+
+logging.basicConfig(level=logging.DEBUG)
+
 
 # Initialize Firestore DB
 cred = credentials.Certificate('key.json')
