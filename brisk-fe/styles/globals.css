@@ -12,6 +12,23 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+.adjacent-input {
+  display: inline-block;
+}
+
+.generate-button {
+  width: 130px;
+}
+
+.article-height {
+  height: 70vh;
+}
+
+form {
+  height: 100%;
+}
+
+
 a {
   color: inherit;
   text-decoration: none;
@@ -30,4 +47,5 @@ a {
     background: black;
   }
 }
+
 
