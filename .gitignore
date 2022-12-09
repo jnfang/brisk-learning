@@ -10,3 +10,5 @@ brisk-fe/node_modules/
 venv/
 
 
+api/.env.yaml
+api/env_vars.yaml

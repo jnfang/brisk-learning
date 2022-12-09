@@ -28,6 +28,10 @@ default_app = initialize_app(cred, {
     'databaseURL': databaseURL
 })
 
+MAX_TOKENS = 1500
+TEMPERATURE = 0
+MODEL = "text-davinci-003"
+
 
 @app.route('/')
 def root():
@@ -41,14 +45,14 @@ def create():
         article = request.json['article']
         lexile = request.json['lexile']
         # create a completion
-        prompt = f"Rewrite this article for {lexile}L lexile level \n \n {article}"
-        logging.debug("Prompt is {}", prompt)
+        PROMPT = f"Rewrite  {lexile}L lexile level \n \n {article}"
+        logging.debug("Prompt is {}", PROMPT)
 
         logging.debug("Calling Completion API...")
         start = time.perf_counter()
 
         completion = openai.Completion.create(
-            engine="davinci", prompt=prompt, temperature=0.3, max_tokens=60, echo=False)
+            model=MODEL, prompt=PROMPT, temperature=TEMPERATURE, max_tokens=MAX_TOKENS, echo=False)
         request_time = time.perf_counter() - start
         logging.info(
             "OpenAI Completion request completed in {0:.0f}ms".format(request_time))
