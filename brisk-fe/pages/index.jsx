@@ -107,9 +107,9 @@ export default function Home() {
             </div>
           </form>
         </div> 
-        <div className="artboard artboard-demo my-5 h-screen">
+        <div className="artboard artboard-demo flex justify-start content-start my-5 mx-5 p-5 h-screen">
         {newContent ? 
-            <p name="result" className="text-top text-left" >{newContent}</p>
+            <p name="result" className="text-top text-left my-10" >{newContent}</p>
              : null }
         </div>
       </main>
