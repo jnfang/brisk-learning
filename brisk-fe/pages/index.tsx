@@ -2,6 +2,9 @@ import Head from 'next/head'
 import Image from 'next/image'
 import React from 'react';
 import styles from '../styles/Home.module.css'
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 export default function Home() {
 
@@ -26,15 +29,8 @@ export default function Home() {
     const result = await res.json();
   };
 
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Brisk</title>
-        <meta name="description" content="AI generated content across reading levels" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
+  const NavBarHeader = () => {
+    return(
       <div className="navbar bg-base-100">
         <div className="navbar-start">
           <div className="dropdown">
@@ -63,46 +59,64 @@ export default function Home() {
           </button>
         </div>
       </div>
-  
+    )
+  }
 
-           <div className="hero h-30">
-              <div className="hero-content text-center ">
-                <div className="max-w-md">
-                  <h1 className="text-5xl font-bold">Next Level Learning</h1>
-                  <p className="py-3">Lorem ipsum stuff stuff Lorem ipsum stuff stuff </p>
-                </div>
-              </div>
+  return (
+    <div className={styles.container}>
+      <Head>
+        <title>Brisk</title>
+        <meta name="description" content="AI generated content across reading levels" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main className={styles.main}>
+        <NavBarHeader />
+        <div className="hero h-30">
+          <div className="hero-content text-center ">
+            <div className="max-w-md">
+              <h1 className="text-5xl font-bold">Next Level Learning</h1>
+              <p className="py-3">Lorem ipsum stuff stuff Lorem ipsum stuff stuff </p>
+            </div>
           </div>
-
-           <div className="artboard artboard-demo my-2 min-h-screen">
+        </div>
+          <div className="artboard artboard-demo my-2 min-h-screen">
           <form className="form-control w-full p-4" onSubmit={handleSubmit}>
-            <div className="form-control">
-              <label className="label adjacent-input" >
-                <span className="label-text adjacent-input">Your article content</span>
-              </label>
-              <select name="lexile" className="select adjacent-input select-bordered w-full my-2 max-w-xs">
-                <option disabled selected>What Lexile level?</option>
-                <option value='500'>500L</option>
-                <option value='600'>600L</option>
-                <option value='700'>700L</option>
-                <option value='800'>800L</option>
-                <option value='800'>900L</option>
-                <option value='1000'>1000L</option>
-              </select>
-              <textarea name="article" className="textarea article-height textarea-bordered w-full my-3"></textarea>
-              <button type="submit" className="max-w-px-150 btn btn-primary my-2">Generate</button>
-              
+          <div className="form-control">
+            <label className="label adjacent-input" >
+              <span className="label-text adjacent-input">Your article content</span>
+            </label>
+            <Col>
+              <Row>
+                <select name="lexile" className="select adjacent-input select-bordered w-full my-2 max-w-xs">
+                  <option disabled selected>What Lexile level?</option>
+                  <option value='500'>500L</option>
+                  <option value='600'>600L</option>
+                  <option value='700'>700L</option>
+                  <option value='800'>800L</option>
+                  <option value='800'>900L</option>
+                  <option value='1000'>1000L</option>
+                </select>
+                <button type="submit" className="max-w-px-150 btn btn-primary my-2">Generate</button>
+              </Row>
+            </Col>
+            <Container>
+              <Row>
+                <Col>
+                <textarea name="article" className="textarea article-height textarea-bordered w-full my-3"></textarea>
+                </Col>
+                <Col>
+                  <div className="artboard artboard-demo my-5 h-screen">
+                    <label className="label">
+                      <span name="result" className="label-text"></span>
+                    </label>
+                  </div>
+                </Col>
+              </Row>
+            </Container>
             </div>
           </form>
         </div> 
-        <div className="artboard artboard-demo my-5 h-screen">
-                <label className="label">
-                  <span name="result" className="label-text"></span>
-                </label>
-              </div>
-      
       </main>
-
     </div>
   )
 }

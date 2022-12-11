@@ -16,14 +16,9 @@ body {
   display: inline-block;
 }
 
-<<<<<<< HEAD
-.generate-button {
-  width: 130px;
-=======
 .generate-btn {
   max-width: 130px;
   margin:auto;
->>>>>>> 9705da53a0a196d8d44eaf5003bf542d8944a243
 }
 
 .article-height {
