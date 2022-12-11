@@ -25,10 +25,14 @@ body {
   height: 70vh;
 }
 
+.artboard-demo{
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+ 
 form {
   height: 100%;
 }
-
 
 a {
   color: inherit;

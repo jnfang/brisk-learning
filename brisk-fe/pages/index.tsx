@@ -1,24 +1,31 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import React from 'react';
+import { useState } from 'react';
 import styles from '../styles/Home.module.css'
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+
 
 export default function Home() {
 
-  const transform_endpoint = 'https://formspree.io/f/xdojqzpr';
+  const transform_endpoint = 'https://brisk-d3f02.wl.r.appspot.com/transform';
+  const [newContent, setNewContent] = useState(null);
 
-  const handleSubmit = async (event:React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // TODO: add validation about null values
+    const article = event.target.article;
+    const lexile = event.target.lexile;
 
+    // TODO: make this validation prettier
+    if (!article.value || !lexile.value) {
+      alert("Please fill out all fields");
+      return;
+    } 
     const data = {
-      article: event.target.article.value,
-      lexile: event.target.lexile.value,
+      article: article.value,
+      lexile: lexile.value,
     }
+    console.log(data);
     const res = await fetch(transform_endpoint, {
       body: JSON.stringify(data),
       headers: {
@@ -27,10 +34,19 @@ export default function Home() {
       method: 'POST',
     });
     const result = await res.json();
+    setNewContent(result.articleContent);
+    console.log(result);
   };
 
-  const NavBarHeader = () => {
-    return(
+  return (
+    <div className={styles.container}>
+      <Head>
+        <title>Brisk</title>
+        <meta name="description" content="AI generated content across reading levels" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <main className={styles.main}>
       <div className="navbar bg-base-100">
         <div className="navbar-start">
           <div className="dropdown">
@@ -45,7 +61,7 @@ export default function Home() {
           </div>
         </div>
         <div className="navbar-center">
-          <a className="btn btn-ghost normal-case text-xl">daisyUI</a>
+          <a className="btn btn-ghost normal-case text-xl">Brisk</a>
         </div>
         <div className="navbar-end">
           <button className="btn btn-ghost btn-circle">
@@ -59,64 +75,45 @@ export default function Home() {
           </button>
         </div>
       </div>
-    )
-  }
+  
 
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Brisk</title>
-        <meta name="description" content="AI generated content across reading levels" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main className={styles.main}>
-        <NavBarHeader />
-        <div className="hero h-30">
-          <div className="hero-content text-center ">
-            <div className="max-w-md">
-              <h1 className="text-5xl font-bold">Next Level Learning</h1>
-              <p className="py-3">Lorem ipsum stuff stuff Lorem ipsum stuff stuff </p>
-            </div>
+           <div className="hero h-30">
+              <div className="hero-content text-center ">
+                <div className="max-w-md">
+                  <h1 className="text-5xl font-bold">Next Level Learning</h1>
+                  <p className="py-3">Lorem ipsum stuff stuff Lorem ipsum stuff stuff </p>
+                </div>
+              </div>
           </div>
-        </div>
-          <div className="artboard artboard-demo my-2 min-h-screen">
+
+           <div className="artboard artboard-demo my-2 min-h-screen">
           <form className="form-control w-full p-4" onSubmit={handleSubmit}>
-          <div className="form-control">
-            <label className="label adjacent-input" >
-              <span className="label-text adjacent-input">Your article content</span>
-            </label>
-            <Col>
-              <Row>
-                <select name="lexile" className="select adjacent-input select-bordered w-full my-2 max-w-xs">
-                  <option disabled selected>What Lexile level?</option>
-                  <option value='500'>500L</option>
-                  <option value='600'>600L</option>
-                  <option value='700'>700L</option>
-                  <option value='800'>800L</option>
-                  <option value='800'>900L</option>
-                  <option value='1000'>1000L</option>
-                </select>
-                <button type="submit" className="max-w-px-150 btn btn-primary my-2">Generate</button>
-              </Row>
-            </Col>
-            <Container>
-              <Row>
-                <Col>
-                <textarea name="article" className="textarea article-height textarea-bordered w-full my-3"></textarea>
-                </Col>
-                <Col>
-                  <div className="artboard artboard-demo my-5 h-screen">
-                    <label className="label">
-                      <span name="result" className="label-text"></span>
-                    </label>
-                  </div>
-                </Col>
-              </Row>
-            </Container>
+            <div className="form-control">
+              <label className="label adjacent-input" >
+                <span className="label-text adjacent-input">Your article content</span>
+              </label>
+              <select name="lexile" className="select adjacent-input select-bordered w-full my-2 max-w-xs">
+                <option disabled selected>What Lexile level?</option>
+                <option value='500'>500L</option>
+                <option value='600'>600L</option>
+                <option value='700'>700L</option>
+                <option value='800'>800L</option>
+                <option value='800'>900L</option>
+                <option value='1000'>1000L</option>
+              </select>
+              <textarea name="article" className="textarea article-height textarea-bordered w-full my-3"></textarea>
+              <button type="submit" className="generate-btn btn btn-primary my-2">Transform</button>
+              
             </div>
           </form>
         </div> 
+        <div className="artboard artboard-demo flex justify-start content-start my-5 mx-5 p-5 h-screen">
+        {newContent ? 
+            <p name="result" className="text-top text-left my-10" >{newContent}</p>
+             : null }
+        </div>
       </main>
+
     </div>
   )
 }
