@@ -4,4 +4,10 @@ key.json
 
 env/
 
+<<<<<<< HEAD
 .env
+=======
+.env
+
+__pycache__/
+>>>>>>> 9705da53a0a196d8d44eaf5003bf542d8944a243
