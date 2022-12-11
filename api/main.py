@@ -50,10 +50,10 @@ def create():
         lexile = request.json['lexile']
         prompt = PromptEngine.get_prompt(lexile, article)
         # create a completion
-        app.logger.info(f"Prompt is {prompt}")
         app.logger.info("Calling Completion API...")
         start = time.perf_counter()
 
+        print(os.environ["OPENAI_API_KEY"])
         completion = openai.Completion.create(
             model=MODEL, prompt=prompt, temperature=TEMPERATURE, max_tokens=MAX_TOKENS, echo=False)
         request_time = time.perf_counter() - start
