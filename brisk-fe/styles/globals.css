@@ -16,8 +16,9 @@ body {
   display: inline-block;
 }
 
-.generate-button {
-  width: 130px;
+.generate-btn {
+  max-width: 130px;
+  margin:auto;
 }
 
 .article-height {

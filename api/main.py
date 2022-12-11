@@ -6,29 +6,33 @@ import os
 from flask import Flask, request, jsonify, render_template, abort
 from firebase_admin import db, credentials, initialize_app
 import openai
+from flask_cors import CORS
+from prompt_engine import PromptEngine
 
 import time
 from datetime import datetime
 import google.cloud.logging as glogging
+import sys
 
-# Initialize Flask app
-
-app = Flask(__name__)
 client = glogging.Client()
 client.setup_logging()
-
 logging.basicConfig(level=logging.DEBUG)
+root = logging.getLogger()
+handler = logging.StreamHandler(sys.stdout)
+root.addHandler(handler)
 
+# Initialize Flask app
+app = Flask(__name__)
+CORS(app)
 
 # Initialize Firestore DB
 cred = credentials.Certificate('key.json')
-openai.api_key_path = os.environ.get('OPEN-API-KEY')
 databaseURL = 'https://brisk-d3f02-default-rtdb.firebaseio.com/'
 default_app = initialize_app(cred, {
     'databaseURL': databaseURL
 })
 
-MAX_TOKENS = 1500
+MAX_TOKENS = 3000
 TEMPERATURE = 0
 MODEL = "text-davinci-003"
 
@@ -44,23 +48,23 @@ def create():
     try:
         article = request.json['article']
         lexile = request.json['lexile']
+        prompt = PromptEngine.get_prompt(lexile, article)
         # create a completion
-        PROMPT = f"Rewrite  {lexile}L lexile level \n \n {article}"
-        logging.debug("Prompt is {}", PROMPT)
-
-        logging.debug("Calling Completion API...")
+        app.logger.info(f"Prompt is {prompt}")
+        app.logger.info("Calling Completion API...")
         start = time.perf_counter()
 
         completion = openai.Completion.create(
-            model=MODEL, prompt=PROMPT, temperature=TEMPERATURE, max_tokens=MAX_TOKENS, echo=False)
+            model=MODEL, prompt=prompt, temperature=TEMPERATURE, max_tokens=MAX_TOKENS, echo=False)
         request_time = time.perf_counter() - start
-        logging.info(
+        app.logger.info(
             "OpenAI Completion request completed in {0:.0f}ms".format(request_time))
         created_article = completion.choices[0].text
-        logging.debug("Received completion used {} total tokens",
-                      completion.usage.total_tokens)
+        app.logger.info(
+            f"Received completion used {completion.usage.total_tokens} total tokens")
     except Exception as e:
-        print(f"An Error Occurred in OpenAI: {e}")
+        print(e)
+        app.logger.error(f"An Error Occurred in OpenAI: {e}")
         abort(500)
         return
 
@@ -79,7 +83,7 @@ def create():
         map_result = map_ref.push(
             {"promptId": prompt_result.key, "createdId": created_result.key})
         firebase_time = time.perf_counter() - firebase_start
-        logging.info(
+        app.logger.info(
             "Firebase Completion request completed in {0:.0f}ms".format(firebase_time))
 
         # TODO: make a class for the return result
