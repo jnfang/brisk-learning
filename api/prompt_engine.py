@@ -1,15 +1,26 @@
 class PromptEngine(object):
+
     @staticmethod
-    def get_prompt(lexile, input_text):
+    def get_prompts_and_tokens(lexile, input_text):
+        MAX_PROMPT_TOKENS = 2300  # Actually 2500 but we want to be safe
+        MAX_COMPLETION_TOKENS = 3800  # Actually 4000 but we want to be safe
         # lexile is a string that corresponds to the lexile level asked for by a user
         # prompt_examples is a dictionary that maps a lexile level to the formatted prompt string
         lexile = str(lexile) + "L"
         prompt_examples = PromptEngine.get_prompt_examples(lexile)
-        prompt_str = PromptEngine.format_mapping_prompt(
+        prompt_tokens = PromptEngine.get_prompt_tokens(lexile)
+        preset_prompt_str = PromptEngine.format_mapping_prompt(
             lexile, prompt_examples)
-        prompt_str += "Original text: " + input_text + \
-            "\n\n\n" + "Rewritten text at " + lexile + ":\n\n\n"
-        return prompt_str
+        remaining_tokens = MAX_PROMPT_TOKENS - prompt_tokens
+        split_inputs = PromptEngine.split_input(input_text, remaining_tokens)
+        prompts_tokens = []
+        for input in split_inputs:
+            prompt_str = preset_prompt_str + "Original text: " + input + \
+                "\n\n\n" + "Rewritten text at " + lexile + ":\n\n\n"
+            tokens_left = MAX_COMPLETION_TOKENS - \
+                PromptEngine.calc_tokens(prompt_str)
+            prompts_tokens.append((prompt_str, tokens_left))
+        return prompts_tokens
 
     @staticmethod
     def get_prompt_examples(lexile):
@@ -25,8 +36,21 @@ class PromptEngine(object):
         return lit_hash[lexile]
 
     @staticmethod
+    def get_prompt_tokens(lexile):
+        token_hash = {
+            "600L": 910,
+            "700L": 1354,
+            "800L": 1225,
+            "900L": 930,
+            "1000L": 1291,
+            "1100L": 787,
+            "1200L": 892,
+        }
+        return token_hash[lexile]
+
+    @staticmethod
     def calc_tokens(prompt_string):
-        return (len(prompt_string) - prompt_string.count(' ')) / 4
+        return (len(prompt_string) - prompt_string.count(' ')) / 3
 
     @staticmethod
     def run_all(lexiles, input):
@@ -366,3 +390,19 @@ class PromptEngine(object):
         and calling out 'chief.'"
         """
         return {original_text1: sample_text1, original_text2: sample_text2}
+
+    # TODO: will need to add more splitting if the paragraphs are still too long
+    @staticmethod
+    def split_input(input_text, remaining_tokens):
+        splits = input_text.split("\n")
+        split_texts = [""]
+        current_token_sum = 0
+        for piece in splits:
+            piece_tokens = PromptEngine.calc_tokens(piece)
+            current_token_sum += piece_tokens
+            if current_token_sum > remaining_tokens:
+                split_texts.append(piece)
+                current_token_sum = piece_tokens
+            else:
+                split_texts[-1] += "\n" + piece
+        return split_texts
