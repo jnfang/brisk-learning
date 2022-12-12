@@ -80,8 +80,10 @@ export default function Home() {
       <div className="hero h-30">
         <div className="hero-content text-center ">
           <div className="max-w-md">
-            <h1 className="text-5xl font-bold">Any text. Any reading level.</h1>
-            <p className="py-3">We know how hard it is to incorporate current events and other content into your classroom. Brisk is the answer.</p>
+            <h1 className="text-5xl font-bold">Any text. </h1>
+            <h1 className="text-5xl font-bold">Any reading level.</h1>
+            <p className="py-3">We know how hard it is to incorporate current events and other content into your classroom.  </p>
+            <p className="py-3">Brisk is the answer.</p>
           </div>
         </div>
       </div>
@@ -90,7 +92,7 @@ export default function Home() {
 
   const DropDown = () => {
     return(
-      <select name="lexile" className="select adjacent-input select-bordered w-full my-2 max-w-xs">
+      <select name="lexile" className="select adjacent-input select-bordered w-full my-2 mx-2 max-w-xs">
         <option value='600'>600L</option>
         <option value='700'>700L</option>
         <option value='800'>800L</option>
@@ -120,7 +122,7 @@ export default function Home() {
                       <span className="label-text adjacent-input">Read this text in</span>
                     </label>
                     <DropDown></DropDown>
-                    <button type="submit" className="generate-btn btn btn-primary my-2">Convert</button>
+                    <button type="submit" className="generate-btn btn btn-primary my-2 mx-2">Convert</button>
                   </div>
                   <div className="grid ">
                     <textarea name="article" className="textarea article-height textarea-bordered w-full my-3"></textarea>
