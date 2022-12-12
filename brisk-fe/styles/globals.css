@@ -29,6 +29,11 @@ body {
   justify-content: flex-start;
   align-items: flex-start;
 }
+
+div[name="result"]{
+  white-space:pre-wrap;
+  padding: 2% 2% 2% 2%;
+}
  
 form {
   height: 100%;

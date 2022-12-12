@@ -127,9 +127,9 @@ export default function Home() {
                   </div>
                 </div>
               </form>
-              <div className="artboard  artboard-demo flex justify-start content-start my-5 mx-5 p-5 h-screen">
+              <div className="artboard  artboard-demo flex justify-start content-start my-5 mx-5 p-5 min-h-screen">
                     {newContent && !loading?
-                        <p name="result" className="text-top text-left my-10" >{newContent}</p>
+                        <div name="result" className="whitespace-pre-line text-top text-left p-10" >{newContent}</div>
                         : null }
                         {loading ?
                           <div className="loader"> </div> : null
