@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import React from 'react';
+import { Row, Col, Container } from 'react-bootstrap';
 import { useState } from 'react';
 import styles from '../styles/Home.module.css'
 
@@ -38,15 +39,8 @@ export default function Home() {
     console.log(result);
   };
 
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Brisk</title>
-        <meta name="description" content="AI generated content across reading levels" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
+  const NavBar = () => {
+    return(
       <div className="navbar bg-base-100">
         <div className="navbar-start">
           <div className="dropdown">
@@ -75,43 +69,63 @@ export default function Home() {
           </button>
         </div>
       </div>
-  
+    )
+  }
 
-           <div className="hero h-30">
-              <div className="hero-content text-center ">
-                <div className="max-w-md">
-                  <h1 className="text-5xl font-bold">Next Level Learning</h1>
-                  <p className="py-3">Lorem ipsum stuff stuff Lorem ipsum stuff stuff </p>
-                </div>
-              </div>
+  const HeaderDetails = () => {
+    return(
+      <div className="hero h-30">
+        <div className="hero-content text-center ">
+          <div className="max-w-md">
+            <h1 className="text-5xl font-bold">Any text. Any reading level.</h1>
+            <p className="py-3">We know how hard it is to incorporate current events and other content into your classroom. Brisk is the answer.</p>
           </div>
-
-           <div className="artboard artboard-demo my-2 min-h-screen">
-          <form className="form-control w-full p-4" onSubmit={handleSubmit}>
-            <div className="form-control">
-              <label className="label adjacent-input" >
-                <span className="label-text adjacent-input">Your article content</span>
-              </label>
-              <select name="lexile" className="select adjacent-input select-bordered w-full my-2 max-w-xs">
-                <option disabled selected>What Lexile level?</option>
-                <option value='600'>600L</option>
-                <option value='700'>700L</option>
-                <option value='800'>800L</option>
-                <option value='800'>900L</option>
-                <option value='1000'>1000L</option>
-                <option value='1200'>1200L</option>
-              </select>
-              <textarea name="article" className="textarea article-height textarea-bordered w-full my-3"></textarea>
-              <button type="submit" className="generate-btn btn btn-primary my-2">Transform</button>
-              
-            </div>
-          </form>
-        </div> 
-        <div className="artboard artboard-demo flex justify-start content-start my-5 mx-5 p-5 h-screen">
-        {newContent ? 
-            <p name="result" className="text-top text-left my-10" >{newContent}</p>
-             : null }
         </div>
+      </div>
+    )
+  }
+
+  const DropDown = () => {
+    return(
+      <select name="lexile" className="select adjacent-input select-bordered w-full my-2 max-w-xs">
+        <option value='600'>600L</option>
+        <option value='700'>700L</option>
+        <option value='800'>800L</option>
+        <option value='800'>900L</option>
+        <option value='1000'>1000L</option>
+        <option value='1100'>1100L</option>
+        <option value='1200'>1200L</option>
+      </select>
+    )
+  }
+
+  return (
+    <div className={styles.container}>
+      <Head>
+        <title>Brisk</title>
+        <meta name="description" content="AI generated content across reading levels" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main className={styles.main}>
+          <NavBar></NavBar>
+          <HeaderDetails></HeaderDetails>
+          <div className="artboard artboard-demo my-2 min-h-screen">
+            <form className="form-control w-full p-4" onSubmit={handleSubmit}>
+              <div className="form-control">
+                <label className="label adjacent-input" >
+                  <span className="label-text adjacent-input">Read this text in</span>
+                </label>
+                <DropDown></DropDown>
+                <button type="submit" className="generate-btn btn btn-primary my-2">Convert</button>
+                <textarea name="article" className="textarea article-height textarea-bordered w-full my-3"></textarea>
+              </div>
+            </form>
+          </div>
+          <div className="artboard artboard-demo flex justify-start content-start my-5 mx-5 p-5 h-screen">
+          {newContent ?
+              <p name="result" className="text-top text-left my-10" >{newContent}</p>
+              : null }
+          </div>
       </main>
 
     </div>
