@@ -94,12 +94,12 @@ export default function Home() {
               </label>
               <select name="lexile" className="select adjacent-input select-bordered w-full my-2 max-w-xs">
                 <option disabled selected>What Lexile level?</option>
-                <option value='500'>500L</option>
                 <option value='600'>600L</option>
                 <option value='700'>700L</option>
                 <option value='800'>800L</option>
                 <option value='800'>900L</option>
                 <option value='1000'>1000L</option>
+                <option value='1200'>1200L</option>
               </select>
               <textarea name="article" className="textarea article-height textarea-bordered w-full my-3"></textarea>
               <button type="submit" className="generate-btn btn btn-primary my-2">Transform</button>
