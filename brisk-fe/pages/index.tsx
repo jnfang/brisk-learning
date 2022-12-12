@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import React from 'react';
-import { Row, Col, Container } from 'react-bootstrap';
 import { useState } from 'react';
 import styles from '../styles/Home.module.css'
 
@@ -10,6 +9,8 @@ export default function Home() {
 
   const transform_endpoint = 'https://brisk-d3f02.wl.r.appspot.com/transform';
   const [newContent, setNewContent] = useState(null);
+
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -27,6 +28,7 @@ export default function Home() {
       lexile: lexile.value,
     }
     console.log(data);
+    setLoading(true);
     const res = await fetch(transform_endpoint, {
       body: JSON.stringify(data),
       headers: {
@@ -35,6 +37,7 @@ export default function Home() {
       method: 'POST',
     });
     const result = await res.json();
+    setLoading(false);
     setNewContent(result.articleContent);
     console.log(result);
   };
@@ -110,24 +113,30 @@ export default function Home() {
           <NavBar></NavBar>
           <HeaderDetails></HeaderDetails>
           <div className="artboard artboard-demo my-2 min-h-screen">
-            <form className="form-control w-full p-4" onSubmit={handleSubmit}>
-              <div className="form-control">
-                <label className="label adjacent-input" >
-                  <span className="label-text adjacent-input">Read this text in</span>
-                </label>
-                <DropDown></DropDown>
-                <button type="submit" className="generate-btn btn btn-primary my-2">Convert</button>
-                <textarea name="article" className="textarea article-height textarea-bordered w-full my-3"></textarea>
+              <form className="form-control w-full p-4" onSubmit={handleSubmit}>
+                <div className="form-control">
+                  <div className="grid grid-flow-row auto-rows-max">
+                    <label className="label adjacent-input" >
+                      <span className="label-text adjacent-input">Read this text in</span>
+                    </label>
+                    <DropDown></DropDown>
+                    <button type="submit" className="generate-btn btn btn-primary my-2">Convert</button>
+                  </div>
+                  <div className="grid ">
+                    <textarea name="article" className="textarea article-height textarea-bordered w-full my-3"></textarea>
+                  </div>
+                </div>
+              </form>
+              <div className="artboard  artboard-demo flex justify-start content-start my-5 mx-5 p-5 h-screen">
+                    {newContent && !loading?
+                        <p name="result" className="text-top text-left my-10" >{newContent}</p>
+                        : null }
+                        {loading ?
+                          <div className="loader"> </div> : null
+                        }
               </div>
-            </form>
-          </div>
-          <div className="artboard artboard-demo flex justify-start content-start my-5 mx-5 p-5 h-screen">
-          {newContent ?
-              <p name="result" className="text-top text-left my-10" >{newContent}</p>
-              : null }
-          </div>
+            </div>
       </main>
-
     </div>
   )
 }
