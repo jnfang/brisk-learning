@@ -82,8 +82,7 @@ export default function Home() {
           <div className="max-w-md">
             <h1 className="text-5xl font-bold">Any text. </h1>
             <h1 className="text-5xl font-bold">Any reading level.</h1>
-            <p className="py-3">We know how hard it is to incorporate current events and other content into your classroom.  </p>
-            <p className="py-3">Brisk is the answer.</p>
+            <p className="py-3">We know how hard it is to incorporate current events and other content into your classroom. Brisk is the answer. </p>
           </div>
         </div>
       </div>
