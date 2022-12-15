@@ -1,8 +1,6 @@
-@import "tailwindcss/base";
-
-@import "tailwindcss/components";
-
-@import "tailwindcss/utilities";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 html,
 body {
@@ -67,4 +65,12 @@ a {
   animation: spin 1s linear infinite;
 }
 
+.copy-btn {
+  right: 20px;
+  cursor: pointer;
+  color: #580cfc;
+}
 
+.copy-btn:hover {
+  border-width: 1px;
+}

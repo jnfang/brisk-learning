@@ -3,7 +3,8 @@ import Image from 'next/image'
 import React from 'react';
 import { useState } from 'react';
 import styles from '../styles/Home.module.css'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCopy } from '@fortawesome/free-solid-svg-icons'
 
 export default function Home() {
 
@@ -11,6 +12,9 @@ export default function Home() {
   const [newContent, setNewContent] = useState(null);
 
   const [loading, setLoading] = useState(false);
+
+  const copyToClipboard = () => {navigator.clipboard.writeText(newContent)} 
+  const onHover = () => {}
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -116,7 +120,7 @@ export default function Home() {
           <div className="artboard artboard-demo my-2 min-h-screen">
             <form className="form-control w-full p-4" onSubmit={handleSubmit}>
               <div className="form-control">
-                <div className="grid grid-flow-row auto-rows-max">
+                <div className="flex">
                   <label className="label adjacent-input" >
                     <span className="label-text adjacent-input">Read this text in</span>
                   </label>
@@ -125,10 +129,19 @@ export default function Home() {
                 </div>
                 <div className="flex">
                   <textarea name="article" className="textarea textarea-bordered my-3 w-1/2"></textarea>
-                  <div name="article" className="flex justify-start content-start border rounded my-3 mx-5 p-5 min-h-screen w-1/2">
+                  <div name="article" className="flex justify-start content-start border rounded my-3 mx-5 p-5 min-h-screen w-1/2 relative">
                     {newContent && !loading?
-                      <div name="result" className="whitespace-pre-line text-top text-left p-10" >{newContent}</div>
-                      : null }
+                      <div>
+                        <FontAwesomeIcon
+                          className="absolute box-border h-5 w-5 copy-btn"
+                          icon={faCopy}
+                          onClick={copyToClipboard}
+                        />
+                        <div name="result" className="whitespace-pre-line text-top text-left p-10" >
+                          {newContent}
+                        </div>
+                      </div>
+                    : null }
                       {loading ?
                         <div className="loader"> </div> : null
                       }
