@@ -114,29 +114,29 @@ export default function Home() {
           <NavBar></NavBar>
           <HeaderDetails></HeaderDetails>
           <div className="artboard artboard-demo my-2 min-h-screen">
-              <form className="form-control w-full p-4" onSubmit={handleSubmit}>
-                <div className="form-control">
-                  <div className="grid grid-flow-row auto-rows-max">
-                    <label className="label adjacent-input" >
-                      <span className="label-text adjacent-input">Read this text in</span>
-                    </label>
-                    <DropDown></DropDown>
-                    <button type="submit" className="generate-btn btn btn-primary my-2 mx-2">Convert</button>
-                  </div>
-                  <div className="grid ">
-                    <textarea name="article" className="textarea article-height textarea-bordered w-full my-3"></textarea>
+            <form className="form-control w-full p-4" onSubmit={handleSubmit}>
+              <div className="form-control">
+                <div className="grid grid-flow-row auto-rows-max">
+                  <label className="label adjacent-input" >
+                    <span className="label-text adjacent-input">Read this text in</span>
+                  </label>
+                  <DropDown></DropDown>
+                  <button type="submit" className="generate-btn btn btn-primary my-2 mx-2">Convert</button>
+                </div>
+                <div className="flex">
+                  <textarea name="article" className="textarea textarea-bordered my-3 w-1/2"></textarea>
+                  <div name="article" className="flex justify-start content-start border rounded my-3 mx-5 p-5 min-h-screen w-1/2">
+                    {newContent && !loading?
+                      <div name="result" className="whitespace-pre-line text-top text-left p-10" >{newContent}</div>
+                      : null }
+                      {loading ?
+                        <div className="loader"> </div> : null
+                      }
                   </div>
                 </div>
-              </form>
-              <div className="artboard  artboard-demo flex justify-start content-start my-5 mx-5 p-5 min-h-screen">
-                    {newContent && !loading?
-                        <div name="result" className="whitespace-pre-line text-top text-left p-10" >{newContent}</div>
-                        : null }
-                        {loading ?
-                          <div className="loader"> </div> : null
-                        }
               </div>
-            </div>
+            </form>
+          </div>
       </main>
     </div>
   )
