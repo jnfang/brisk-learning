@@ -7,10 +7,6 @@ class ActionProvider {
    stateRef,
    createCustomMessage,
    invokeAutomtion,
-   invokeDataPull,
-   invokeCurriculum,
-   handleDefault,
-   invokeHelp,
    ...rest
  ) {
    this.createChatBotMessage = createChatBotMessage;
@@ -19,10 +15,6 @@ class ActionProvider {
    this.stateRef = stateRef;
    this.createCustomMessage = createCustomMessage;
    this.invokeAutomtion = invokeAutomtion;
-   this.invokeDataPull = invokeDataPull;
-   this.invokeCurriculum = invokeCurriculum;
-   this.handleDefault = handleDefault;
-   this.invokeHelp = invokeHelp;
  }
 
   invokeAutomation = async (input) => {
@@ -51,7 +43,9 @@ class ActionProvider {
       // const message3 = this.createChatBotMessage("Exempting these students in Google Classroom...");
       // const message4 = this.createChatBotMessage("Complete.");
       const message = this.createChatBotMessage(llmResponse);
+      console.log(this.stateRef)
       this.updateChatBotState([message]);
+      console.log(this.stateRef)
   }
 
   updateChatBotState = (message) => {
@@ -59,7 +53,8 @@ class ActionProvider {
       ...prevState,
       messages: [...prevState.messages, ...message],
     }));
-    console.log()
+    console.log("this is the state");
+    console.log(this.state)
   }
 
 }
