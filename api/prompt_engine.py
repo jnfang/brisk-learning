@@ -422,7 +422,10 @@ class PromptEngine(object):
         Ashai, Elizabeth Folsom, and Rohan Shah. When you don't have the tools 
         to address a certain problem, such as , just say you can't yet do the task.
 
-        Teacher Prompt: {input}"""
+        Teacher Prompt: {input}
+        
+        Your Response:
+        """
 
     # TODO: will need to add more splitting if the paragraphs are still too long
     @staticmethod

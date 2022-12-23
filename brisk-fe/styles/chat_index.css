@@ -22,13 +22,23 @@ body {
   } */
   
   .react-chatbot-kit-chat-container  {
-    width: auto;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: white;
   }
   
   .react-chatbot-kit-chat-message-container {
-    height: fit-content !important;
+    height: 91vh !important;
   }
   
   .react-chatbot-kit-chat-input-container {
     color: black !important;
+  }
+
+  .react-chatbot-kit-chat-inner-container {
+    height: 95vh !important;
+  }
+
+  .react-chatbot-kit-chat-header {
+    visibility: hidden;
   }

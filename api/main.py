@@ -158,7 +158,7 @@ def chat():
             input_variables=["input"],
             template=PromptEngine.ta_prompt()
         )
-        llm = OpenAI(temperature=0.7)
+        llm = OpenAI(temperature=0.0)
         chain = LLMChain(llm=llm, prompt=prompt)
         response = chain.run(input)
         print(response)
