@@ -1,0 +1,34 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+      monospace;
+  }
+  
+  .react-chatbot-kit-chat-bot-message {
+    margin-left: 0px !important;
+    width: fit-content !important;
+  }
+  /* 
+  .react-chatbot-kit-chat-inner-container {
+    height: 1000px !important;
+  } */
+  
+  .react-chatbot-kit-chat-container  {
+    width: auto;
+  }
+  
+  .react-chatbot-kit-chat-message-container {
+    height: fit-content !important;
+  }
+  
+  .react-chatbot-kit-chat-input-container {
+    color: black !important;
+  }

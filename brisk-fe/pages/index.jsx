@@ -5,16 +5,16 @@ import { useState } from 'react';
 import styles from '../styles/Home.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
+import Link from 'next/link' 
 
 export default function Home() {
 
-  const transform_endpoint = 'https://brisk-d3f02.wl.r.appspot.com/transform';
+  const transform_endpoint = 'http://127.0.0.1:8080/transform';
   const [newContent, setNewContent] = useState(null);
 
   const [loading, setLoading] = useState(false);
 
   const copyToClipboard = () => {navigator.clipboard.writeText(newContent)} 
-  const onHover = () => {}
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -56,7 +56,9 @@ export default function Home() {
             </label>
             <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
               <li><a>Homepage</a></li>
-              <li><a>Portfolio</a></li>
+              <li>
+                <Link href="/chat">Chat</Link>
+              </li>
               <li><a>About</a></li>
             </ul>
           </div>

@@ -13,6 +13,9 @@ from datetime import datetime
 import google.cloud.logging as glogging
 import sys
 import concurrent.futures
+from langchain import OpenAI
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
 
 client = glogging.Client()
 client.setup_logging()
@@ -146,7 +149,28 @@ def delete():
     except Exception as e:
         return f"An Error Occurred: {e}"
 
+@ app.route('/chat', methods=['POST'])
+def chat():
+    try:
+        input = request.json['prompt']
+        previous_context = request.json['previous_context']
+        prompt = PromptTemplate(
+            input_variables=["input"],
+            template=PromptEngine.ta_prompt()
+        )
+        llm = OpenAI(temperature=0.7)
+        chain = LLMChain(llm=llm, prompt=prompt)
+        response = chain.run(input)
+        print(response)
+        return {"llmResponse": response}, 200
+
+    except Exception as e:
+        print(e)
+        abort(500)
+        return
+
 
 port = int(os.environ.get('PORT', 8080))
 if __name__ == '__main__':
     app.run(threaded=True, host='0.0.0.0', port=port, debug=True)
+
