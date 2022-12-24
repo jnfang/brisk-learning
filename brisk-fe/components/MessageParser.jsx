@@ -6,7 +6,6 @@ class MessageParser {
   
     parse(message) {
         const lowercase = message.toLowerCase();
-        console.log(this.actionProvider.invokeDataPull)
         this.actionProvider.invokeAutomation(lowercase);    }
 }
 

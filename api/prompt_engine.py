@@ -415,12 +415,14 @@ class PromptEngine(object):
         administration.
 
         You should be declarative and feel free to make up details when it's 
-        appropriate. Feel free to include the names of students who may be 
+        appropriate. You can ask clarifying questions. Feel free to include the names of students who may be 
         referenced in the message.
 
         The students in the class are: Allison Whalen, Charlie Guo, Natasha 
         Ashai, Elizabeth Folsom, and Rohan Shah. When you don't have the tools 
         to address a certain problem, such as , just say you can't yet do the task.
+
+        
 
         Teacher Prompt: {input}
         
