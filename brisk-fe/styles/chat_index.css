@@ -15,7 +15,7 @@ body {
   .react-chatbot-kit-chat-bot-message {
     margin-left: 0px !important;
     width: fit-content !important;
-    background-color: #580cfc !important;
+    background: #580cfc !important;
   }
 
   .react-chatbot-kit-chat-bot-message-arrow {
@@ -25,11 +25,12 @@ body {
   .react-chatbot-kit-chat-container  {
     width: 100% !important;
     height: 100% !important;
-    background-color: white;
+    background: white;
   }
   
   .react-chatbot-kit-chat-message-container {
-    height: 85vh !important;
+    height: 82.5vh !important;
+    background: white;
   }
   
   .react-chatbot-kit-chat-input-container {
@@ -74,5 +75,34 @@ body {
     margin-left: 10px;
     margin-right: 10px;
     border: 1px solid #580cfc !important;
+  }
 
+  .tool-container {
+    background: #f1f1f1;
+    border: 1px solid #580cfc !important;
+    margin: 20px;
+    padding: 10px;
+    position: relative;
+  }
+
+  .cancel-button {
+    color: #424242;
+    width: 50px;
+    height: 50px;
+    margin: 0px;
+  }
+  .cancel-button:hover {
+    background: #BDBDBD;
+  }
+
+  .options-container {
+    position: absolute;
+    right: 10px;
+    top: 0px;
+  }
+
+  .prompt-container {
+    padding-left: 10px;
+    padding-right: 100px;
+    font-size: small;
   }

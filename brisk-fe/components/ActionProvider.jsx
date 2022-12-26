@@ -19,11 +19,11 @@ class ActionProvider {
 
   invokeAutomation = async (input) => {
       const chat_endpoint = "http://127.0.0.1:8080/chat";
+      localStorage["lastBotMessage"] = null;
       const data = {
         prompt: input,
         previous_context: ""
       }
-      console.log(data);
       const res = await fetch(chat_endpoint, {
         body: JSON.stringify(data),
         headers: {
@@ -32,12 +32,23 @@ class ActionProvider {
         method: 'POST',
       });
 
+
       const result = await res.json();
       var llmResponse = result.llmResponse;
-      const message = this.createChatBotMessage(llmResponse);
-      console.log(this.stateRef)
+
+      // Let's try to use local storage to share state with CurrentWorkflow.jsx
+      localStorage["lastBotMessage"] = llmResponse;
+      var firstPromptIndex = llmResponse.indexOf("//P//");
+      console.log()
+      let cleanedLlmResponse;
+      if (firstPromptIndex > -1) {
+        cleanedLlmResponse = llmResponse.substring(0, firstPromptIndex);
+      }else{
+        cleanedLlmResponse = llmResponse;
+      }
+      const message = this.createChatBotMessage(cleanedLlmResponse);
       this.updateChatBotState([message]);
-      console.log(this.stateRef)
+
   }
 
   updateChatBotState = (message) => {

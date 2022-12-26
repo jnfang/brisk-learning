@@ -40,7 +40,6 @@ export default function Chat() {
             setBotMessagesState(messageArray);
             setShowIntegrations(false);
             setLastBotMessagesState(lastMessage);
-            console.log(messageArray);
           }
         })
       }
@@ -50,8 +49,6 @@ export default function Chat() {
   });
 
   const IntegrationIcons = () => {
-    console.log("current workflow tools");
-    console.log(CurrentWorkflow.tools());
     return (
       <div className="grid grid-cols-9 current-integration-icons">
         {CurrentWorkflow.tools().map(createIconImage)}
@@ -60,7 +57,15 @@ export default function Chat() {
   }
 
   const createIconImage = (tool) => {
-    return (<img className="integration-icon" alt={tool} src={CurrentWorkflow.toolDictionary()[tool]} />)
+    return (
+      <img 
+        className="integration-icon"
+        key={tool}
+        alt={tool}
+        title={tool}
+        src={CurrentWorkflow.toolDictionary()[tool]}
+      />
+    )
   }
 
   const IntegrationPanel = () => {
@@ -81,7 +86,7 @@ export default function Chat() {
   const ChatHeader = () => {
     return (
       <div>
-        <h1 className="text-3xl font-bold">Your personal TA </h1>
+        <h1 className="text-3xl font-bold">Your virtual assistant</h1>
         <h1 className="text-2xl font-bold">Stop Clicking Around.</h1>
       </div>
     )
@@ -93,10 +98,9 @@ export default function Chat() {
           <div className="basis-1/2">
             <ChatHeader></ChatHeader>
             <IntegrationPanel></IntegrationPanel>
-            <CurrentWorkflow showWorkflow={showWorkflow} lastBotMessage={lastBotMessageState}></CurrentWorkflow>
+            <CurrentWorkflow showWorkflow={showWorkflow}></CurrentWorkflow>
           </div>
             <div className="basis-1/2">
-              <div></div>
               <Chatbot config={config} actionProvider={ActionProvider} messageParser={MessageParser}/>
            </div>
         </div>
