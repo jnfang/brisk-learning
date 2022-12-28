@@ -14,7 +14,7 @@ export default function NavBar () {
                 <Link href="/">Homepage</Link>
               </li>
               <li>
-                <Link href="/chat">Chat</Link>
+                <Link href="/demo">Demo</Link>
               </li>
               <li><a>About</a></li>
             </ul>

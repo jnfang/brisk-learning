@@ -133,3 +133,12 @@ body {
     display: flex;
     justify-content: center;
   }
+
+  .start-button {
+    background-color: #580cfc;
+    display: inline-flex;
+    align-items: center;
+    justify-items: center;
+    font-size: medium;
+    color: white;
+  }

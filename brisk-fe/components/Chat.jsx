@@ -1,12 +1,10 @@
 import React, {useState} from 'react';
 import Chatbot from 'react-chatbot-kit'
-import Link from 'next/link';
 
 import ActionProvider from '../components/ActionProvider';
 import MessageParser from '../components/MessageParser';
 import CurrentWorkflow from '../components/CurrentWorkflow';
 import config from '../components/config';
-import NavBar from '../components/NavBar';
 
 import 'react-chatbot-kit/build/main.css';
 import { useEffect } from 'react';
@@ -92,24 +90,18 @@ export default function Chat() {
     )
   }
 
-  const ChatExperience = () => {
-    return (
-    <div className="flex flex-row extra-top-padding">
-      <div className="basis-1/2">
-        <ChatHeader></ChatHeader>
-        <IntegrationPanel></IntegrationPanel>
-        <CurrentWorkflow showWorkflow={showWorkflow}></CurrentWorkflow>
-        </div>
-          <div className="basis-1/2">
-            <Chatbot config={config} actionProvider={ActionProvider} messageParser={MessageParser}/>
-        </div>
-      </div>
-    )
-  }
   return (
     <div className="App">
-        <NavBar></NavBar>
-        <ChatExperience/>
+        <div className="flex flex-row extra-top-padding">
+            <div className="basis-1/2">
+                <ChatHeader></ChatHeader>
+                <IntegrationPanel></IntegrationPanel>
+                <CurrentWorkflow showWorkflow={showWorkflow}></CurrentWorkflow>
+            </div>
+            <div className="basis-1/2">
+                <Chatbot config={config} actionProvider={ActionProvider} messageParser={MessageParser}/>
+            </div>
+        </div>
     </div>
   );
 }
