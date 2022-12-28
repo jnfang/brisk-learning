@@ -91,19 +91,25 @@ export default function Chat() {
       </div>
     )
   }
+
+  const ChatExperience = () => {
+    return (
+    <div className="flex flex-row extra-top-padding">
+      <div className="basis-1/2">
+        <ChatHeader></ChatHeader>
+        <IntegrationPanel></IntegrationPanel>
+        <CurrentWorkflow showWorkflow={showWorkflow}></CurrentWorkflow>
+        </div>
+          <div className="basis-1/2">
+            <Chatbot config={config} actionProvider={ActionProvider} messageParser={MessageParser}/>
+        </div>
+      </div>
+    )
+  }
   return (
     <div className="App">
         <NavBar></NavBar>
-        <div className="flex flex-row extra-top-padding">
-          <div className="basis-1/2">
-            <ChatHeader></ChatHeader>
-            <IntegrationPanel></IntegrationPanel>
-            <CurrentWorkflow showWorkflow={showWorkflow}></CurrentWorkflow>
-          </div>
-            <div className="basis-1/2">
-              <Chatbot config={config} actionProvider={ActionProvider} messageParser={MessageParser}/>
-           </div>
-        </div>
+        <ChatExperience/>
     </div>
   );
 }

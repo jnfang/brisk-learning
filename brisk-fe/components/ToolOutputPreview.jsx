@@ -1,77 +1,192 @@
+import { useLayoutEffect } from "react";
+import { useState } from "react";
 
 export default function ToolOutputPreview(tool, prompt, context) {
     
+    const [toolRequestData, setToolRequestData] = useState(null);
+    const invokeToolEndpoint = 'http://127.0.0.1:8080/invoke_tool';
+    const [maxToolRequests, setMaxToolRequests] = useState(0);
+
+    const PreviewGeneric = (toolProp) => {
+        if (toolRequestData === null) {
+            return (
+                <div className="flex loader-container">
+                    <div className="loader"></div>
+                </div>
+            )
+        } else {
+            return (
+                <div className="email-container">
+                    {toolRequestData}
+                </div>
+            )
+        }
+    }
     
-    // Here are all the functions for specific tools
-    const previewGoogleClassroom = (tool, prompt, context) => {
-        return (<div></div>);
+    async function handleToolRequest(request_tool, request_prompt, request_context) {
+        // Do validation on inputs - optional for now
+        // We only run this if toolRequestData is null to avoid a race condition, there's
+        // probably a better way to address this
+        console.log(maxToolRequests);
+        if (toolRequestData === null && maxToolRequests < 1) {
+            const data = {
+                tool: request_tool,
+                prompt: request_prompt,
+                context: request_context
+            }
+            setMaxToolRequests(maxToolRequests + 1);
+            const res = await fetch(invokeToolEndpoint, {
+                body: JSON.stringify(data),
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                method: 'POST',
+            });
+            const result = await res.json();
+            setToolRequestData(result.toolResponse);
+            console.log(result.toolResponse);
+        }
+        return null;
     }
 
-    const previewGmail = (tool, prompt, context) => {
+    // Here are all the functions for specific tools
+    const PreviewGoogleClassroom = (tool, prompt, context) => {
+        handleToolRequest(tool, prompt, context);
+        return <PreviewGeneric toolProp={toolRequestData}></PreviewGeneric>;
+    }
+
+    const PreviewGmail = (tool, prompt, context) => {
+        handleToolRequest(tool, prompt, context);
+
+        const subject = (str) => {
+            const a = str.substring(
+                str.indexOf("<s>") + 3, 
+                str.lastIndexOf("<b>") - 1
+            ).trim();
+            return a
+        }
+
+        const body = (str) => {
+            const a =  str.substring(
+                str.lastIndexOf("<b>") + 3, 
+                str.length
+            ).trim();
+            return a
+        }
+
         return (
-        <div>
-            <img src="https://i.ibb.co/LPcKLwN/Screen-Shot-2022-12-25-at-7-55-08-PM.png"></img>
+        <div className="email-container">
+            {(toolRequestData !== null) ?
+                (<form>
+                    <div className="subject-line-container"> 
+                        <b>Subject:</b>
+                        <input type="text" defaultValue={subject(toolRequestData)}></input>
+                    </div>
+                    <div className="email-body-content">
+                        <b>Body:</b>
+                        <div></div>
+                        <textarea
+                            rows="15"
+                            defaultValue={body(toolRequestData)}
+                        >
+                        </textarea>
+                    </div>
+                    <input type="submit" value="Submit" />
+                </form>)
+                : (
+                <div className="flex loader-container">
+                    <div className="loader"></div>
+                </div>)
+            }
         </div>);
     }
     
-    const previewGoogleCalendar = (tool, prompt, context) => {
+    const PreviewGoogleCalendar = (tool, prompt, context) => {
         return (<div>{tool}</div>);
     }
 
-    const previewGoogleDrive = (tool, prompt, context) => {
+    const PreviewGoogleDrive = (tool, prompt, context) => {
         return (<div>{tool}</div>);
     }
     
-    const previewGoogleMeet = (tool, prompt, context) => {
+    const PreviewGoogleMeet = (tool, prompt, context) => {
         return (<div>{tool}</div>);
     }
     
-    const previewGoogleDocs = (tool, prompt, context) => {
+    const PreviewGoogleDocs = (tool, prompt, context) => {
         return (<div>{tool}</div>);
     }
     
-    const previewGoogleSlides = (tool, prompt, context) => {
+    const PreviewGoogleSlides = (tool, prompt, context) => {
         return (<div>{tool}</div>);
     }
     
-    const previewGoogleSheets = (tool, prompt, context) => {
+    const PreviewGoogleSheets = (tool, prompt, context) => {
         return (<div>{tool}</div>);
     }
     
-    const previewZoom = (tool, prompt, context) => {
+    const PreviewZoom = (tool, prompt, context) => {
         return (<div>{tool}</div>);
     }
     
-    const previewAries = (tool, prompt, context) => {
+    const PreviewAries = (tool, prompt, context) => {
+        handleToolRequest(tool, prompt, context);
+
+        if (toolRequestData === null) {
+            return (
+                <div className="flex loader-container">
+                    <div className="loader"></div>
+                </div>
+            )
+        } else {
+            return (
+                <div className="email-container">
+                    {toolRequestData}
+                </div>
+            )
+        }
+    }
+    
+    const PreviewCanvas = (tool, prompt, context) => {
+        return <PreviewGeneric toolProp={toolRequestData}></PreviewGeneric>;
+    }
+    
+    const PreviewRemind = (tool, prompt, context) => {
         return (<div>{tool}</div>);
     }
     
-    const previewCanvas = (tool, prompt, context) => {
+    const PreviewSchoology = (tool, prompt, context) => {
+        handleToolRequest(tool, prompt, context);
+        return <PreviewGeneric toolProp={toolRequestData}></PreviewGeneric>;
+    }
+    
+    const PreviewPowerSchool = (tool, prompt, context) => {
+        handleToolRequest(tool, prompt, context);
+
+        if (toolRequestData === null) {
+            return (
+                <div className="flex loader-container">
+                    <div className="loader"></div>
+                </div>
+            )
+        } else {
+            return (
+                <div className="email-container">
+                    {toolRequestData}
+                </div>
+            )
+        }
+    }
+    
+    const PreviewClever = (tool, prompt, context) => {
         return (<div>{tool}</div>);
     }
     
-    const previewRemind = (tool, prompt, context) => {
-        return (<div>{tool}</div>);
-    }
-    
-    const previewSchoology = (tool, prompt, context) => {
-        return (<div>{tool}</div>);
-    }
-    
-    const previewPowerSchool = (tool, prompt, context) => {
-        console.log("in preview of powerschool");
-        return (<div>{tool}</div>);
-    }
-    
-    const previewClever = (tool, prompt, context) => {
-        return (<div>{tool}</div>);
-    }
-    
-    const previewWikipedia = (tool, prompt, context) => {
+    const PreviewWikipedia = (tool, prompt, context) => {
         return (<div>{tool}</div>);
     }
 
-    const previewYoutube = (tool, prompt, context) => {
+    const PreviewYoutube = (tool, prompt, context) => {
         return (
             <div>
                 <iframe width="426" height="240" src="https://www.youtube.com/embed/IElkjzC9YhQ" title="Interpreting the meaning of the derivative in context | AP Calculus AB | Khan Academy" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -79,28 +194,25 @@ export default function ToolOutputPreview(tool, prompt, context) {
         );
     }
 
-    const previewGeneric = (tool, prompt, context) => {
-        return (<div>{tool}</div>);
-    }
     // For a gmail or remind action
     const toolPreview = {
-        'google classroom': previewGoogleClassroom,
-        'youtube': previewYoutube,
-        'gmail': previewGmail,
-        'google meet': previewGoogleMeet,
-        'google calendar': previewGoogleCalendar,
-        'google docs': previewGoogleDocs,
-        'google slides': previewGoogleSlides,
-        'google sheets': previewGoogleSheets,
-        'zoom': previewZoom,
-        'clever': previewClever,
-        'remind': previewRemind,
-        'schoology': previewSchoology,
-        'aries': previewAries,
-        'canvas': previewCanvas,
-        'powerschool': previewPowerSchool,
-        'google drive': previewGoogleDrive,
-        'wikipedia': previewWikipedia,
+        'google classroom': PreviewGoogleClassroom,
+        'youtube': PreviewYoutube,
+        'gmail': PreviewGmail,
+        'google meet': PreviewGoogleMeet,
+        'google calendar': PreviewGoogleCalendar,
+        'google docs': PreviewGoogleDocs,
+        'google slides': PreviewGoogleSlides,
+        'google sheets': PreviewGoogleSheets,
+        'zoom': PreviewZoom,
+        'clever': PreviewClever,
+        'remind': PreviewRemind,
+        'schoology': PreviewSchoology,
+        'aries': PreviewAries,
+        'canvas': PreviewCanvas,
+        'powerschool': PreviewPowerSchool,
+        'google drive': PreviewGoogleDrive,
+        'wikipedia': PreviewWikipedia,
     }
     // For a google doc action, generate a downloadable icon
     // For a google calendar action, do what
@@ -115,14 +227,16 @@ export default function ToolOutputPreview(tool, prompt, context) {
     // 
 
     const realTool = tool.tool;
+    const realPrompt = tool.prompt;
+    const realContext = tool.prompt;
     var previewFunction = toolPreview[realTool]
-    console.log(realTool);
-    console.log(previewFunction);
+
     if (typeof previewFunction === "undefined") {
         console.log("unsupported tool");
-        previewFunction = previewGeneric;
+        previewFunction = PreviewGeneric;
     }
-    const result = previewFunction(realTool, prompt, context)
+
+    const result = previewFunction(realTool, realPrompt, realContext)
     // Each integrated app gets its own funciton. Tried to make static methods work
     // but alas
 

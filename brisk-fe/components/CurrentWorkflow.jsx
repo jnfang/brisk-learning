@@ -55,7 +55,7 @@ CurrentWorkflow.jsxWorkflowArray = (msg) => {
     var toolHash = srcArrayHash[i]
     const tool = toolHash["tool"];
     const src = toolHash["src"];
-    var prompt = toolHash["prompt"];
+    const prompt = toolHash["prompt"];
     let colonIndex = prompt.indexOf(":");
     if (colonIndex > -1 && colonIndex < prompt.length) {prompt = prompt.substring(colonIndex +1, prompt.length).trim()}
 
@@ -81,7 +81,7 @@ CurrentWorkflow.jsxWorkflowArray = (msg) => {
             </button>
           </div>
         </div>
-      <ToolOutputPreview tool={tool} prompt={prompt} context={""} />
+      <ToolOutputPreview tool={tool} prompt={prompt} context={"this is some context"} />
     </div>
     
     )

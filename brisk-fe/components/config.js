@@ -2,7 +2,7 @@
 import { createChatBotMessage } from "react-chatbot-kit";
 
 const config = {
-  initialMessages: [createChatBotMessage(`Hi, Brisk is a virtual TA. I am currently integrated with Remind, Google Suite and Classroom, and Powerschool `)]
+  initialMessages: [createChatBotMessage(`Hi, I'm here to help. Let me try whatever to help speed up whatever you need to get done.`)]
 }
 
 export default config;

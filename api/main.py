@@ -8,6 +8,7 @@ from firebase_admin import db, credentials, initialize_app
 import openai
 from flask_cors import CORS
 from prompt_engine import PromptEngine
+from tool_engine import ToolEngine
 import time
 from datetime import datetime
 import google.cloud.logging as glogging
@@ -168,6 +169,26 @@ def chat():
         print(e)
         abort(500)
         return
+
+@ app.route('/invoke_tool', methods=["POST"])
+def invoke_tool():
+    try:
+        print(request.json)
+        input = request.json['prompt']
+        previous_context = request.json['context']
+        tool = request.json['tool']
+        result = ToolEngine.invokeTool(tool, input, previous_context)
+        print(result)
+        return {"toolResponse": result}, 200
+
+        # Now we want to hit the tool engine which will apply the tool
+
+    
+    except Exception as e:
+        print(e)
+        abort(500)
+        return
+
 
 
 port = int(os.environ.get('PORT', 8080))
