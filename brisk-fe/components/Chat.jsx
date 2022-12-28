@@ -1,26 +1,46 @@
 import React, {useState} from 'react';
-import Chatbot from 'react-chatbot-kit'
+import Chatbot, { createChatBotMessage } from 'react-chatbot-kit'
 
 import ActionProvider from '../components/ActionProvider';
 import MessageParser from '../components/MessageParser';
 import CurrentWorkflow from '../components/CurrentWorkflow';
 import config from '../components/config';
+import { createClientMessage } from 'react-chatbot-kit';
+import { invokeChatResponse } from "./utils";
+
 
 import 'react-chatbot-kit/build/main.css';
 import { useEffect } from 'react';
 
-export default function Chat() {
+export default function Chat(props) {
 
   const [showIntegrations, setShowIntegrations] = useState(true);
   const [showWorkflow, setShowWorkflow] = useState(false);
   const [botMessagesState, setBotMessagesState] = useState([]);
   const [lastBotMessageState, setLastBotMessagesState] = useState(null);
+  const [initialMessages, setInitialMessages] = useState([createClientMessage(props.firstInput)]);
+  const [madeInitialRequest, setMadeInitialRequest] = useState(false);
+
+
+
+  const setInitialMessagesCallback = (botResponse) => {
+    setInitialMessages([createClientMessage(props.firstInput), createChatBotMessage(botResponse)]);
+  };
+
+  const loadMessages = () => {
+    // Okay so we're going to have to call the action provider method here to create the chatbot message
+    if (!madeInitialRequest) {
+      setMadeInitialRequest(true);
+      invokeChatResponse(props.firstInput, "", setInitialMessagesCallback);
+    }
+  };
 
   const handleIntegrationClick = () => {
     setShowIntegrations(!showIntegrations);
   }
 
   useEffect(() => {
+    loadMessages();
     try{
       if (typeof document !== "undefined") {
         var containers = document.getElementsByClassName("react-chatbot-kit-chat-inner-container")
@@ -99,7 +119,7 @@ export default function Chat() {
                 <CurrentWorkflow showWorkflow={showWorkflow}></CurrentWorkflow>
             </div>
             <div className="basis-1/2">
-                <Chatbot config={config} actionProvider={ActionProvider} messageParser={MessageParser}/>
+              <Chatbot config={config} key={initialMessages.length} actionProvider={ActionProvider} messageParser={MessageParser} messageHistory={initialMessages}/>
             </div>
         </div>
     </div>
