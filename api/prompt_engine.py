@@ -394,37 +394,36 @@ class PromptEngine(object):
     @staticmethod
     def ta_prompt():
         return """You are a virtual TA demo called Brisk that can do whatever a teacher 
-        asks within reason. Your primary objective is to convince users you have 
-        the capability to do whatever command they ask you. You can do 
-         queries like pulling data from one integration and using 
-        it to complete a task in another. Before you pretend to take an action, you
-        should confirm with the teacher that you should take said action.
+        asks. Your primary objective is to confirm that you can do what the teacher is asking based on
+        the tools you have. You will also create prompts for the tools to use to do what the teacher asks.
      
-        You are integrated with Google Classroom, Google Calendar, Google Drive, Google
-        Docs, Google Slides, Google Sheets, Google Meet, Powerschool, Aries, Remind, 
-        Zoom, Schoology, Clever, Youtube, Wikipedia, Data, Curriculum.
+        You are integrated with Google tools: Classroom, Calendar, Drive,
+        Docs, Slides, Sheets, Youtube, Meet. Non-google tools: Powerschool, Aries, Remind, 
+        Zoom, Schoology, Clever, Wikipedia, Data, Curriculum, lexile converter.
 
-        Google Classroom, Schoology, and Canvas are learning management systems. 
-        Teachers can use learning management systems to:
+        Google Classroom, Schoology, and Canvas are LMS's. 
+        Teachers can use LMSs to:
         1. Query, update, or remove curriculum (assignments, quizzes, materials, projects)
         2. Assign curriculum to students and check the status of student submissions
         3. Grade or provide feedback on assignments
-        4. Exempt students
+        4. Exempt students from assignments
         Assume teacher wants to use Google Classroom unless otherwise specified. 
 
         Powerschool and Aries are student information systems which allows teachers to mark students 
-        as absent or late, and mark grades. Data available, student information, parent contact information including
-        email, absents, tardies, and grades. Assume powerschool is the SIS system used.
+        as absent or late, and mark grades. Data available: student name, student email, parent name, parent email,
+        student absences, student tardies, overall grade, grades on assignments. Assume powerschool is the SIS system used.
 
         Remind is a parent-teacher communication application.
 
         Clever allows teachers to make enrollment changes like adding/removing students from a course.
 
-        Youtube is a place for video resources. Wikipedia is a place for text resources. Yo
+        Youtube is a place for video resources. Wikipedia is a place for text resources. You can search both.
 
         Data is a way to create charts and graphs based on data from other tools.
 
-        Curriculum is a tool that allows you to create or modify curriculum content based on what the teacher asks. After
+        Lexile Converter converts text to a specific lexile.
+
+        Curriculum is a tool that allows you to create or modify curriculum based on what the teacher asks. After
         the teacher approves the curriculum, you can create a new Google Doc, Slide or sheet with that content.
         
         The students in the class are: Allison Whalen, Charlie Guo, Natasha 
@@ -438,16 +437,13 @@ class PromptEngine(object):
         Example:
 
         Teacher prompt:
-        "for students who are absent, send an email to their parents with links to the assignments we covered today?"
+        "for students who are absent, send an email to their parents with links to the assignments we covered today"
 
         Response:
         Okay, I will send an email to absent students' parents with assignments in Google Classrom that were covered.
-        //P// Powerschool: Query for students who were absent today... \n
+        //P// Powerschool: Find students who were absent today... \n
         //P// Google Classroom: Look for assignments that were assigned today... \n
         //P// Gmail: Draft an email to parents explaining the assignments that were covered today...\n
-
-        *VERY IMPORTANT* Ask followup questions if there is a significant detail missing that will prevent you from completing task. For example,
-        if the teacher does not say what to send an email / message about or if they dont specify a recipient.
 
         Teacher Prompt: {input}
         
@@ -545,7 +541,22 @@ class PromptEngine(object):
         Janelle Sutherland, 344829, C+, 60, 80, 70, 78, 80
         Charlie Guo, 3907879, C, 90, 0, 50, 88, 82, 99
 
-        Prompt: {input}
+        Example Prompt:
+        Query for all the students that have an A or A- in the class.
+
+        Example Output:
+        Students that have an A or A- in the class: Natasha Ashai, Elizabeth Folsom, Robert Castlerock.
+
+        Example Prompt:
+        Who is absent today?
+
+        Example Output:
+        Natasha Ashai, Rohan Shah, Jimmy Clay
+
+        Prompt:
+        {input}
+
+        Output:
         """
         return return_prompt
 
@@ -625,6 +636,51 @@ class PromptEngine(object):
         Answer: 
         """
         return rtn_val
+    
+    @staticmethod
+    def parse_lexile_prompt():
+        rtn_val = """
+        You will parse a prompt from a teacher that wants to convert a text to a lexile level. You will output the lexile level. Round level to the nearest hundred.
+
+        The lexile level may not be in the prompt, but the teacher may provide information for you to infer the lexile level.
+
+        Grades 2-3  are 7-9 year-olds and should read 500
+        Grades 4-5 are 9-11 year-olds and should read 700
+        Grades 6-8 are 11-14 year-olds and should read 900
+        Grades 9-10 are 14-16 year-olds and should read 1000
+        Grades 11-12,  are 16-18 year-olds and should read 1200
+
+        Input 1:
+        Convert this passage to 650L.
+
+        Response:
+        [600]
+
+        Input 2:
+        Translate this passage to 1350:
+
+        Response 2:
+        [1350]
+
+        Input 3:
+        I need a version of this that will be easy for 15 year olds to read:
+        I am really happy right now but this is very challenging for me.
+
+        Input 3:
+        [1000]
+
+        Input 4:
+        Summarize this passage:
+
+        Response 4:
+        [ERROR]
+        
+        Prompt Input: {input}
+
+        Response:
+        """
+        return rtn_val
+
 
     # TODO: will need to add more splitting if the paragraphs are still too long
     @staticmethod

@@ -15,7 +15,6 @@ import { useEffect } from 'react';
 export default function Chat(props) {
 
   const [showIntegrations, setShowIntegrations] = useState(true);
-  const [showWorkflow, setShowWorkflow] = useState(false);
   const [botMessagesState, setBotMessagesState] = useState([]);
   const [lastBotMessageState, setLastBotMessagesState] = useState(null);
   const [initialMessages, setInitialMessages] = useState([createClientMessage(props.firstInput)]);
@@ -54,7 +53,6 @@ export default function Chat(props) {
               lastMessage = updatedBotMessages[i].textContent;
               messageArray.push(lastMessage);
             }
-            setShowWorkflow(true);
             setBotMessagesState(messageArray);
             setShowIntegrations(false);
             setLastBotMessagesState(lastMessage);
@@ -116,7 +114,7 @@ export default function Chat(props) {
             <div className="basis-1/2">
                 <ChatHeader></ChatHeader>
                 <IntegrationPanel></IntegrationPanel>
-                <CurrentWorkflow showWorkflow={showWorkflow}></CurrentWorkflow>
+                <CurrentWorkflow></CurrentWorkflow>
             </div>
             <div className="basis-1/2">
               <Chatbot config={config} key={initialMessages.length} actionProvider={ActionProvider} messageParser={MessageParser} messageHistory={initialMessages}/>

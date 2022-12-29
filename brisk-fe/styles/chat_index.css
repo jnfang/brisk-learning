@@ -141,4 +141,44 @@ body {
     justify-items: center;
     font-size: medium;
     color: white;
+    margin-left: 5px;
+  }
+
+  .attach-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+  }
+
+  .attach-button {
+    position: relative;
+  }
+
+  .dropdown-attach {
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    outline: #616161;
+  }
+  
+  .dropdown-button {
+    background-color: white;
+    display: inline-flex;
+    font-size: medium;
+    color: #616161;
+    margin-left: 0px;
+    border: none;
+    text-transform: none;
+    width: 100%;
+  }
+
+  .dropdown-button:hover {
+    background-color: #f1f1f1;
+    font-weight: bolder;
+  }
+
+  .main-form {
+    margin-bottom: 100px;
+    padding-left: 0px;
+    padding-right: 0px;
   }

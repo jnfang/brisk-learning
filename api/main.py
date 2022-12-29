@@ -18,12 +18,12 @@ from langchain import OpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 
-client = glogging.Client()
-client.setup_logging()
-logging.basicConfig(level=logging.DEBUG)
-root = logging.getLogger()
-handler = logging.StreamHandler(sys.stdout)
-root.addHandler(handler)
+# client = glogging.Client()
+# client.setup_logging()
+# logging.basicConfig(level=logging.DEBUG)
+# root = logging.getLogger()
+# handler = logging.StreamHandler(sys.stdout)
+# root.addHandler(handler)
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -62,7 +62,7 @@ def get_completion(prompt_and_token):
         return created_article
     except Exception as e:
         print(e)
-        app.logger.error(f"An Error Occurred in OpenAI: {e}")
+        # app.logger.error(f"An Error Occurred in OpenAI: {e}")
         raise e
 
 
@@ -90,22 +90,22 @@ async def create():
         return
 
     try:
-        firebase_start = time.perf_counter()
-        # Create records in Firebase DB
-        prompt_ref = db.reference('/promptArticles')
-        prompt_result = prompt_ref.push(
-            {"articleContent": article, "createdAt": datetime.utcnow().isoformat()})
+        # firebase_start = time.perf_counter()
+        # # Create records in Firebase DB
+        # prompt_ref = db.reference('/promptArticles')
+        # prompt_result = prompt_ref.push(
+        #     {"articleContent": article, "createdAt": datetime.utcnow().isoformat()})
 
-        created_ref = db.reference('/createdArticles')
-        created_result = created_ref.push(
-            {"articleContent": full_transformed_article, "createdAt": datetime.utcnow().isoformat(), "promptId": prompt_result.key})
+        # created_ref = db.reference('/createdArticles')
+        # created_result = created_ref.push(
+        #     {"articleContent": full_transformed_article, "createdAt": datetime.utcnow().isoformat(), "promptId": prompt_result.key})
 
-        map_ref = db.reference('/articleMap')
-        map_result = map_ref.push(
-            {"promptId": prompt_result.key, "createdId": created_result.key})
-        firebase_time = time.perf_counter() - firebase_start
-        app.logger.info(
-            "Firebase Completion request completed in {:10.4f}s".format(firebase_time))
+        # map_ref = db.reference('/articleMap')
+        # map_result = map_ref.push(
+        #     {"promptId": prompt_result.key, "createdId": created_result.key})
+        # firebase_time = time.perf_counter() - firebase_start
+        # app.logger.info(
+        #     "Firebase Completion request completed in {:10.4f}s".format(firebase_time))
 
         # TODO: make a class for the return result
         return jsonify(created_result.get()), 200
@@ -175,14 +175,12 @@ def invoke_tool():
     try:
         print(request.json)
         input = request.json['prompt']
-        previous_context = request.json['context']
         tool = request.json['tool']
-        result = ToolEngine.invokeTool(tool, input, previous_context)
+        attachments = request.json['attachments']
+        print(attachments)
+        result = ToolEngine.invokeTool(tool, input, attachments)
         print(result)
         return {"toolResponse": result}, 200
-
-        # Now we want to hit the tool engine which will apply the tool
-
     
     except Exception as e:
         print(e)

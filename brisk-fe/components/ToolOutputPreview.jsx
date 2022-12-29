@@ -1,7 +1,7 @@
 import { useLayoutEffect } from "react";
 import { useState } from "react";
 
-export default function ToolOutputPreview(tool, prompt, context) {
+export default function ToolOutputPreview(props) {
     
     const [toolRequestData, setToolRequestData] = useState(null);
     const invokeToolEndpoint = 'http://127.0.0.1:8080/invoke_tool';
@@ -23,16 +23,17 @@ export default function ToolOutputPreview(tool, prompt, context) {
         }
     }
     
-    async function handleToolRequest(request_tool, request_prompt, request_context) {
+    async function handleToolRequest(request_tool, request_prompt, attachments) {
         // Do validation on inputs - optional for now
         // We only run this if toolRequestData is null to avoid a race condition, there's
         // probably a better way to address this
+        console.log("THERE HAS TO BE ONE THAT STARTS??")
         console.log(maxToolRequests);
         if (toolRequestData === null && maxToolRequests < 1) {
             const data = {
                 tool: request_tool,
                 prompt: request_prompt,
-                context: request_context
+                attachments: attachments
             }
             setMaxToolRequests(maxToolRequests + 1);
             const res = await fetch(invokeToolEndpoint, {
@@ -51,12 +52,12 @@ export default function ToolOutputPreview(tool, prompt, context) {
 
     // Here are all the functions for specific tools
     const PreviewGoogleClassroom = (tool, prompt, context) => {
-        handleToolRequest(tool, prompt, context);
+        handleToolRequest(tool, prompt, {context: context});
         return <PreviewGeneric toolProp={toolRequestData}></PreviewGeneric>;
     }
 
     const PreviewGmail = (tool, prompt, context) => {
-        handleToolRequest(tool, prompt, context);
+        handleToolRequest(tool, prompt, {context: context});
 
         const subject = (str) => {
             const a = str.substring(
@@ -130,7 +131,7 @@ export default function ToolOutputPreview(tool, prompt, context) {
     }
     
     const PreviewAries = (tool, prompt, context) => {
-        handleToolRequest(tool, prompt, context);
+        handleToolRequest(tool, prompt, {context: context});
 
         if (toolRequestData === null) {
             return (
@@ -148,6 +149,7 @@ export default function ToolOutputPreview(tool, prompt, context) {
     }
     
     const PreviewCanvas = (tool, prompt, context) => {
+        handleToolRequest(tool, prompt, {context: context});
         return <PreviewGeneric toolProp={toolRequestData}></PreviewGeneric>;
     }
     
@@ -156,12 +158,12 @@ export default function ToolOutputPreview(tool, prompt, context) {
     }
     
     const PreviewSchoology = (tool, prompt, context) => {
-        handleToolRequest(tool, prompt, context);
+        handleToolRequest(tool, prompt, {context: context});
         return <PreviewGeneric toolProp={toolRequestData}></PreviewGeneric>;
     }
     
     const PreviewPowerSchool = (tool, prompt, context) => {
-        handleToolRequest(tool, prompt, context);
+        handleToolRequest(tool, prompt, {context: context});
 
         if (toolRequestData === null) {
             return (
@@ -194,6 +196,64 @@ export default function ToolOutputPreview(tool, prompt, context) {
         );
     }
 
+    const PreviewCurriculum = (tool, prompt, context) => {
+        handleToolRequest(tool, prompt, context);
+
+        if (toolRequestData === null) {
+            return (
+                <div className="flex loader-container">
+                    <div className="loader"></div>
+                </div>
+            )
+        } else {
+            return (
+                <div className="email-container">
+                    {toolRequestData}
+                </div>
+            )
+        }
+    }
+
+    const PreviewData = (tool, prompt, context) => {
+        handleToolRequest(tool, prompt, {context: context});
+
+        if (toolRequestData === null) {
+            return (
+                <div className="flex loader-container">
+                    <div className="loader"></div>
+                </div>
+            )
+        } else {
+            return (
+                <div className="email-container">
+                    {toolRequestData}
+                </div>
+            )
+        }
+    }
+
+    const PreviewLexileConverter = (tool, prompt, context) => {
+        console.log("about to send handle tool request")
+        handleToolRequest(
+            tool,
+            prompt,
+            {context: context, text: "this is a good text"});
+
+        if (toolRequestData === null) {
+            return (
+                <div className="flex loader-container">
+                    <div className="loader"></div>
+                </div>
+            )
+        } else {
+            return (
+                <div className="email-container">
+                    {toolRequestData}
+                </div>
+            )
+        }
+    }
+
     // For a gmail or remind action
     const toolPreview = {
         'google classroom': PreviewGoogleClassroom,
@@ -213,6 +273,9 @@ export default function ToolOutputPreview(tool, prompt, context) {
         'powerschool': PreviewPowerSchool,
         'google drive': PreviewGoogleDrive,
         'wikipedia': PreviewWikipedia,
+        'curriculum': PreviewCurriculum,
+        'data' : PreviewData,
+        'lexile converter' : PreviewLexileConverter
     }
     // For a google doc action, generate a downloadable icon
     // For a google calendar action, do what
@@ -226,11 +289,13 @@ export default function ToolOutputPreview(tool, prompt, context) {
     // For curriculum translate or convert, open a textbox called input -- OpenAI
     // 
 
-    const realTool = tool.tool;
-    const realPrompt = tool.prompt;
-    const realContext = tool.prompt;
+    const realTool = props.tool;
+    const realPrompt = props.prompt;
+    const realContext = props.prompt;
+    console.log('real prompt');
+    console.log(realPrompt);
     var previewFunction = toolPreview[realTool]
-
+    console.log(previewFunction);
     if (typeof previewFunction === "undefined") {
         console.log("unsupported tool");
         previewFunction = PreviewGeneric;

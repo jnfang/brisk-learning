@@ -21,15 +21,18 @@ const TOOLDICTIONARY = {
   'google drive': "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Google_Drive_icon_%282020%29.svg/2295px-Google_Drive_icon_%282020%29.svg.png",
   'wikipedia': "https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1200px-Wikipedia-logo-v2.svg.png",
   'curriculum' : "https://www.citypng.com/public/uploads/preview/hd-purple-round-pencil-icon-png-171630368416vlipzv1qyr.png",
-  'data': "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKfp_Aguqo9ljbIMjZZVlZjnHSgkxWVLLXwg&usqp=CAU"
+  'data': "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKfp_Aguqo9ljbIMjZZVlZjnHSgkxWVLLXwg&usqp=CAU",
+  'lexile converter': "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Eo_circle_purple_arrow-up-down.svg/2048px-Eo_circle_purple_arrow-up-down.svg.png" 
 };
 
 const PROMPTSEPERATOR = "//P//";
 
-export default function CurrentWorkflow({showWorkflow}) {
+export default function CurrentWorkflow() {
   if (typeof window === 'undefined') {return (<div></div>)}
   var lastBotMessage = localStorage["lastBotMessage"];
-  if (showWorkflow && !!lastBotMessage){
+  console.log(lastBotMessage);
+
+  if (lastBotMessage.includes(PROMPTSEPERATOR)){
     return (
       <div className='integration-container rounded-sm'>
         <div className="current-integration">
@@ -56,6 +59,7 @@ CurrentWorkflow.jsxWorkflowArray = (msg) => {
     const tool = toolHash["tool"];
     const src = toolHash["src"];
     const prompt = toolHash["prompt"];
+    console.log(prompt);
     let colonIndex = prompt.indexOf(":");
     if (colonIndex > -1 && colonIndex < prompt.length) {prompt = prompt.substring(colonIndex +1, prompt.length).trim()}
 
