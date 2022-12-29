@@ -39,8 +39,11 @@ export default function CurrentWorkflow(props) {
         props.attachments
       )
     );
-  }, [lastBotMessageState, props.attachments]);
+  }, [props.attachments]);
 
+  if (lastBotMessageState !== localStorage["lastBotMessage"]) {
+    setLastBotMessageState(localStorage["lastBotMessage"]);
+  }
   if (typeof window === 'undefined') {return (<div></div>)}
   if (currentWorkflowComponents.every(e => e === null)) {return (<div></div>)}
   if (lastBotMessageState.includes(PROMPTSEPERATOR)){
@@ -49,7 +52,6 @@ export default function CurrentWorkflow(props) {
         <div className="current-integration">
           Workflow
         </div>
-        {props.attachments}
         <div>
           {currentWorkflowComponents}
         </div>
@@ -73,16 +75,12 @@ CurrentWorkflow.jsxWorkflowArray = (msg, attachments) => {
     const prompt = toolHash["prompt"];
     let colonIndex = prompt.indexOf(":");
     if (colonIndex > -1 && colonIndex < prompt.length) {prompt = prompt.substring(colonIndex +1, prompt.length).trim()}
-    console.log("prompt: " + prompt);
     const workflowElement = <WorkflowElement src={src} tool={tool} prompt={prompt} attachments={attachments}/>;
-    
     workflowVisualizationArray.push(workflowElement);
-    console.log(workflowVisualizationArray.length);
 
   }
   return workflowVisualizationArray;
 }
-
 
 
 // Function returns an array of dictionaries ordered by when they show up in GPT3

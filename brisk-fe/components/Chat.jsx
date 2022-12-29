@@ -114,7 +114,7 @@ export default function Chat(props) {
             <div className="basis-1/2">
                 <ChatHeader></ChatHeader>
                 <IntegrationPanel></IntegrationPanel>
-                <CurrentWorkflow></CurrentWorkflow>
+                <CurrentWorkflow attachments={workflowAttachments}></CurrentWorkflow>
             </div>
             <div className="basis-1/2">
               <Chatbot config={config} key={initialMessages.length} actionProvider={ActionProvider} messageParser={MessageParser} messageHistory={initialMessages}/>

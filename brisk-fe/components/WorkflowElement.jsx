@@ -10,7 +10,6 @@ export default function WorkflowElement (props) {
     const handleCancel = () => {
         setShowStatus(false);
     }
-
     if (showStatus) {
         return (
             <div key={props.tool} className="tool-container">
@@ -19,7 +18,7 @@ export default function WorkflowElement (props) {
                     <img className="integration-icon" src={props.src} />
                     </div>
                     <div className="basis-3/8 font-bold text-left prompt-container">
-                    {prompt}
+                    {props.prompt}
                     </div>
                     <div className="inline-flex options-container">
                     <button onClick={handleCancel}>

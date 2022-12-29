@@ -27,11 +27,10 @@ export default function ToolOutputPreview(props) {
     }
     
     async function handleToolRequest(request_tool, request_prompt, attachments) {
-        console.log("called this!")
         // Do validation on inputs - optional for now
         // We only run this if toolRequestData is null to avoid a race condition, there's
         // probably a better way to address this!
-        console.log(maxToolRequests);
+
         if (toolRequestData === null && maxToolRequests < 1) {
             const data = {
                 tool: request_tool,

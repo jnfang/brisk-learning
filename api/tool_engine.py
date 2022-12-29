@@ -174,11 +174,12 @@ class ToolEngine(object):
 
     @staticmethod
     def processLexileConversion(prompt, attachments):
-
         # Attachments is a dictionary of values
         # Check if attachments has a text field
         if "text" in attachments:
             article = attachments["text"]
+        elif "link" in attachments:
+            return "This functionality is coming soon!"
         else:
             return "You need to attach a website or text to convert it!"
         print(article)
