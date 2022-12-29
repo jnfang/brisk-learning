@@ -98,7 +98,7 @@ body {
   .options-container {
     position: absolute;
     right: 10px;
-    top: 0px;
+    top: 10px;
   }
 
   .prompt-container {
@@ -181,4 +181,11 @@ body {
     margin-bottom: 100px;
     padding-left: 0px;
     padding-right: 0px;
+  }
+
+  .cancel-button {
+    color: #424242;
+    width: 20px;
+    height: 20px;
+    margin: 0px;
   }

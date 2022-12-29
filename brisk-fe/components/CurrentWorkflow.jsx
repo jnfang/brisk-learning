@@ -1,6 +1,6 @@
+import { useEffect } from "react";
 import { useState } from "react";
-import ToolOutputPreview from "./ToolOutputPreview";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import WorkflowElement from "./WorkflowElement";
 
 const TOOLDICTIONARY = {
   'google classroom': "https://cdn.worldvectorlogo.com/logos/google-classroom.svg",
@@ -28,10 +28,22 @@ const TOOLDICTIONARY = {
 const PROMPTSEPERATOR = "//P//";
 
 export default function CurrentWorkflow(props) {
-  if (typeof window === 'undefined') {return (<div></div>)}
-  var lastBotMessage = localStorage["lastBotMessage"];
 
-  if (lastBotMessage.includes(PROMPTSEPERATOR)){
+  const [lastBotMessageState, setLastBotMessageState] = useState(localStorage["lastBotMessage"]);
+  const [currentWorkflowComponents, setCurrentWorkflowComponents] = useState([]);
+
+  useEffect(() => {
+    setCurrentWorkflowComponents(
+      CurrentWorkflow.jsxWorkflowArray(
+        lastBotMessageState,
+        props.attachments
+      )
+    );
+  }, [lastBotMessageState, props.attachments]);
+
+  if (typeof window === 'undefined') {return (<div></div>)}
+  if (currentWorkflowComponents.every(e => e === null)) {return (<div></div>)}
+  if (lastBotMessageState.includes(PROMPTSEPERATOR)){
     return (
       <div className='integration-container rounded-sm'>
         <div className="current-integration">
@@ -39,7 +51,7 @@ export default function CurrentWorkflow(props) {
         </div>
         {props.attachments}
         <div>
-          {CurrentWorkflow.jsxWorkflowArray(lastBotMessage, props.attachments)}
+          {currentWorkflowComponents}
         </div>
       </div>
     )
@@ -61,34 +73,12 @@ CurrentWorkflow.jsxWorkflowArray = (msg, attachments) => {
     const prompt = toolHash["prompt"];
     let colonIndex = prompt.indexOf(":");
     if (colonIndex > -1 && colonIndex < prompt.length) {prompt = prompt.substring(colonIndex +1, prompt.length).trim()}
-
-    var workflowElement = (
-      <div key={tool} className="tool-container">
-        <div className="flex flex-row">
-          <div className="basis-5/8">
-            <img className="integration-icon" src={src} />
-          </div>
-          <div className="basis-3/8 font-bold text-left prompt-container">
-            {prompt}
-          </div>
-          <div className="inline-flex options-container">
-            <button className="cancel-button font-bold py-2 px-4 rounded-l">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
-              </svg>
-            </button>
-            <button class="cancel-button font-bold py-2 px-4 rounded-r">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
-                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
-              </svg>         
-            </button>
-          </div>
-        </div>
-      <ToolOutputPreview tool={tool} prompt={prompt} attachments={attachments} />
-    </div>
+    console.log("prompt: " + prompt);
+    const workflowElement = <WorkflowElement src={src} tool={tool} prompt={prompt} attachments={attachments}/>;
     
-    )
     workflowVisualizationArray.push(workflowElement);
+    console.log(workflowVisualizationArray.length);
+
   }
   return workflowVisualizationArray;
 }
