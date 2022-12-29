@@ -27,10 +27,9 @@ const TOOLDICTIONARY = {
 
 const PROMPTSEPERATOR = "//P//";
 
-export default function CurrentWorkflow() {
+export default function CurrentWorkflow(props) {
   if (typeof window === 'undefined') {return (<div></div>)}
   var lastBotMessage = localStorage["lastBotMessage"];
-  console.log(lastBotMessage);
 
   if (lastBotMessage.includes(PROMPTSEPERATOR)){
     return (
@@ -38,8 +37,9 @@ export default function CurrentWorkflow() {
         <div className="current-integration">
           Workflow
         </div>
+        {props.attachments}
         <div>
-          {CurrentWorkflow.jsxWorkflowArray(lastBotMessage)}
+          {CurrentWorkflow.jsxWorkflowArray(lastBotMessage, props.attachments)}
         </div>
       </div>
     )
@@ -48,7 +48,7 @@ export default function CurrentWorkflow() {
   }
 };
 
-CurrentWorkflow.jsxWorkflowArray = (msg) => {
+CurrentWorkflow.jsxWorkflowArray = (msg, attachments) => {
   var workflowVisualizationArray = [];
   const srcArrayHash = CurrentWorkflow.toolOptions(msg);
 
@@ -59,12 +59,11 @@ CurrentWorkflow.jsxWorkflowArray = (msg) => {
     const tool = toolHash["tool"];
     const src = toolHash["src"];
     const prompt = toolHash["prompt"];
-    console.log(prompt);
     let colonIndex = prompt.indexOf(":");
     if (colonIndex > -1 && colonIndex < prompt.length) {prompt = prompt.substring(colonIndex +1, prompt.length).trim()}
 
     var workflowElement = (
-      <div className="tool-container">
+      <div key={tool} className="tool-container">
         <div className="flex flex-row">
           <div className="basis-5/8">
             <img className="integration-icon" src={src} />
@@ -73,7 +72,7 @@ CurrentWorkflow.jsxWorkflowArray = (msg) => {
             {prompt}
           </div>
           <div className="inline-flex options-container">
-            <button class="cancel-button font-bold py-2 px-4 rounded-l">
+            <button className="cancel-button font-bold py-2 px-4 rounded-l">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                 <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
               </svg>
@@ -85,7 +84,7 @@ CurrentWorkflow.jsxWorkflowArray = (msg) => {
             </button>
           </div>
         </div>
-      <ToolOutputPreview tool={tool} prompt={prompt} context={"this is some context"} />
+      <ToolOutputPreview tool={tool} prompt={prompt} attachments={attachments} />
     </div>
     
     )

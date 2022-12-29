@@ -17,9 +17,6 @@ export async function invokeChatResponse(input, previous_context, setStateCallba
 
     const result = await res.json();
     var llmResponse = result.llmResponse;
-
-    console.log("Just returned:")
-    console.log(llmResponse);
     // Need to update this to use chatbot's save message method
     localStorage["lastBotMessage"] = llmResponse;
     var firstPromptIndex = llmResponse.indexOf("//P//");

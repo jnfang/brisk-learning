@@ -8,7 +8,6 @@ import config from '../components/config';
 import { createClientMessage } from 'react-chatbot-kit';
 import { invokeChatResponse } from "./utils";
 
-
 import 'react-chatbot-kit/build/main.css';
 import { useEffect } from 'react';
 
@@ -19,6 +18,7 @@ export default function Chat(props) {
   const [lastBotMessageState, setLastBotMessagesState] = useState(null);
   const [initialMessages, setInitialMessages] = useState([createClientMessage(props.firstInput)]);
   const [madeInitialRequest, setMadeInitialRequest] = useState(false);
+  const [workflowAttachments, setWorkflowAttachments] = useState(props.initialAttachments);
 
 
 

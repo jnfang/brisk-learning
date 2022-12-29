@@ -1,11 +1,14 @@
 import { useLayoutEffect } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function ToolOutputPreview(props) {
     
     const [toolRequestData, setToolRequestData] = useState(null);
     const invokeToolEndpoint = 'http://127.0.0.1:8080/invoke_tool';
     const [maxToolRequests, setMaxToolRequests] = useState(0);
+    const [toolState, setToolState] = useState(props.tool);
+    const [promptState, setPromptState] = useState(props.prompt);
+    const [attachmentState, setAttachmentState] = useState(props.attachments);
 
     const PreviewGeneric = (toolProp) => {
         if (toolRequestData === null) {
@@ -24,10 +27,10 @@ export default function ToolOutputPreview(props) {
     }
     
     async function handleToolRequest(request_tool, request_prompt, attachments) {
+        console.log("called this!")
         // Do validation on inputs - optional for now
         // We only run this if toolRequestData is null to avoid a race condition, there's
-        // probably a better way to address this
-        console.log("THERE HAS TO BE ONE THAT STARTS??")
+        // probably a better way to address this!
         console.log(maxToolRequests);
         if (toolRequestData === null && maxToolRequests < 1) {
             const data = {
@@ -45,20 +48,21 @@ export default function ToolOutputPreview(props) {
             });
             const result = await res.json();
             setToolRequestData(result.toolResponse);
-            console.log(result.toolResponse);
         }
         return null;
     }
 
+    useEffect(() => {
+        handleToolRequest(toolState, promptState, attachmentState);
+    }, [attachmentState]);
+    
+
     // Here are all the functions for specific tools
     const PreviewGoogleClassroom = (tool, prompt, context) => {
-        handleToolRequest(tool, prompt, {context: context});
         return <PreviewGeneric toolProp={toolRequestData}></PreviewGeneric>;
     }
 
     const PreviewGmail = (tool, prompt, context) => {
-        handleToolRequest(tool, prompt, {context: context});
-
         const subject = (str) => {
             const a = str.substring(
                 str.indexOf("<s>") + 3, 
@@ -131,7 +135,6 @@ export default function ToolOutputPreview(props) {
     }
     
     const PreviewAries = (tool, prompt, context) => {
-        handleToolRequest(tool, prompt, {context: context});
 
         if (toolRequestData === null) {
             return (
@@ -149,7 +152,6 @@ export default function ToolOutputPreview(props) {
     }
     
     const PreviewCanvas = (tool, prompt, context) => {
-        handleToolRequest(tool, prompt, {context: context});
         return <PreviewGeneric toolProp={toolRequestData}></PreviewGeneric>;
     }
     
@@ -158,13 +160,10 @@ export default function ToolOutputPreview(props) {
     }
     
     const PreviewSchoology = (tool, prompt, context) => {
-        handleToolRequest(tool, prompt, {context: context});
         return <PreviewGeneric toolProp={toolRequestData}></PreviewGeneric>;
     }
     
     const PreviewPowerSchool = (tool, prompt, context) => {
-        handleToolRequest(tool, prompt, {context: context});
-
         if (toolRequestData === null) {
             return (
                 <div className="flex loader-container">
@@ -197,8 +196,6 @@ export default function ToolOutputPreview(props) {
     }
 
     const PreviewCurriculum = (tool, prompt, context) => {
-        handleToolRequest(tool, prompt, context);
-
         if (toolRequestData === null) {
             return (
                 <div className="flex loader-container">
@@ -215,8 +212,6 @@ export default function ToolOutputPreview(props) {
     }
 
     const PreviewData = (tool, prompt, context) => {
-        handleToolRequest(tool, prompt, {context: context});
-
         if (toolRequestData === null) {
             return (
                 <div className="flex loader-container">
@@ -233,12 +228,6 @@ export default function ToolOutputPreview(props) {
     }
 
     const PreviewLexileConverter = (tool, prompt, context) => {
-        console.log("about to send handle tool request")
-        handleToolRequest(
-            tool,
-            prompt,
-            {context: context, text: "this is a good text"});
-
         if (toolRequestData === null) {
             return (
                 <div className="flex loader-container">
@@ -292,10 +281,7 @@ export default function ToolOutputPreview(props) {
     const realTool = props.tool;
     const realPrompt = props.prompt;
     const realContext = props.prompt;
-    console.log('real prompt');
-    console.log(realPrompt);
     var previewFunction = toolPreview[realTool]
-    console.log(previewFunction);
     if (typeof previewFunction === "undefined") {
         console.log("unsupported tool");
         previewFunction = PreviewGeneric;

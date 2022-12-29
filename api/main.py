@@ -153,16 +153,22 @@ def delete():
 @ app.route('/chat', methods=['POST'])
 def chat():
     try:
-        input = request.json['prompt']
-        previous_context = request.json['previous_context']
-        prompt = PromptTemplate(
-            input_variables=["input"],
-            template=PromptEngine.ta_prompt()
-        )
-        llm = OpenAI(temperature=0.0)
-        chain = LLMChain(llm=llm, prompt=prompt)
-        response = chain.run(input)
-        print(response)
+        response = """
+        Okay, I will send an email to absent students' parents with assignments in Google Classrom that were covered.
+        //P// Powerschool: Find students who were absent today... \n
+        //P// Google Classroom: Look for assignments that were assigned today... \n
+        //P// Gmail: Draft an email to parents explaining the assignments that were covered today...\n
+        """
+        # input = request.json['prompt']
+        # previous_context = request.json['previous_context']
+        # prompt = PromptTemplate(
+        #     input_variables=["input"],
+        #     template=PromptEngine.ta_prompt()
+        # )
+        # llm = OpenAI(temperature=0.0)
+        # chain = LLMChain(llm=llm, prompt=prompt)
+        # response = chain.run(input)
+        # print(response)
         return {"llmResponse": response}, 200
 
     except Exception as e:
@@ -173,13 +179,14 @@ def chat():
 @ app.route('/invoke_tool', methods=["POST"])
 def invoke_tool():
     try:
-        print(request.json)
-        input = request.json['prompt']
-        tool = request.json['tool']
-        attachments = request.json['attachments']
-        print(attachments)
-        result = ToolEngine.invokeTool(tool, input, attachments)
-        print(result)
+        result = "<s> 1234 this is the <b> response you should expect"
+        # print(request.json)
+        # input = request.json['prompt']
+        # tool = request.json['tool']
+        # attachments = request.json['attachments']
+        # print(attachments)
+        # result = ToolEngine.invokeTool(tool, input, attachments)
+        # print(result)
         return {"toolResponse": result}, 200
     
     except Exception as e:
