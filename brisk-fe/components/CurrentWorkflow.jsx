@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import WorkflowElement from "./WorkflowElement";
 
-const TOOLDICTIONARY = {
+export const TOOLDICTIONARY = {
   'google classroom': "https://cdn.worldvectorlogo.com/logos/google-classroom.svg",
   'youtube': "https://cdn-icons-png.flaticon.com/512/1384/1384060.png",
   'gmail': "https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg",

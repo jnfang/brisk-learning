@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
 
-
 export default function ToolOutputPreview(props) {
     
     const [toolRequestData, setToolRequestData] = useState(null);
@@ -12,6 +11,45 @@ export default function ToolOutputPreview(props) {
     const [toolState, setToolState] = useState(props.tool);
     const [promptState, setPromptState] = useState(props.prompt);
     const [attachmentState, setAttachmentState] = useState(props.attachments);
+
+
+    const GoogleDocComponent = (docUrl) => {
+        docUrl = "https://docs.google.com/document/d/1SyqxM7VHj3sSwfObuQoLaDoCtC9UX6DeLqNpbHf4MCc/edit?usp=sharing";
+        const src = "https://upload.wikimedia.org/wikipedia/commons/0/01/Google_Docs_logo_%282014-2020%29.svg"
+        return (
+            <div className="google-doc-container rounded flex">
+                <div className="bg-slate-200 rounded flex px-1 py-1">
+                    <img className="fileShortCutImg" src={src} />
+                    <div className="fileShortCutTitle px-2 font-semibold py-1">
+                        <a href={docUrl}>Google Doc</a>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    const GoogleSlideComponent = (docUrl) => {
+        docUrl = "https://docs.google.com/presentation/d/1WiitB8CBijz0SaLZRlbaMubJcelM5IgP6H9yZNtLEOc/edit?usp=sharing";
+        const src = "https://media.flaticon.com/dist/min/img/landing/gsuite/slides.svg"
+        return (
+            <div className="google-doc-container rounded flex">
+                <div className="bg-slate-200 rounded flex px-1 py-1">
+                    <img className="fileShortCutImg" src={src} />
+                    <div className="fileShortCutTitle px-2 font-semibold py-1">
+                        <a href={docUrl}>Google Slide</a>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    // For a given string, if it contains "docs.google.com", return JSX with the text,
+    // with GoogleDocComponent replacing every word that contains "docs.google.com".
+    // Otherwise, return the string.
+    const interpolateGoogleDocs = (str) => {
+        return str;
+    }
+
 
     // const copyToClipboard = () => {navigator.clipboard.writeText(newContent)} 
 
@@ -36,6 +74,7 @@ export default function ToolOutputPreview(props) {
         // Do validation on inputs - optional for now
         // We only run this if toolRequestData is null to avoid a race condition, there's
         // probably a better way to address this!
+        
         if (toolRequestData === null && maxToolRequests < 1) {
             const data = {
                 tool: request_tool,
@@ -89,18 +128,19 @@ export default function ToolOutputPreview(props) {
                 (<form>
                     <div className="subject-line-container"> 
                         <b>Subject:</b>
-                        <input type="text" defaultValue={subject(toolRequestData)}></input>
+                        <input className="border-2 border-slate-300	" type="text" defaultValue={subject(toolRequestData)}></input>
                     </div>
                     <div className="email-body-content">
                         <b>Body:</b>
                         <div></div>
                         <textarea
+                            className="border-2 border-slate-300	"
                             rows="15"
                             defaultValue={body(toolRequestData)}
                         >
                         </textarea>
                     </div>
-                    <input type="submit" value="Submit" />
+                    <button className="start-button float-right" type="submit" value="Submit">Send</button>
                 </form>)
                 : (
                 <div className="flex loader-container">
@@ -115,7 +155,21 @@ export default function ToolOutputPreview(props) {
     }
 
     const PreviewGoogleDrive = (tool, prompt, context) => {
-        return (<div>{tool}</div>);
+        if (toolRequestData === null) {
+            return (
+                <div className="flex loader-container">
+                    <div className="loader"></div>
+                </div>
+            )
+        } else {
+            return (
+                <div className="email-container">
+                    {toolRequestData}
+                    <GoogleDocComponent />
+                    <GoogleSlideComponent />
+                </div>
+            )
+        }
     }
     
     const PreviewGoogleMeet = (tool, prompt, context) => {
@@ -123,11 +177,37 @@ export default function ToolOutputPreview(props) {
     }
     
     const PreviewGoogleDocs = (tool, prompt, context) => {
-        return (<div>{tool}</div>);
+        if (toolRequestData === null) {
+            return (
+                <div className="flex loader-container">
+                    <div className="loader"></div>
+                </div>
+            )
+        } else {
+            return (
+                <div className="email-container">
+                    {toolRequestData}
+                    <GoogleDocComponent />
+                </div>
+            )
+        }
     }
     
     const PreviewGoogleSlides = (tool, prompt, context) => {
-        return (<div>{tool}</div>);
+        if (toolRequestData === null) {
+            return (
+                <div className="flex loader-container">
+                    <div className="loader"></div>
+                </div>
+            )
+        } else {
+            return (
+                <div className="email-container">
+                    {toolRequestData}
+                    <GoogleSlideComponent />
+                </div>
+            )
+        }
     }
     
     const PreviewGoogleSheets = (tool, prompt, context) => {
@@ -210,6 +290,8 @@ export default function ToolOutputPreview(props) {
             return (
                 <div className="email-container">
                     {toolRequestData}
+                    <GoogleDocComponent />
+                    <GoogleSlideComponent />
                 </div>
             )
         }
@@ -226,6 +308,7 @@ export default function ToolOutputPreview(props) {
             return (
                 <div className="email-container">
                     {toolRequestData}
+                    <img src="https://daext.com/wp-content/uploads/2020/11/vertical-bar-chart-2.png"></img>
                 </div>
             )
         }

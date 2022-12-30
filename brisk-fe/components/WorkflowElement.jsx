@@ -12,8 +12,8 @@ export default function WorkflowElement (props) {
     }
     if (showStatus) {
         return (
-            <div key={props.tool} className="tool-container">
-                <div className="flex flex-row">
+            <div key={props.tool} className="tool-container  bg-white border border-gray-300 rounded shadow-lg appearance-none md:mr-2 md:mb-0 focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline">
+                <div className="flex flex-row ">
                     <div className="basis-5/8">
                     <img className="integration-icon" src={props.src} />
                     </div>

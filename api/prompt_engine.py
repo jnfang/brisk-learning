@@ -467,18 +467,15 @@ class PromptEngine(object):
         <b>
         Hi all,
 
-        You're receiving this email because you missed class today! We did a pop quiz and you will need to make it up 
-        when you are back in class. If you were sick, I hope you make a speedy recovery.
+        You're receiving this email because you missed class today! We did a pop quiz and you will need to make it up when you are back in class. If you were sick, I hope you make a speedy recovery.
 
         Best,
         Mr. Jaffer
 
         EXAMPLE 2
-        Name: JN Fang
+        Name: Arman Jaffer
 
-        Prompt: Send an email to let parents that there will be parent-teacher conferences next week. Each parent can 
-        sign up for a 20-minute slot at this link www.forma.com/2324398 If they can't make it, they can email me to 
-        find another time.
+        Prompt: Send an email to let parents that there will be parent-teacher conferences next week. Each parent can sign up for a 20-minute slot at this link www.forma.com/2324398 If they can't make it, they can email me to find another time.
 
         Output:
         <s>
@@ -487,12 +484,12 @@ class PromptEngine(object):
         <b>
         Hi parents!
 
-        I wanted to let you know that there will be parent-teacher conferences next week. Parent-teacher conferences 
-        are a good time for you to get to know me and learn more about what your kids will learn this year.  If you're 
-        interested in signing up for a 20-minute slot, use this link: www.forma.com/2324398
+        I wanted to let you know that there will be parent-teacher conferences next week. Parent-teacher conferences are a good time for you to get to know me and learn more about what your kids will learn this year.  If you're interested in signing up for a 20-minute slot, use this link: www.forma.com/2324398
 
-        I understand that for various reasons you may not be able to make it. If that's true, shoot me an email and we 
-        can find an alternate time to chat, even if it's over Zoom.
+        I understand that for various reasons you may not be able to make it. If that's true, shoot me an email and we can find an alternate time to chat, even if it's over Zoom.
+
+        Best,
+        Arman Jaffer
 
         Prompt: {input}
         {context}
@@ -564,7 +561,7 @@ class PromptEngine(object):
     @staticmethod
     def lms_prompt():
         rtn_val = """
-        You will simulate responses from a learning management system for a teacher that is asking it to do tasks. You can do several things:
+        You will simulate responses from a learning management system for a teacher that is asking it to do tasks. You will pretend to execute the commands of the teacher.
 
         Courses: Create courses, list the courses that a teacher is an instructor for, delete a course, rename a course, add or remove a topic from a course.
 

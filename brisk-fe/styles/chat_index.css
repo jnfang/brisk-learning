@@ -74,8 +74,6 @@ body {
   }
 
   .tool-container {
-    background: #f1f1f1;
-    border: 1px solid #580cfc !important;
     margin: 20px;
     padding: 10px;
     position: relative;
@@ -184,4 +182,8 @@ body {
     width: 20px;
     height: 20px;
     margin: 0px;
+  }
+
+  .fileShortCutImg {
+    width: 16px;
   }
