@@ -22,7 +22,9 @@ export const TOOLDICTIONARY = {
   'wikipedia': "https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1200px-Wikipedia-logo-v2.svg.png",
   'curriculum' : "https://www.citypng.com/public/uploads/preview/hd-purple-round-pencil-icon-png-171630368416vlipzv1qyr.png",
   'data': "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKfp_Aguqo9ljbIMjZZVlZjnHSgkxWVLLXwg&usqp=CAU",
-  'lexile converter': "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Eo_circle_purple_arrow-up-down.svg/2048px-Eo_circle_purple_arrow-up-down.svg.png" 
+  'lexile converter': "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Eo_circle_purple_arrow-up-down.svg/2048px-Eo_circle_purple_arrow-up-down.svg.png",
+  'writing integrity': "https://w7.pngwing.com/pngs/54/921/png-transparent-computer-icons-robot-internet-bot-google-docs-robots-purple-electronics-violet.png",
+  'lesson planner': "https://static.vecteezy.com/system/resources/previews/012/319/315/original/clipboard-multicolor-circle-line-inverted-icon-vector.jpg"
 };
 
 const PROMPTSEPERATOR = "//P//";

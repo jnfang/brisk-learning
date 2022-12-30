@@ -50,7 +50,6 @@ export default function ToolOutputPreview(props) {
         return str;
     }
 
-
     // const copyToClipboard = () => {navigator.clipboard.writeText(newContent)} 
 
 
@@ -75,6 +74,13 @@ export default function ToolOutputPreview(props) {
         // We only run this if toolRequestData is null to avoid a race condition, there's
         // probably a better way to address this!
         
+
+        const inactiveTools = ["google drive", "google caledar", "google sheets",
+            "google slides", "google docs", "remind", "clever", "zoom", "google meet", "youtube", "data", "curriculum"]
+        if (inactiveTools.includes(request_tool)) {
+            setToolRequestData("Default output");
+            return null;
+        }
         if (toolRequestData === null && maxToolRequests < 1) {
             const data = {
                 tool: request_tool,
@@ -165,8 +171,11 @@ export default function ToolOutputPreview(props) {
             return (
                 <div className="email-container">
                     {toolRequestData}
-                    <GoogleDocComponent />
-                    <GoogleSlideComponent />
+                    <div className="flex">
+                        <GoogleDocComponent />
+                        <div className="px-1"></div>
+                        <GoogleSlideComponent />
+                    </div>
                 </div>
             )
         }
@@ -290,8 +299,12 @@ export default function ToolOutputPreview(props) {
             return (
                 <div className="email-container">
                     {toolRequestData}
-                    <GoogleDocComponent />
-                    <GoogleSlideComponent />
+                    <div className="flex">
+                        <GoogleDocComponent />
+                        <div className="px-1"></div>
+                        <GoogleSlideComponent />
+                    </div>
+
                 </div>
             )
         }
@@ -338,6 +351,14 @@ export default function ToolOutputPreview(props) {
         }
     }
 
+    const PreviewWritingAuth = (tool, prompt, context) => {
+        return (<div>{tool}</div>);
+    }
+
+    const PreviewLessonPlanner = (tool, prompt, context) => {
+        return (<div>{tool}</div>);
+    }
+
     // For a gmail or remind action
     const toolPreview = {
         'google classroom': PreviewGoogleClassroom,
@@ -359,7 +380,9 @@ export default function ToolOutputPreview(props) {
         'wikipedia': PreviewWikipedia,
         'curriculum': PreviewCurriculum,
         'data' : PreviewData,
-        'lexile converter' : PreviewLexileConverter
+        'lexile converter' : PreviewLexileConverter,
+        'writing authentication' : PreviewWritingAuth,
+        'lesson planner' : PreviewLessonPlanner,
     }
     // For a google doc action, generate a downloadable icon
     // For a google calendar action, do what

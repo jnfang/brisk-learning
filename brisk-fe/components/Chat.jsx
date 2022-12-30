@@ -115,14 +115,14 @@ export default function Chat(props) {
   return (
     <div className="App">
         <div className="flex flex-row extra-top-padding">
-            <div className="basis-1/2">
-                <ChatHeader></ChatHeader>
-                <IntegrationPanel></IntegrationPanel>
-                <CurrentWorkflow messages={allMessagesState} attachments={workflowAttachments}></CurrentWorkflow>
-            </div>
-            <div className="basis-1/2">
-              <Chatbot config={config} key={initialMessages.length} actionProvider={ActionProvider} messageParser={MessageParser} messageHistory={initialMessages} saveMessages={saveMessages}/>
-            </div>
+          <div className="basis-1/2">
+            <ChatHeader></ChatHeader>
+            <IntegrationPanel></IntegrationPanel>
+            <CurrentWorkflow messages={allMessagesState} attachments={workflowAttachments}></CurrentWorkflow>
+          </div>
+          <div className="basis-1/2">
+            <Chatbot config={config} key={initialMessages.length} actionProvider={ActionProvider} messageParser={MessageParser} messageHistory={initialMessages} saveMessages={saveMessages}/>
+          </div>
         </div>
     </div>
   );

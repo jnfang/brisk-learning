@@ -628,6 +628,12 @@ class PromptEngine(object):
 
         (-) Evan Hernandez: https://docs.google.com/document/d/1Tg2nYx7Ly8Wzh139WkrNKvg/edit
 
+        Example Prompt:
+        Exempt absent students from today's worksheet...
+
+        Answer:
+        Today is 9/9/2022 so the assignment that is due is Poetry of the Romantic Era. I have exempted the absent students from the assignment. 
+
         Prompt: {input}
 
         Answer: 

@@ -157,17 +157,17 @@ def chat():
         Okay, I will send an email to absent students' parents with assignments in Google Classrom that were covered.
         //P// Powerschool: Find students who were absent today... \n
         //P// Google Classroom: Look for assignments that were assigned today... \n
-        //P// Gmail: Draft an email to parents explaining the assignments that were covered today...\n
+        //P// Google Drive: Draft an email to parents explaining the assignments that were covered today...\n
         """
         input = request.json['prompt']
-        # previous_context = request.json['previous_context']
-        # prompt = PromptTemplate(
-        #     input_variables=["input"],
-        #     template=PromptEngine.ta_prompt()
-        # )
-        # llm = OpenAI(temperature=0.0)
-        # chain = LLMChain(llm=llm, prompt=prompt)
-        # response = chain.run(input)
+        previous_context = request.json['previous_context']
+        prompt = PromptTemplate(
+            input_variables=["input"],
+            template=PromptEngine.ta_prompt()
+        )
+        llm = OpenAI(temperature=0.0)
+        chain = LLMChain(llm=llm, prompt=prompt)
+        response = chain.run(input)
         print(response)
         return {"llmResponse": response}, 200
 
@@ -179,14 +179,14 @@ def chat():
 @ app.route('/invoke_tool', methods=["POST"])
 def invoke_tool():
     try:
-        result = "<s> 1234 this is the <b> response you should expect https://docs.google.com/document/d/1P8YuXtwU-j7asv3XE_rcCegBFSoPqcp2ccD-FN1uu1w/edit#heading=h.ln612hpxnadx sahdakjsd"
-        # print(request.json['attachments'])
-        # print(request.json)
-        # input = request.json['prompt']
-        # tool = request.json['tool']
-        # attachments = request.json['attachments']
-        # print(attachments)
-        # result = ToolEngine.invokeTool(tool, input, attachments)
+        result = "<s> default content <b> fjsailjfls"
+        print(request.json['attachments'])
+        print(request.json)
+        input = request.json['prompt']
+        tool = request.json['tool']
+        attachments = request.json['attachments']
+        print(attachments)
+        result = ToolEngine.invokeTool(tool, input, attachments)
         print(result)
         return {"toolResponse": result}, 200
     
