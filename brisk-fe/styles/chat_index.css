@@ -41,10 +41,6 @@ body {
     height: 100% !important;
   }
 
-  .react-chatbot-kit-chat-header {
-    visibility: hidden;
-  }
-
   .react-chatbot-kit-chat-container {
     border: 1px solid #d8d8d8;
     border-radius: 0.125rem;

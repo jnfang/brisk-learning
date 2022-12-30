@@ -1,5 +1,8 @@
 import { useLayoutEffect } from "react";
 import { useState, useEffect } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCopy } from '@fortawesome/free-solid-svg-icons'
+
 
 export default function ToolOutputPreview(props) {
     
@@ -9,6 +12,9 @@ export default function ToolOutputPreview(props) {
     const [toolState, setToolState] = useState(props.tool);
     const [promptState, setPromptState] = useState(props.prompt);
     const [attachmentState, setAttachmentState] = useState(props.attachments);
+
+    // const copyToClipboard = () => {navigator.clipboard.writeText(newContent)} 
+
 
     const PreviewGeneric = (toolProp) => {
         if (toolRequestData === null) {
@@ -30,7 +36,6 @@ export default function ToolOutputPreview(props) {
         // Do validation on inputs - optional for now
         // We only run this if toolRequestData is null to avoid a race condition, there's
         // probably a better way to address this!
-
         if (toolRequestData === null && maxToolRequests < 1) {
             const data = {
                 tool: request_tool,
@@ -236,7 +241,15 @@ export default function ToolOutputPreview(props) {
         } else {
             return (
                 <div className="email-container">
-                    {toolRequestData}
+                    {/* <FontAwesomeIcon
+                          className="absolute box-border h-5 w-5 copy-btn"
+                          icon={faCopy}
+                          onClick={copyToClipboard}
+                    /> */}
+                    <div>
+                        {toolRequestData}
+                    </div>
+
                 </div>
             )
         }

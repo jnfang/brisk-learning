@@ -19,8 +19,12 @@ export default function Chat(props) {
   const [initialMessages, setInitialMessages] = useState([createClientMessage(props.firstInput)]);
   const [madeInitialRequest, setMadeInitialRequest] = useState(false);
   const [workflowAttachments, setWorkflowAttachments] = useState(props.initialAttachments);
+  const [allMessagesState, setAllMessagesState] = useState([createClientMessage(props.firstInput)]);
 
-
+  const saveMessages = (messages, HTMLString) => {
+    localStorage.setItem('chat_messages', JSON.stringify(messages));
+    setAllMessagesState(messages);
+  };
 
   const setInitialMessagesCallback = (botResponse) => {
     setInitialMessages([createClientMessage(props.firstInput), createChatBotMessage(botResponse)]);
@@ -114,10 +118,10 @@ export default function Chat(props) {
             <div className="basis-1/2">
                 <ChatHeader></ChatHeader>
                 <IntegrationPanel></IntegrationPanel>
-                <CurrentWorkflow attachments={workflowAttachments}></CurrentWorkflow>
+                <CurrentWorkflow messages={allMessagesState} attachments={workflowAttachments}></CurrentWorkflow>
             </div>
             <div className="basis-1/2">
-              <Chatbot config={config} key={initialMessages.length} actionProvider={ActionProvider} messageParser={MessageParser} messageHistory={initialMessages}/>
+              <Chatbot config={config} key={initialMessages.length} actionProvider={ActionProvider} messageParser={MessageParser} messageHistory={initialMessages} saveMessages={saveMessages}/>
             </div>
         </div>
     </div>

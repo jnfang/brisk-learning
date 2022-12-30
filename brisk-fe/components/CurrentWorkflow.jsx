@@ -39,7 +39,7 @@ export default function CurrentWorkflow(props) {
         props.attachments
       )
     );
-  }, [props.attachments]);
+  }, [localStorage["lastBotMessage"], props.attachments]);
 
   if (lastBotMessageState !== localStorage["lastBotMessage"]) {
     setLastBotMessageState(localStorage["lastBotMessage"]);
