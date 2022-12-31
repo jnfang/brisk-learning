@@ -24,7 +24,10 @@ export const TOOLDICTIONARY = {
   'data': "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKfp_Aguqo9ljbIMjZZVlZjnHSgkxWVLLXwg&usqp=CAU",
   'lexile converter': "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Eo_circle_purple_arrow-up-down.svg/2048px-Eo_circle_purple_arrow-up-down.svg.png",
   'writing integrity': "https://w7.pngwing.com/pngs/54/921/png-transparent-computer-icons-robot-internet-bot-google-docs-robots-purple-electronics-violet.png",
-  'lesson planner': "https://static.vecteezy.com/system/resources/previews/012/319/315/original/clipboard-multicolor-circle-line-inverted-icon-vector.jpg"
+  'lesson planner': "https://static.vecteezy.com/system/resources/previews/012/319/315/original/clipboard-multicolor-circle-line-inverted-icon-vector.jpg",
+  'feedback': "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlM19sO3G9DCLc0-BaRMW7VzfsLxXQq_DGWIM6tSq2mZSj9Nab_K4BfAsxg197S6Lji3o&usqp=CAU",
+  'writing authentication': "https://miro.medium.com/max/1400/0*F9ptwf7KyiVfrX0x.jpg",
+  'monitor': "https://cdn2.iconfinder.com/data/icons/advertising-agency-wildberry-vol-1/256/Frequency-512.png",
 };
 
 const PROMPTSEPERATOR = "//P//";

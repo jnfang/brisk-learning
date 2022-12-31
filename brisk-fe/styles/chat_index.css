@@ -173,7 +173,7 @@ body {
   }
 
   .main-form {
-    margin-bottom: 100px;
+    margin-bottom: 40px;
     padding-left: 0px;
     padding-right: 0px;
   }
@@ -187,4 +187,14 @@ body {
 
   .fileShortCutImg {
     width: 16px;
+  }
+
+  .example-icon {
+    color: rgb(226 232 240);
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+
+  .outline-purple {
+    outline: 0px solid #580cfc;
   }

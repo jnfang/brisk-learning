@@ -7,6 +7,7 @@ import { faPaperclip } from '@fortawesome/free-solid-svg-icons'
 import { Button } from 'react-bootstrap';
 import TextAttachmentBox from '../components/TextAttachmentBox';
 import LinkAttachmentBox from '../components/LinkAttachmentBox';
+import ExampleContainer from '../components/ExampleContainer';
 
 
 export default function Demo() {
@@ -115,7 +116,7 @@ export default function Demo() {
         <Chat firstInput={firstInput} initialAttachments={attachments}></Chat>
         :
         <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20 ">
-        <div className="max-w-2xl mx-auto sm:max-w-xl md:max-w-2xl">
+        <div className="max-w-5xl mx-auto">
           <div className="text-center">
             <div className="max-w-xl mb-10 md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">
               <div>
@@ -123,7 +124,7 @@ export default function Demo() {
                   Demo
                 </p>
               </div>
-              <h2 className="max-w-lg mb-6 font-sans text-3xl font-bold leading-none tracking-tight text-gray-900 sm:text-4xl md:mx-auto">
+              <h2 className="max-w-lg mb-6 font-sans text-4xl font-bold leading-none tracking-tight text-gray-900 sm:text-4xl md:mx-auto">
                 <span className="relative inline-block">
                   <DottedRectangle/>
                   <span className="relative">The</span>
@@ -140,7 +141,7 @@ export default function Demo() {
                 required=""
                 onChange={(e) => {setFirstInput(e.target.value)}}
                 type="text"
-                className="flex-grow w-full h-12 px-4 mb-3 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none md:mr-2 md:mb-0 focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
+                className="flex-grow w-full h-12 px-4 mb-3 transition duration-200 bg-white border border-gray-600 rounded shadow-sm appearance-none md:mr-2 md:mb-0 focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
               />
               <button
                 type="button"
@@ -167,6 +168,11 @@ export default function Demo() {
               <LinkAttachmentBox onSubmit={handleLinkAttachmentClick} onCancel={handleCancelClick}/> :
               null 
             }
+            <div>
+              <h1 className="font-sans text-2xl font-bold text-left px-5 py-5">Need some inspiration?</h1>
+            </div>
+
+            <ExampleContainer></ExampleContainer>
           
           </div>
         </div>
