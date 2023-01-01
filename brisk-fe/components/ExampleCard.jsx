@@ -4,8 +4,19 @@ import { TOOLDICTIONARY } from "./CurrentWorkflow"
 export default function ExampleCard(props) {
 
   const toolItem = (tool) => {
-    console.log(TOOLDICTIONARY[tool])
-    return (<img className="h-5 x-5"src={TOOLDICTIONARY[tool]} /> )
+    return (<img key={tool} className="h-5 x-5"src={TOOLDICTIONARY[tool]} /> )
+  }
+
+  const handleExampleClick = (e) => {
+    // Create a dictionary that will be used to populate the workflow query
+    e.stopPropagation();
+    if (props.description && props.tools) {
+      const exampleDict ={
+        "exampleMessage": props.description,
+        "tools": props.tools,
+      }
+      props.handleExampleClick(exampleDict);
+    }
   }
 
   return (
@@ -21,7 +32,7 @@ export default function ExampleCard(props) {
               <h2 className="text-xl font-bold">{props.title}</h2>
               <p className="text-base text-gray-700 md:text-md italic">"{props.description}"</p>
             </div>
-            <button className="outline-purple flex flex-row bg-slate-200 px-2 py-2 rounded-md my-2 justify-between hover:outline-2">
+            <button className="outline-purple flex flex-row bg-slate-200 px-2 py-2 rounded-md my-2 justify-between hover:outline-2" onClick={handleExampleClick}>
               <div><b>Try this example</b></div>
               <div className="flex flex-row gap-1">
                 {props.tools.map(item => toolItem(item))}

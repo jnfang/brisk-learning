@@ -8,6 +8,7 @@ import { Button } from 'react-bootstrap';
 import TextAttachmentBox from '../components/TextAttachmentBox';
 import LinkAttachmentBox from '../components/LinkAttachmentBox';
 import ExampleContainer from '../components/ExampleContainer';
+import { useEffect } from 'react';
 
 
 export default function Demo() {
@@ -60,6 +61,22 @@ export default function Demo() {
   const handleCancelClick = (e) => {
     setShowTextAttachmentBox(false);
     setShowLinkAttachmentBox(false);
+  }
+
+  const handleExampleClick = (exampleDict) => {
+    setFirstInput(exampleDict.exampleMessage);
+    var attachments = {};
+    if (exampleDict["tools"] && exampleDict["tools"].length > 0){
+      attachments["exampleTools"] = exampleDict["tools"];
+    }
+    if (exampleDict["text"]){
+      attachments["text"] = exampleDict["text"];
+    }
+    if (exampleDict["link"]){
+      attachments["link"] = exampleDict["link"];
+    }
+    setAttachments(attachments);
+    setSubmitted(true);
   }
 
   const Dropdown = () => {
@@ -172,7 +189,7 @@ export default function Demo() {
               <h1 className="font-sans text-2xl font-bold text-left px-5 py-5">Need some inspiration?</h1>
             </div>
 
-            <ExampleContainer></ExampleContainer>
+            <ExampleContainer handleExampleClick={handleExampleClick}></ExampleContainer>
           
           </div>
         </div>

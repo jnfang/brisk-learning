@@ -7,7 +7,8 @@ import { faDiagramNext,
     faBinoculars,
     faFilePen,
     faComment,
-    faPersonChalkboard
+    faPersonChalkboard,
+    faForwardFast
 } from "@fortawesome/free-solid-svg-icons"
 
 export default function ExampleContainer(props){
@@ -34,15 +35,17 @@ export default function ExampleContainer(props){
 
             />
             <ExampleCard
+                handleExampleClick={props.handleExampleClick}
                 title="Use tools faster"
                 description="Didn't cover side angle side today, shift all assigments in the unit back a day"
                 image="https://i.ibb.co/zhgbgyH/GClass-Aries-Datalexilemail.png"
                 link="https://www.google.com"
-                icon={faChartSimple}
+                icon={faForwardFast}
                 tools={["canvas"]}
 
             />
             <ExampleCard
+                handleExampleClick={props.handleExampleClick}
                 title="Personalized Data Reports"
                 description="Create a chart of Charlie's performance on the last 4 assignments and email it to his parents."
                 image="https://i.ibb.co/zhgbgyH/GClass-Aries-Datalexilemail.png"
@@ -52,6 +55,7 @@ export default function ExampleContainer(props){
 
             />
             <ExampleCard
+                handleExampleClick={props.handleExampleClick}
                 title="Detect AI-writing"
                 description="Verify that students did their recent essay submissions without AI-writing assistance."
                 image="https://i.ibb.co/YpZSzjQ/GDrive-Detectorlexilemail.png"
@@ -60,6 +64,7 @@ export default function ExampleContainer(props){
                 tools={["google classroom", "writing authentication"]}
             />
             <ExampleCard
+                handleExampleClick={props.handleExampleClick}
                 title="Monitor student progress"
                 description="Send me an email if a student hasn't submitted three assignments in a row."
                 image="https://i.ibb.co/80s3BZf/Monitor-studentlexilemail.png"
@@ -69,6 +74,7 @@ export default function ExampleContainer(props){
 
             />
             <ExampleCard
+                handleExampleClick={props.handleExampleClick}
                 title="Create worksheets on any topic"
                 description="Generate a worksheet about the battle of gettysburg aligned with ca state standards."
                 image="https://i.ibb.co/18Fn1wp/Worksheet-Doclexilemail-1.png"
@@ -77,6 +83,7 @@ export default function ExampleContainer(props){
                 tools={["curriculum", "google docs", "schoology"]}
             />
             <ExampleCard
+                handleExampleClick={props.handleExampleClick}
                 title="Automate the first round of feedback"
                 description="Give feedback on grammar, sentence structure, content on the Hamlet papers."
                 image="https://i.ibb.co/sVKLZzR/Feedback-REALfeedbackdrive.png"
