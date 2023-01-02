@@ -29,7 +29,7 @@ export default function WorkflowElement (props) {
                     </button>
                     </div>
                 </div>
-                <ToolOutputPreview tool={props.tool} prompt={props.prompt} attachments={props.attachments} />
+                <ToolOutputPreview tool={props.tool} prompt={props.prompt} attachments={props.attachments} exampleFlow={props.exampleFlow} />
             </div>
         )
     } else {

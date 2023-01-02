@@ -41,7 +41,8 @@ export default function CurrentWorkflow(props) {
     setCurrentWorkflowComponents(
       CurrentWorkflow.jsxWorkflowArray(
         lastBotMessageState,
-        props.attachments
+        props.attachments,
+        props.exampleFlow
       )
     );
   }, [localStorage["lastBotMessage"], props.attachments]);
@@ -67,7 +68,8 @@ export default function CurrentWorkflow(props) {
   }
 };
 
-CurrentWorkflow.jsxWorkflowArray = (msg, attachments) => {
+// ExampleFlow is null when you are not in the example flow, otherwise it is the title of the example flow
+CurrentWorkflow.jsxWorkflowArray = (msg, attachments, exampleFlow) => {
   var workflowVisualizationArray = [];
   const srcArrayHash = CurrentWorkflow.toolOptions(msg);
 
@@ -80,7 +82,13 @@ CurrentWorkflow.jsxWorkflowArray = (msg, attachments) => {
     const prompt = toolHash["prompt"];
     let colonIndex = prompt.indexOf(":");
     if (colonIndex > -1 && colonIndex < prompt.length) {prompt = prompt.substring(colonIndex +1, prompt.length).trim()}
-    const workflowElement = <WorkflowElement src={src} tool={tool} prompt={prompt} attachments={attachments}/>;
+    const workflowElement = <WorkflowElement
+      src={src}
+      tool={tool}
+      prompt={prompt}
+      attachments={attachments}
+      exampleFlow={exampleFlow}
+    />;
     workflowVisualizationArray.push(workflowElement);
 
   }

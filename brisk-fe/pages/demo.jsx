@@ -18,6 +18,7 @@ export default function Demo() {
   const [showAttachmentDropdown, setShowAttachmentDropdown] = useState(false);
   const [showTextAttachmentBox, setShowTextAttachmentBox] = useState(false);
   const [showLinkAttachmentBox, setShowLinkAttachmentBox] = useState(false);
+  const [exampleFlow, setExampleFlow] = useState(null);
 
   const handleGoSubmit = (e) =>  {
     e.preventDefault();
@@ -66,9 +67,17 @@ export default function Demo() {
   const handleExampleClick = (exampleDict) => {
     setFirstInput(exampleDict.exampleMessage);
     var attachments = {};
-    if (exampleDict["tools"] && exampleDict["tools"].length > 0){
-      attachments["exampleTools"] = exampleDict["tools"];
+
+    // Need to do validation that we are in the example flow
+    // Check whether exampleDict has a "tools" key and if it has a non-empty list
+    // Check whether exampleDict has "exampeTitle" key and if it has a non-empty string
+
+    const inExampleFlow = exampleDict["exampleTitle"] && exampleDict["exampleTitle"].length > 0 &&
+      exampleDict["tools"] && exampleDict["tools"].length > 0;
+    if (inExampleFlow) {
+      setExampleFlow(exampleDict.exampleTitle);
     }
+    // Setting text and link attachments is optional
     if (exampleDict["text"]){
       attachments["text"] = exampleDict["text"];
     }
@@ -130,7 +139,7 @@ export default function Demo() {
     <div>
       <NavBar></NavBar>
       {(submitted) ?
-        <Chat firstInput={firstInput} initialAttachments={attachments}></Chat>
+        <Chat firstInput={firstInput} initialAttachments={attachments} exampleState={exampleFlow}></Chat>
         :
         <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20 ">
         <div className="max-w-5xl mx-auto">

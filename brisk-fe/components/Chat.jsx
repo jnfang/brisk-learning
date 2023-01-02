@@ -20,6 +20,7 @@ export default function Chat(props) {
   const [madeInitialRequest, setMadeInitialRequest] = useState(false);
   const [workflowAttachments, setWorkflowAttachments] = useState(props.initialAttachments);
   const [allMessagesState, setAllMessagesState] = useState([createClientMessage(props.firstInput)]);
+  const [exampleState, setExampleState] = useState(props.exampleState);
 
   const saveMessages = (messages, HTMLString) => {
     localStorage.setItem('chat_messages', JSON.stringify(messages));
@@ -34,7 +35,13 @@ export default function Chat(props) {
     // Okay so we're going to have to call the action provider method here to create the chatbot message
     if (!madeInitialRequest) {
       setMadeInitialRequest(true);
-      invokeChatResponse(props.firstInput, "", setInitialMessagesCallback);
+      invokeChatResponse(
+        props.firstInput,
+        "",
+        setInitialMessagesCallback,
+        workflowAttachments,
+        exampleState
+      );
     }
   };
 
@@ -118,10 +125,21 @@ export default function Chat(props) {
           <div className="basis-1/2">
             <ChatHeader></ChatHeader>
             <IntegrationPanel></IntegrationPanel>
-            <CurrentWorkflow messages={allMessagesState} attachments={workflowAttachments}></CurrentWorkflow>
+            <CurrentWorkflow
+              messages={allMessagesState}
+              attachments={workflowAttachments}
+              exampleFlow={exampleState}
+            />
           </div>
           <div className="basis-1/2">
-            <Chatbot config={config} key={initialMessages.length} actionProvider={ActionProvider} messageParser={MessageParser} messageHistory={initialMessages} saveMessages={saveMessages}/>
+            <Chatbot
+              config={config}
+              key={initialMessages.length}
+              actionProvider={ActionProvider}
+              messageParser={MessageParser} 
+              messageHistory={initialMessages} 
+              saveMessages={saveMessages}
+            />
           </div>
         </div>
     </div>

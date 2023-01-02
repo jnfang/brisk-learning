@@ -19,12 +19,18 @@ class ActionProvider {
    this.invokeAutomtion = invokeAutomtion;
  }
 
+ // TODO We don't have access to attachments here, so will need 
+ // to use local storage or some other method to store them
+
+ // exampleState is set to null because in invokeChatResponse because
+ // this is only called on the second message
   invokeAutomation = async (input) => {
     const setChatBotState = (cleanedLlmResponse) => {
       const message = this.createChatBotMessage(cleanedLlmResponse);
       this.updateChatBotState([message]);
     }
-    invokeChatResponse(input, "context", setChatBotState);
+    
+    invokeChatResponse(input, "", setChatBotState, {}, null);
   }
 
   updateChatBotState = (message) => {

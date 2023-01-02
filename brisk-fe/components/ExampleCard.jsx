@@ -12,6 +12,7 @@ export default function ExampleCard(props) {
     e.stopPropagation();
     if (props.description && props.tools) {
       const exampleDict ={
+        "exampleTitle": props.title,
         "exampleMessage": props.description,
         "tools": props.tools,
       }

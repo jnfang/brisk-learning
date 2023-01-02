@@ -2,6 +2,7 @@ import { useLayoutEffect } from "react";
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
+import { exampleToolData } from "./utils";
 
 export default function ToolOutputPreview(props) {
     
@@ -11,6 +12,7 @@ export default function ToolOutputPreview(props) {
     const [toolState, setToolState] = useState(props.tool);
     const [promptState, setPromptState] = useState(props.prompt);
     const [attachmentState, setAttachmentState] = useState(props.attachments);
+    const [exampleFlowState, setExampleFlowState] = useState(props.exampleFlow);
 
 
     const GoogleDocComponent = (docUrl) => {
@@ -73,7 +75,21 @@ export default function ToolOutputPreview(props) {
         // Do validation on inputs - optional for now
         // We only run this if toolRequestData is null to avoid a race condition, there's
         // probably a better way to address this!
-        
+
+        // If exampleFlowState is true and request prompt is a substring of the chat response in exampleToolData,
+        // then we know that we are in the example flow and we should return the exampleToolData of the tool that
+        // should be rendered. If that's not the case, go ahead and make the request to the backend.
+        const useExampleResponse = (
+            exampleFlowState !== null && 
+            exampleFlowState in exampleToolData &&
+            exampleToolData[exampleFlowState]["chat response"].includes(request_prompt)
+        )
+        if (useExampleResponse) {
+            const exampleToolResponse = exampleToolData[exampleFlowState][request_tool];
+
+            setToolRequestData(exampleToolResponse);
+            return null;
+        }
 
         const inactiveTools = ["google drive", "google caledar", "google sheets",
             "google slides", "google docs", "remind", "clever", "zoom", "google meet", "youtube", "data", "curriculum"]
