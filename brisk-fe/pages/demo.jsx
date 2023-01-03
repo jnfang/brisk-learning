@@ -4,7 +4,6 @@ import Chat from '../components/Chat';
 import NavBar from '../components/NavBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons'
-import { Button } from 'react-bootstrap';
 import TextAttachmentBox from '../components/TextAttachmentBox';
 import LinkAttachmentBox from '../components/LinkAttachmentBox';
 import ExampleContainer from '../components/ExampleContainer';
@@ -94,10 +93,10 @@ export default function Demo() {
         <div className=''>
           <ul className='dropdown-attach border-2'>
               <li className='menu-item'>
-                <Button className='dropdown-button' onClick={onClickText}>Text</Button>
+                <button className='dropdown-button' onClick={onClickText}>Text</button>
               </li>
               <li className='menu-item'>
-                <Button className='dropdown-button' onClick={onClickLink}>Link</Button>
+                <button className='dropdown-button' onClick={onClickLink}>Link</button>
               </li>
             </ul>
         </div>
