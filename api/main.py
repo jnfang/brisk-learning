@@ -8,11 +8,15 @@ from firebase_admin import db, credentials, initialize_app
 import openai
 from flask_cors import CORS
 from prompt_engine import PromptEngine
+from tool_engine import ToolEngine
 import time
 from datetime import datetime
 import google.cloud.logging as glogging
 import sys
 import concurrent.futures
+from langchain import OpenAI
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
 
 client = glogging.Client()
 client.setup_logging()
@@ -58,7 +62,7 @@ def get_completion(prompt_and_token):
         return created_article
     except Exception as e:
         print(e)
-        app.logger.error(f"An Error Occurred in OpenAI: {e}")
+        # app.logger.error(f"An Error Occurred in OpenAI: {e}")
         raise e
 
 
@@ -110,43 +114,54 @@ async def create():
         abort(500)
         return
 
-
-@ app.route('/list', methods=['GET'])
-def read():
+@ app.route('/chat', methods=['POST'])
+def chat():
     try:
-        # Check if ID was passed to URL query
-        todo_id = request.args.get('id')
-        # if todo_id:
-        #     todo = collection_ref.document(todo_id).get()
-        #     return jsonify(todo.to_dict()), 200
-        # else:
-        #     all_todos = [doc.to_dict() for doc in collection_ref.stream()]
-        #     return jsonify(all_todos), 200
+        response = """
+        Okay, I will send an email to absent students' parents with assignments in Google Classrom that were covered.
+        //P// Powerschool: Find students who were absent today... \n
+        //P// Google Classroom: Look for assignments that were assigned today... \n
+        //P// Google Drive: Draft an email to parents explaining the assignments that were covered today...\n
+        """
+        input = request.json['prompt']
+        previous_context = request.json['previous_context']
+        prompt = PromptTemplate(
+            input_variables=["input"],
+            template=PromptEngine.ta_prompt()
+        )
+        llm = OpenAI(temperature=0.0)
+        chain = LLMChain(llm=llm, prompt=prompt)
+        response = chain.run(input)
+        print(response)
+        return {"llmResponse": response}, 200
+
     except Exception as e:
-        return f"An Error Occurred: {e}"
+        print(e)
+        abort(500)
+        return
 
-
-@ app.route('/update', methods=['POST', 'PUT'])
-def update():
+@ app.route('/invoke_tool', methods=["POST"])
+def invoke_tool():
     try:
-        id = request.json['id']
-        # collection_ref.document(id).update(request.json)
-        return jsonify({"success": True}), 200
+        result = "<s> default content <b> fjsailjfls"
+        print(request.json['attachments'])
+        print(request.json)
+        input = request.json['prompt']
+        tool = request.json['tool']
+        attachments = request.json['attachments']
+        print(attachments)
+        result = ToolEngine.invokeTool(tool, input, attachments)
+        print(result)
+        return {"toolResponse": result}, 200
+    
     except Exception as e:
-        return f"An Error Occurred: {e}"
+        print(e)
+        abort(500)
+        return
 
-
-@ app.route('/delete', methods=['GET', 'DELETE'])
-def delete():
-    try:
-        # Check for ID in URL query
-        todo_id = request.args.get('id')
-        # collection_ref.document(todo_id).delete()
-        return jsonify({"success": True}), 200
-    except Exception as e:
-        return f"An Error Occurred: {e}"
 
 
 port = int(os.environ.get('PORT', 8080))
 if __name__ == '__main__':
     app.run(threaded=True, host='0.0.0.0', port=port, debug=True)
+
