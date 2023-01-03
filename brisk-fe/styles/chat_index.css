@@ -1,0 +1,202 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+      monospace;
+  }
+  
+  .react-chatbot-kit-chat-bot-message {
+    margin-left: 0px !important;
+    width: fit-content !important;
+    background: #580cfc !important;
+  }
+
+  .react-chatbot-kit-chat-bot-message-arrow {
+    border-right: 8px solid #580cfc !important;
+  }
+  
+  .react-chatbot-kit-chat-container  {
+    width: 100% !important;
+    height: 100% !important;
+    background: white;
+  }
+  
+  .react-chatbot-kit-chat-message-container {
+    height: 82.5vh !important;
+    background: white;
+  }
+  
+  .react-chatbot-kit-chat-input-container {
+    color: black !important;
+  }
+
+  .react-chatbot-kit-chat-inner-container {
+    height: 100% !important;
+  }
+
+  .react-chatbot-kit-chat-container {
+    border: 1px solid #d8d8d8;
+    border-radius: 0.125rem;
+  }
+
+  .extra-top-padding {
+    padding-top: 5vh;
+  }
+
+  .integration-icon {
+    height: 5vh;
+    padding: 1px;
+  }
+
+  .current-integration {
+    padding: 10px;
+    background:#580cfc;
+    color: white;
+    text-align: left;
+  }
+
+  .current-integration-icons {
+    padding: 10px;
+  }
+
+  .integration-container {
+    margin-top: 25px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border: 1px solid #580cfc !important;
+  }
+
+  .tool-container {
+    margin: 20px;
+    padding: 10px;
+    position: relative;
+  }
+
+  .cancel-button {
+    color: #424242;
+    width: 50px;
+    height: 50px;
+    margin: 0px;
+  }
+  .cancel-button:hover {
+    background: #BDBDBD;
+  }
+
+  .options-container {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
+
+  .prompt-container {
+    padding-left: 10px;
+    padding-right: 100px;
+    font-size: medium;
+  }
+
+  .email-container {
+    text-align: left !important;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+    font-size: small;
+    white-space: pre-wrap;
+  }
+
+  .subject-line-container {
+    padding: 5px;
+    width: 100%;
+  }
+
+  .email-body-content {
+    padding: 5px;
+    max-width: 100%;
+  }
+
+  input, textarea {
+    padding:0; 
+    margin:0 ;
+    width: 100%;
+  }
+
+  .loader-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .start-button {
+    background-color: #580cfc;
+    display: inline-flex;
+    align-items: center;
+    justify-items: center;
+    font-size: medium;
+    color: white;
+    margin-left: 5px;
+  }
+
+  .attach-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+  }
+
+  .attach-button {
+    position: relative;
+  }
+
+  .dropdown-attach {
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    outline: #616161;
+  }
+  
+  .dropdown-button {
+    background-color: white;
+    display: inline-flex;
+    font-size: medium;
+    color: #616161;
+    margin-left: 0px;
+    border: none;
+    text-transform: none;
+    width: 100%;
+  }
+
+  .dropdown-button:hover {
+    background-color: #f1f1f1;
+    font-weight: bolder;
+  }
+
+  .main-form {
+    margin-bottom: 40px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .cancel-button {
+    color: #424242;
+    width: 20px;
+    height: 20px;
+    margin: 0px;
+  }
+
+  .fileShortCutImg {
+    width: 16px;
+  }
+
+  .example-icon {
+    color: rgb(226 232 240);
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+
+  .outline-purple {
+    outline: 0px solid #580cfc;
+  }

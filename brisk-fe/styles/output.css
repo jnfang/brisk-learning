@@ -2082,6 +2082,7 @@ html {
   padding: var(--navbar-padding, 0.5rem);
   min-height: 4rem;
   width: 100%;
+  color: black;
 }
 
 :where(.navbar > *) {
