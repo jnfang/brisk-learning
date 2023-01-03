@@ -31,7 +31,7 @@ export default function ExampleCard(props) {
         <div className="basis-3/4 flex flex-col justify-between grow px-2 text-left h-full">
             <div className="grow">
               <h2 className="text-xl font-bold">{props.title}</h2>
-              <p className="text-base text-gray-700 md:text-md italic">"{props.description}"</p>
+              <p className="text-base text-gray-700 md:text-md italic">&quot;{props.description}&quot;</p>
             </div>
             <button className="outline-purple flex flex-row bg-slate-200 px-2 py-2 rounded-md my-2 justify-between hover:outline-2" onClick={handleExampleClick}>
               <div><b>Try this example</b></div>

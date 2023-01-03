@@ -160,15 +160,15 @@ def chat():
         //P// Google Drive: Draft an email to parents explaining the assignments that were covered today...\n
         """
         input = request.json['prompt']
-        # previous_context = request.json['previous_context']
-        # prompt = PromptTemplate(
-        #     input_variables=["input"],
-        #     template=PromptEngine.ta_prompt()
-        # )
-        # llm = OpenAI(temperature=0.0)
-        # chain = LLMChain(llm=llm, prompt=prompt)
-        # response = chain.run(input)
-        # print(response)
+        previous_context = request.json['previous_context']
+        prompt = PromptTemplate(
+            input_variables=["input"],
+            template=PromptEngine.ta_prompt()
+        )
+        llm = OpenAI(temperature=0.0)
+        chain = LLMChain(llm=llm, prompt=prompt)
+        response = chain.run(input)
+        print(response)
         return {"llmResponse": response}, 200
 
     except Exception as e:
@@ -180,14 +180,14 @@ def chat():
 def invoke_tool():
     try:
         result = "<s> default content <b> fjsailjfls"
-        # print(request.json['attachments'])
-        # print(request.json)
-        # input = request.json['prompt']
-        # tool = request.json['tool']
-        # attachments = request.json['attachments']
-        # print(attachments)
-        # result = ToolEngine.invokeTool(tool, input, attachments)
-        # print(result)
+        print(request.json['attachments'])
+        print(request.json)
+        input = request.json['prompt']
+        tool = request.json['tool']
+        attachments = request.json['attachments']
+        print(attachments)
+        result = ToolEngine.invokeTool(tool, input, attachments)
+        print(result)
         return {"toolResponse": result}, 200
     
     except Exception as e:

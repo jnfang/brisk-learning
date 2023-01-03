@@ -113,8 +113,8 @@ export default function Chat(props) {
   const ChatHeader = () => {
     return (
       <div>
-        <h1 className="text-3xl font-bold">Your virtual assistant</h1>
-        <h1 className="text-2xl font-bold">Stop Clicking Around.</h1>
+        <h1 className="text-3xl font-bold">Anything your TA can do...</h1>
+        <h1 className="text-2xl font-bold">Brisk can do better.</h1>
       </div>
     )
   }
@@ -122,7 +122,7 @@ export default function Chat(props) {
   return (
     <div className="App">
         <div className="flex flex-row extra-top-padding">
-          <div className="basis-1/2">
+          <div className="basis-2/3">
             <ChatHeader></ChatHeader>
             <IntegrationPanel></IntegrationPanel>
             <CurrentWorkflow
@@ -131,7 +131,7 @@ export default function Chat(props) {
               exampleFlow={exampleState}
             />
           </div>
-          <div className="basis-1/2">
+          <div className="basis-1/3">
             <Chatbot
               config={config}
               key={initialMessages.length}

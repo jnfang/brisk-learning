@@ -104,6 +104,9 @@ When talking to leaders in 2011 in Australia, Elizabeth said this:
 `
 
 const gettysburgWorksheetExample = `
+
+I've found the CA state standards for 8th grade history here: https://www.cde.ca.gov/be/st/ss/documents/histsocscistnd.pdf
+
 Title: The Battle of Gettysburg: A Turning Point in the Civil War
 
 Directions: Read the following passage and answer the questions below.
@@ -142,7 +145,7 @@ export const exampleToolData = {
         "tools": ["lexile converter", "google docs", "google classroom"],
         "chat response": "Okay, I've used Lexile Converter to re-write the attached news article at 700L Lexile and attached it to the Romanticism Unit. //P// Lexile Converter: Re-write the attached news article at 700L Lexile... //P// Google Docs: Creating a doc with the content //P// Google Classroom: Attach it to the Romanticism Unit...",
         "lexile converter": lexileConversionExample,
-        "google docs": "<doc>",
+        "google docs": "",
         "google classroom": "Attached the re-written article to the Romanticism Unit",
         icon: faKeyboard,
 
@@ -150,7 +153,7 @@ export const exampleToolData = {
     "Use Tools Faster": {
         "command": "Didn't cover side angle side today, shift all assigments in the unit back a day",
         "tools": ["canvas"],
-        "chat response": "Okay, I've used Canvas to shift all assignments in the unit back a day. //P// Canvas: Shifting all assignments in the Geomerty of Triangles Unit back a day...",
+        "chat response": "Okay, I've used Canvas to shift all assignments in the unit back a day. //P// Canvas: Shifting all assignments in the Geometry of Triangles Unit back a day...",
         "canvas": "Changing dates of Geometry of Triangles assignments \nTriange Inequality Theorem: 9/14 -> 9/15 \n Pythagorean Theorem: 9/15 -> 9/16 \n Perpindicular Bisectors: 9/16 -> 9/17 \n Angle Bisectors: 9/17 -> 9/20 \n Medians and Cortoids: 9/20 -> 9/21 \n Altitudes and Medians: 9/21 -> 9/22 \n Triangle Congruence: 9/22 -> 9/23 ",
         icon: faForwardFast,
     },
@@ -177,7 +180,7 @@ export const exampleToolData = {
         "chat response": "Okay, I've scheduled a monitor that checks Google Classroom every week and emails you a list of students who meet the criteria. //P// Monitor: Check Google Classroom Every Week... //P// Google Classroom: Find students who have not completed the last 3 assignments in the unit... //P// Gmail: Email you a list of students who meet the criteria...",
         "google classroom": "Retrieved recent student submission data and found that Jimmy Clay has not completed the last 3 assignments in the unit",
         "monitor": "Scheduling a weekly monitor to check Google Classroom and email you an list of students who have not completed the last 3 assignments in the unit",
-        "gmail": "<a> Your Student Submissions Report <b> Jimmy Clay has not completed the last 3 assignments in the unit: https://classroom.google.com/u/0/w/MzExODE1NTAwMTMz/t/all",
+        "gmail": "<a Your Student Submissions Report <b> Jimmy Clay has not completed the last 3 assignments in the unit: https://classroom.google.com/u/0/w/MzExODE1NTAwMTMz/t/all",
         "icon": faBinoculars
     },
     "Create worksheets on any topic": {

@@ -98,12 +98,14 @@ body {
   .prompt-container {
     padding-left: 10px;
     padding-right: 100px;
-    font-size: small;
+    font-size: medium;
   }
 
   .email-container {
     text-align: left !important;
-    margin-top: 0px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
     font-size: small;
     white-space: pre-wrap;
   }
