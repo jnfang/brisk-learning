@@ -19,7 +19,7 @@ class ToolEngine(object):
         )
         llm = OpenAI(temperature=0.0)
         chain = LLMChain(llm=llm, prompt=prompt_template)
-        response = chain.run({"input": input, "context":context})
+        response = chain.predict(input=input, context=context)
         return response 
     
     @staticmethod
@@ -38,7 +38,7 @@ class ToolEngine(object):
         )
         llm = OpenAI(temperature=0.0)
         chain = LLMChain(llm=llm, prompt=prompt_template)
-        response = chain.run({"input": input, "context":context})
+        response = chain.predict(input=input, context=context)
         return response
 
     @staticmethod
@@ -85,7 +85,7 @@ class ToolEngine(object):
         )
         llm = OpenAI(temperature=0.0)
         chain = LLMChain(llm=llm, prompt=prompt_template)
-        response = chain.run({"input": prompt, "context":context})
+        response = chain.predict(input=prompt, context=context)
         return response 
 
     @staticmethod
@@ -100,7 +100,7 @@ class ToolEngine(object):
         )
         llm = OpenAI(temperature=0.0)
         chain = LLMChain(llm=llm, prompt=prompt_template)
-        response = chain.run({"input": prompt, "context":context})
+        response = chain.predict(input=prompt, context=context)
         return response 
 
     @staticmethod
@@ -115,7 +115,7 @@ class ToolEngine(object):
         )
         llm = OpenAI(temperature=0.0)
         chain = LLMChain(llm=llm, prompt=prompt_template)
-        response = chain.run({"input": prompt, "context":context})
+        response = chain.predict(input=prompt, context=context)
         return response 
 
     @staticmethod
@@ -130,7 +130,7 @@ class ToolEngine(object):
         )
         llm = OpenAI(temperature=0.0)
         chain = LLMChain(llm=llm, prompt=prompt_template)
-        response = chain.run({"input": prompt, "context":context})
+        response = chain.predict(input=prompt, context=context)
         return response 
 
     @staticmethod
