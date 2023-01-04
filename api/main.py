@@ -29,12 +29,12 @@ from langchain.chains import LLMChain
 app = Flask(__name__)
 CORS(app)
 
-# Initialize Firestore DB
-cred = credentials.Certificate('key.json')
-databaseURL = 'https://brisk-d3f02-default-rtdb.firebaseio.com/'
-default_app = initialize_app(cred, {
-    'databaseURL': databaseURL
-})
+# # Initialize Firestore DB
+# cred = credentials.Certificate('key.json')
+# databaseURL = 'https://brisk-d3f02-default-rtdb.firebaseio.com/'
+# default_app = initialize_app(cred, {
+#     'databaseURL': databaseURL
+# })
 
 MAX_TOKENS = 2000
 TEMPERATURE = 0
