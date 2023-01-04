@@ -7,7 +7,7 @@ import { exampleToolData } from "./utils";
 export default function ToolOutputPreview(props) {
     
     const [toolRequestData, setToolRequestData] = useState(null);
-    const invokeToolEndpoint = 'http://127.0.0.1:8080/invoke_tool';
+    const invokeToolEndpoint = (process.env.NEXT_PUBLIC_SERVER || "https://brisk-edu.onrender.com/") + "invoke_tool";
     const [maxToolRequests, setMaxToolRequests] = useState(0);
     const [toolState, setToolState] = useState(props.tool);
     const [promptState, setPromptState] = useState(props.prompt);

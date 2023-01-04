@@ -11,9 +11,12 @@ import { faDiagramNext,
 } from "@fortawesome/free-solid-svg-icons"
 
 
+export const envServerURL = process.env.NEXT_PUBLIC_SERVER || "https://brisk-edu.onrender.com/"
+
 // Returns the cleaned up LLM response that will be displayed in chat
 export async function invokeChatResponse(input, previous_context, setStateCallback, attachments, exampleState) {
-    const chatEndpoint = "http://127.0.0.1:8080/chat";
+    const chatEndpoint = envServerURL+ "chat";
+    console.log(process.env.NEXT_PUBLIC_SERVER);
     let llmResponse;
     if (exampleState) {
         // Based on the title of the tool, get the chat response

@@ -11,10 +11,10 @@ export default function NavBar () {
             </label>
             <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
               <li>
-                <Link href="/">Homepage</Link>
+                <Link href="/">Demo</Link>
               </li>
               <li>
-                <Link href="/demo">Demo</Link>
+                <Link href="/lexile">Lexile</Link>
               </li>
               <li><a>About</a></li>
             </ul>
