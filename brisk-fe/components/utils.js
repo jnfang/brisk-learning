@@ -205,3 +205,134 @@ export const exampleToolData = {
     }
 
 };
+
+// Create a dictionary similar to TOOLDICTIONARY with the same keys, except the value is a dictionary with one key "imageUrl" and the value is the url of the image
+// The next key is "name" and the value is the name of the tool but every first character is capitalized
+// The next key is "description" and the value is a description of the tool
+
+export const TOOLDESCRIPTIONS = {
+    'youtube': {
+      'imageUrl': "https://cdn-icons-png.flaticon.com/512/1384/1384060.png",
+      'name': "Youtube",
+      'description': "YouTube is a video-sharing website that teachers can use to share educational videos with their students. Teachers can also use YouTube to create their own videos for use in the classroom."
+    },
+    'google meet': {
+      'imageUrl': "https://upload.wikimedia.org/wikipedia/commons/9/9b/Google_Meet_icon_%282020%29.svg",
+      'name': "Google Meet",
+      'description': "Google Meet is a video conferencing tool that teachers can use to hold online meetings with their students. Teachers can use Meet to hold virtual office hours, review assignments, or hold virtual lectures."
+    },
+    'google slides': {
+      'imageUrl': "https://media.flaticon.com/dist/min/img/landing/gsuite/slides.svg",
+      'name': "Google Slides",
+      'description': "Google Slides is a web-based presentation application developed by Google."
+    },
+    'google docs': {
+      'imageUrl': "https://upload.wikimedia.org/wikipedia/commons/0/01/Google_Docs_logo_%282014-2020%29.svg",
+      'name': "Google Docs",
+      'description': "Google Docs is a word processor included as part of a free, web-based software office suite offered by Google. It allows collaborative editing of documents in real time."
+    },
+    'google sheets': {
+      'imageUrl': "https://media.flaticon.com/dist/min/img/landing/gsuite/sheets.svg",
+      'name': "Google Sheets",
+      'description': "Google Sheets is a spreadsheet program included as part of a free, web-based software office suite offered by Google. It allows collaborative editing of spreadsheets in real time."
+    },
+    'google classroom': {
+      'imageUrl': "https://cdn.worldvectorlogo.com/logos/google-classroom.svg",
+      'name': "Google Classroom",
+      'description': "Google Classroom is a web-based platform that teachers can use to create and organize assignments, send announcements and messages, and track class progress. Teachers can also use Classroom to grade assignments and provide feedback to students."
+    },
+    'gmail': {
+      'imageUrl': "https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg",
+      'name': "Gmail",
+      'description': "Gmail is an email service that teachers can use to communicate with students and other teachers. Teachers can use Gmail to send and receive emails, and to schedule and organize emails using labels and folders."
+    },
+    'zoom': {
+      'imageUrl': "https://www.yourstrategic.com/wp-content/uploads/2021/11/Zoom-Icon.png",
+      'name': "Zoom",
+      'description': "Zoom is a video conferencing service that can be used for teleconferencing, telecommuting, distance education, and social relations."
+    },
+    'google drive': {
+      'imageUrl': "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Google_Drive_icon_%282020%29.svg/2295px-Google_Drive_icon_%282020%29.svg.png",
+      'name': "Google Drive",
+      'description': "Google Drive is a file storage and synchronization service developed by Google. It allows users to store files in the cloud, share files, and edit documents, spreadsheets, and presentations with collaborators."
+    },
+    'google calendar': {
+      'imageUrl': "https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Calendar_icon_%282020%29.svg",
+      'name': "Google Calendar",
+      'description': "Google Calendar is a time-management and scheduling tool that teachers can use to create and manage events and appointments. Teachers can use Calendar to schedule class time, office hours, and other appointments, and to share their schedule with students."
+    },
+    'clever': {
+      'imageUrl': "https://images.squarespace-cdn.com/content/v1/59d3e365f43b55815a1bad33/1598978265798-V9XFUYOUCY6YY0XO8XBR/image-asset.png",
+      'name': "Clever",
+      'description': "Clever is a platform that connects teachers and students with educational resources and apps. Teachers can use Clever to access and assign online resources and apps to their students, and to track student progress."
+    },
+    'remind': {
+      'imageUrl': "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRGVCxXrMYevZYjNcNPbK55jhxTk9fBHtm8Q&usqp=CAU",
+      'name': "Remind",
+      'description': "Remind is a communication tool that teachers can use to send messages to students and parents. Teachers can use Remind to send announcements, reminders, and other messages to keep students and parents informed."
+    },
+    'schoology': {
+      'imageUrl': "https://img.icons8.com/plasticine/400/schoology.png",
+      'name': "Schoology",
+      'description': "Schoology is a learning management system that teachers can use to create and manage course materials and assignments. Teachers can use Schoology to create and distribute assignments, provide feedback, and track student progress."
+    },
+    'aries': {
+      'imageUrl': "https://pbs.twimg.com/profile_images/770375041145987072/Pr4KhDXP_400x400.jpg",
+      'name': "Aries",
+      'description': "Aeries is a student information system that teachers can use to access and update student data. Teachers can use Aeries to view student information, grades, and attendance, and to enter grades and attendance data."
+    },
+    'canvas': {
+      'imageUrl': "https://www.instructure.com/sites/default/files/image/2021-12/Canvas_logo_single_mark.png",
+      'name': "Canvas",
+      'description': "Canvas is a learning management system that teachers can use to create and manage course materials and assignments. Teachers can use Canvas to create and distribute assignments, provide feedback, and track student progress."
+    },
+    'powerschool': {
+      'imageUrl': "https://wellesleyps.org/wms/wp-content/uploads/sites/16/2020/09/powerschool-P-logo.png",
+      'name': "PowerSchool",
+      'description':"PowerSchool is a student information system that teachers can use to access and update student data. Teachers can use PowerSchool to view student information, grades, and attendance, and to enter grades and attendance data."
+    },
+    'wikipedia': {
+      'imageUrl': "https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1200px-Wikipedia-logo-v2.svg.png",
+      'name': "Wikipedia",
+      'description': "Wikipedia is an online encyclopedia that teachers can use as a resource for research and information on a wide range of topics. Teachers can use Wikipedia to find articles and information to use in the classroom or to recommend to students for research projects."
+    },
+    'curriculum': {
+      'imageUrl': "https://www.citypng.com/public/uploads/preview/hd-purple-round-pencil-icon-png-171630368416vlipzv1qyr.png",
+      'name': "Curriculum",
+      'description': "Curriculum is a tool that uses generative AI to help teachers create content for lesson plans, worksheets, resources, quizzes, and more. The content can be generated in Google Docs, Slides, and other tools."
+    },
+    'data': {
+      'imageUrl': "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKfp_Aguqo9ljbIMjZZVlZjnHSgkxWVLLXwg&usqp=CAU",
+      'name': "Data",
+      'description': "Data is a tool that allows teachers to use data from various sources, such as Google Classroom, Google Sheets, and more, to create charts and visualizations. These charts and visualizations can help teachers better understand and track student progress."
+    },
+    'lexile converter': {
+      'imageUrl': "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Eo_circle_purple_arrow-up-down.svg/2048px-Eo_circle_purple_arrow-up-down.svg.png",
+      'name': "Lexile Converter",
+      'description': "Lexile Converter is a tool that allows teachers to convert any text to text of a specific Lexile level. This can help teachers tailor reading materials to the appropriate level for their students."
+    },
+    'writing integrity': {
+      'imageUrl': "https://miro.medium.com/max/1400/0*F9ptwf7KyiVfrX0x.jpg",
+      'name': "Writing Integrity",
+      'description': "Writing Integrity is a tool that looks at folders of student work and flags documents that may be plagiarized or may have been created using automated tools like GPT-3. This can help teachers identify and address instances of academic dishonesty in their classrooms."
+    },
+    'lesson planner': {
+      'imageUrl': "https://static.vecteezy.com/system/resources/previews/012/319/315/original/clipboard-multicolor-circle-line-inverted-icon-vector.jpg",
+      'name': "Lesson Planner",
+      'description': "Lesson Planner is a tool that allows you to create lesson plans for your students."
+    },
+    'feedback': {
+      'imageUrl': "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlM19sO3G9DCLc0-BaRMW7VzfsLxXQq_DGWIM6tSq2mZSj9Nab_K4BfAsxg197S6Lji3o&usqp=CAU",
+      'name': "Feedback",
+      'description': "Feedback is a tool that provides automated feedback on student submissions based on how the teacher has given feedback in the past. The goal of Feedback is to save teachers time and improve the efficiency of the feedback process."
+    },
+    'monitor': {
+      'imageUrl': "https://cdn2.iconfinder.com/data/icons/advertising-agency-wildberry-vol-1/256/Frequency-512.png",
+      'name': "Monitor",
+      'description': "Monitor is a tool that allows teachers to schedule workflows and receive notifications when certain metrics reach certain thresholds. This can help teachers stay up-to-date on important data and track student progress."
+    },
+  }
+
+
+
+ 
