@@ -17,6 +17,7 @@ import concurrent.futures
 from langchain import OpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
+import time
 
 # client = glogging.Client()
 # client.setup_logging()
@@ -133,6 +134,8 @@ def chat():
         chain = LLMChain(llm=llm, prompt=prompt)
         response = chain.run(input)
         print(response)
+        # time.sleep(1)
+
         return {"llmResponse": response}, 200
 
     except Exception as e:
@@ -144,6 +147,7 @@ def chat():
 def invoke_tool():
     try:
         result = "<s> default content <b> fjsailjfls"
+        print(request.json['prompt'])
         print(request.json['attachments'])
         print(request.json)
         input = request.json['prompt']
@@ -152,6 +156,7 @@ def invoke_tool():
         print(attachments)
         result = ToolEngine.invokeTool(tool, input, attachments)
         print(result)
+        # time.sleep(1)
         return {"toolResponse": result}, 200
     
     except Exception as e:

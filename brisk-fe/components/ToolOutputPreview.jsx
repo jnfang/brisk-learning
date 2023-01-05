@@ -1,20 +1,5 @@
-import { useLayoutEffect } from "react";
-import { useState, useEffect } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCopy } from '@fortawesome/free-solid-svg-icons'
-import { exampleToolData } from "./utils";
-
 export default function ToolOutputPreview(props) {
     
-    const [toolRequestData, setToolRequestData] = useState(null);
-    const invokeToolEndpoint = (process.env.NEXT_PUBLIC_SERVER || "https://brisk-edu.onrender.com/") + "invoke_tool";
-    const [maxToolRequests, setMaxToolRequests] = useState(0);
-    const [toolState, setToolState] = useState(props.tool);
-    const [promptState, setPromptState] = useState(props.prompt);
-    const [attachmentState, setAttachmentState] = useState(props.attachments);
-    const [exampleFlowState, setExampleFlowState] = useState(props.exampleFlow);
-
-
     const GoogleDocComponent = (docUrl) => {
         docUrl = "https://docs.google.com/document/d/1SyqxM7VHj3sSwfObuQoLaDoCtC9UX6DeLqNpbHf4MCc/edit?usp=sharing";
         const src = "https://upload.wikimedia.org/wikipedia/commons/0/01/Google_Docs_logo_%282014-2020%29.svg"
@@ -45,18 +30,9 @@ export default function ToolOutputPreview(props) {
         )
     }
 
-    // For a given string, if it contains "docs.google.com", return JSX with the text,
-    // with GoogleDocComponent replacing every word that contains "docs.google.com".
-    // Otherwise, return the string.
-    const interpolateGoogleDocs = (str) => {
-        return str;
-    }
-
-    // const copyToClipboard = () => {navigator.clipboard.writeText(newContent)} 
-
 
     const PreviewGeneric = (toolProp) => {
-        if (toolRequestData === null) {
+        if (props.response === null) {
             return (
                 <div className="flex loader-container">
                     <div className="loader"></div>
@@ -65,66 +41,15 @@ export default function ToolOutputPreview(props) {
         } else {
             return (
                 <div className="email-container">
-                    {toolRequestData}
+                    {props.response}
                 </div>
             )
         }
     }
     
-    async function handleToolRequest(request_tool, request_prompt, attachments) {
-        // Do validation on inputs - optional for now
-        // We only run this if toolRequestData is null to avoid a race condition, there's
-        // probably a better way to address this!
-
-        // If exampleFlowState is true and request prompt is a substring of the chat response in exampleToolData,
-        // then we know that we are in the example flow and we should return the exampleToolData of the tool that
-        // should be rendered. If that's not the case, go ahead and make the request to the backend.
-        const useExampleResponse = (
-            exampleFlowState !== null && 
-            exampleFlowState in exampleToolData &&
-            exampleToolData[exampleFlowState]["chat response"].includes(request_prompt)
-        )
-        if (useExampleResponse) {
-            const exampleToolResponse = exampleToolData[exampleFlowState][request_tool];
-
-            setToolRequestData(exampleToolResponse);
-            return null;
-        }
-
-        const inactiveTools = ["google drive", "google caledar", "google sheets",
-            "google slides", "google docs", "remind", "clever", "zoom", "google meet", "youtube", "data", "curriculum"]
-        if (inactiveTools.includes(request_tool)) {
-            setToolRequestData("Default output");
-            return null;
-        }
-        if (toolRequestData === null && maxToolRequests < 1) {
-            const data = {
-                tool: request_tool,
-                prompt: request_prompt,
-                attachments: attachments
-            }
-            setMaxToolRequests(maxToolRequests + 1);
-            const res = await fetch(invokeToolEndpoint, {
-                body: JSON.stringify(data),
-                headers: {
-                'Content-Type': 'application/json',
-                },
-                method: 'POST',
-            });
-            const result = await res.json();
-            setToolRequestData(result.toolResponse);
-        }
-        return null;
-    }
-
-    useEffect(() => {
-        handleToolRequest(toolState, promptState, attachmentState);
-    }, [attachmentState]);
-    
-
     // Here are all the functions for specific tools
     const PreviewGoogleClassroom = (tool, prompt, context) => {
-        return <PreviewGeneric toolProp={toolRequestData}></PreviewGeneric>;
+        return <PreviewGeneric toolProp={props.response}></PreviewGeneric>;
     }
 
     const PreviewGmail = (tool, prompt, context) => {
@@ -146,11 +71,11 @@ export default function ToolOutputPreview(props) {
 
         return (
         <div className="email-container">
-            {(toolRequestData !== null) ?
+            {(props.response !== null) ?
                 (<form>
                     <div className="subject-line-container"> 
                         <b>Subject:</b>
-                        <input className="border-2 border-slate-300	" type="text" defaultValue={subject(toolRequestData)}></input>
+                        <input className="border-2 border-slate-300	" type="text" defaultValue={subject(props.response)}></input>
                     </div>
                     <div className="email-body-content">
                         <b>Body:</b>
@@ -158,7 +83,7 @@ export default function ToolOutputPreview(props) {
                         <textarea
                             className="border-2 border-slate-300	"
                             rows="15"
-                            defaultValue={body(toolRequestData)}
+                            defaultValue={body(props.response)}
                         >
                         </textarea>
                     </div>
@@ -177,7 +102,7 @@ export default function ToolOutputPreview(props) {
     }
 
     const PreviewGoogleDrive = (tool, prompt, context) => {
-        if (toolRequestData === null) {
+        if (props.response === null) {
             return (
                 <div className="flex loader-container">
                     <div className="loader"></div>
@@ -186,7 +111,7 @@ export default function ToolOutputPreview(props) {
         } else {
             return (
                 <div className="email-container">
-                    {toolRequestData}
+                    {props.response}
                     <div className="flex">
                         <GoogleDocComponent />
                         <div className="px-1"></div>
@@ -202,7 +127,7 @@ export default function ToolOutputPreview(props) {
     }
     
     const PreviewGoogleDocs = (tool, prompt, context) => {
-        if (toolRequestData === null) {
+        if (props.response === null) {
             return (
                 <div className="flex loader-container">
                     <div className="loader"></div>
@@ -211,7 +136,7 @@ export default function ToolOutputPreview(props) {
         } else {
             return (
                 <div className="email-container">
-                    {toolRequestData}
+                    {props.response}
                     <GoogleDocComponent />
                 </div>
             )
@@ -219,7 +144,7 @@ export default function ToolOutputPreview(props) {
     }
     
     const PreviewGoogleSlides = (tool, prompt, context) => {
-        if (toolRequestData === null) {
+        if (props.response === null) {
             return (
                 <div className="flex loader-container">
                     <div className="loader"></div>
@@ -228,7 +153,7 @@ export default function ToolOutputPreview(props) {
         } else {
             return (
                 <div className="email-container">
-                    {toolRequestData}
+                    {props.response}
                     <GoogleSlideComponent />
                 </div>
             )
@@ -245,7 +170,7 @@ export default function ToolOutputPreview(props) {
     
     const PreviewAries = (tool, prompt, context) => {
 
-        if (toolRequestData === null) {
+        if (props.response === null) {
             return (
                 <div className="flex loader-container">
                     <div className="loader"></div>
@@ -254,14 +179,14 @@ export default function ToolOutputPreview(props) {
         } else {
             return (
                 <div className="email-container">
-                    {toolRequestData}
+                    {props.response}
                 </div>
             )
         }
     }
     
     const PreviewCanvas = (tool, prompt, context) => {
-        return <PreviewGeneric toolProp={toolRequestData}></PreviewGeneric>;
+        return <PreviewGeneric toolProp={props.response}></PreviewGeneric>;
     }
     
     const PreviewRemind = (tool, prompt, context) => {
@@ -269,11 +194,11 @@ export default function ToolOutputPreview(props) {
     }
     
     const PreviewSchoology = (tool, prompt, context) => {
-        return <PreviewGeneric toolProp={toolRequestData}></PreviewGeneric>;
+        return <PreviewGeneric toolProp={props.response}></PreviewGeneric>;
     }
     
     const PreviewPowerSchool = (tool, prompt, context) => {
-        if (toolRequestData === null) {
+        if (props.response === null) {
             return (
                 <div className="flex loader-container">
                     <div className="loader"></div>
@@ -282,7 +207,7 @@ export default function ToolOutputPreview(props) {
         } else {
             return (
                 <div className="email-container">
-                    {toolRequestData}
+                    {props.response}
                 </div>
             )
         }
@@ -305,7 +230,7 @@ export default function ToolOutputPreview(props) {
     }
 
     const PreviewCurriculum = (tool, prompt, context) => {
-        if (toolRequestData === null) {
+        if (props.response === null) {
             return (
                 <div className="flex loader-container">
                     <div className="loader"></div>
@@ -314,7 +239,7 @@ export default function ToolOutputPreview(props) {
         } else {
             return (
                 <div className="email-container">
-                    {toolRequestData}
+                    {props.response}
                     <div className="flex">
                         <GoogleDocComponent />
                         <div className="px-1"></div>
@@ -327,7 +252,7 @@ export default function ToolOutputPreview(props) {
     }
 
     const PreviewData = (tool, prompt, context) => {
-        if (toolRequestData === null) {
+        if (props.response === null) {
             return (
                 <div className="flex loader-container">
                     <div className="loader"></div>
@@ -336,7 +261,7 @@ export default function ToolOutputPreview(props) {
         } else {
             return (
                 <div className="email-container">
-                    {toolRequestData}
+                    {props.response}
                     <img src="https://daext.com/wp-content/uploads/2020/11/vertical-bar-chart-2.png"></img>
                 </div>
             )
@@ -344,7 +269,7 @@ export default function ToolOutputPreview(props) {
     }
 
     const PreviewLexileConverter = (tool, prompt, context) => {
-        if (toolRequestData === null) {
+        if (props.response === null) {
             return (
                 <div className="flex loader-container">
                     <div className="loader"></div>
@@ -359,7 +284,7 @@ export default function ToolOutputPreview(props) {
                           onClick={copyToClipboard}
                     /> */}
                     <div>
-                        {toolRequestData}
+                        {props.response}
                     </div>
 
                 </div>
@@ -397,7 +322,7 @@ export default function ToolOutputPreview(props) {
         'curriculum': PreviewCurriculum,
         'data' : PreviewData,
         'lexile converter' : PreviewLexileConverter,
-        'writing authentication' : PreviewWritingAuth,
+        'writing integrity' : PreviewWritingAuth,
         'lesson planner' : PreviewLessonPlanner,
     }
     // For a google doc action, generate a downloadable icon
@@ -423,8 +348,7 @@ export default function ToolOutputPreview(props) {
 
     const result = previewFunction(realTool, realPrompt, realContext)
     // Each integrated app gets its own funciton. Tried to make static methods work
-    // but alas
-
+    // but alas, no luck. So we have to do this.
 
     return (<div>{result}</div>);
 }

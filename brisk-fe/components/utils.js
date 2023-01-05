@@ -16,7 +16,6 @@ export const envServerURL = process.env.NEXT_PUBLIC_SERVER || "https://brisk-edu
 // Returns the cleaned up LLM response that will be displayed in chat
 export async function invokeChatResponse(input, previous_context, setStateCallback, attachments, exampleState) {
     const chatEndpoint = envServerURL+ "chat";
-    console.log(process.env.NEXT_PUBLIC_SERVER);
     let llmResponse;
     if (exampleState) {
         // Based on the title of the tool, get the chat response
@@ -52,6 +51,61 @@ export async function invokeChatResponse(input, previous_context, setStateCallba
     }
     setStateCallback(cleanedLlmResponse);
     return cleanedLlmResponse;
+}
+
+
+export async function invokeTool(requestHash, setResponseData) {
+    // Do validation on inputs - optional for now
+    // We only run this if toolRequestData is null to avoid a race condition, there's
+    // probably a better way to address this!
+
+    // If exampleFlowState is true and request prompt is a substring of the chat response in exampleToolData,
+    // then we know that we are in the example flow and we should return the exampleToolData of the tool that
+    // should be rendered. If that's not the case, go ahead and make the request to the backend.
+
+    const request_tool = requestHash["tool"];
+    const request_prompt = requestHash["prompt"];
+    const attachments = requestHash["attachments"];
+    const exampleFlowState = requestHash["exampleFlowState"];
+    const invokeToolEndpoint = envServerURL + "invoke_tool";
+
+
+    // CASE 1: We're in the example flow and the request prompt is a substring of the chat response in exampleToolData
+    const useExampleResponse = (
+        exampleFlowState !== null && 
+        exampleFlowState in exampleToolData &&
+        exampleToolData[exampleFlowState]["chat response"].includes(request_prompt)
+    )
+    if (useExampleResponse) {
+        const exampleToolResponse = exampleToolData[exampleFlowState][request_tool];
+        setResponseData({...requestHash, "toolResponse": exampleToolResponse});
+        return null;
+    }
+
+    // CASE 2: We've stashed the tool response in localStorage, so we'll just return that
+    if (!!sessionStorage[request_tool+request_prompt]) {
+        const toolResponse = JSON.parse(sessionStorage[request_tool+request_prompt]);
+        setResponseData({...requestHash, "toolResponse": toolResponse});
+        return null;
+    }
+
+    // CASE 3: We'll actually make the request to the backend
+    const data = {
+        tool: request_tool,
+        prompt: request_prompt,
+        attachments: attachments
+    }
+    const res = await fetch(invokeToolEndpoint, {
+        body: JSON.stringify(data),
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        method: 'POST',
+    });
+    const result = await res.json();
+    setResponseData({...requestHash, "toolResponse": result});
+    sessionStorage[request_tool+request_prompt] = JSON.stringify(result);
+    return null;
 }
 
 const lexileConversionExample = `
@@ -171,10 +225,10 @@ export const exampleToolData = {
     },
     "Detect AI Writing": {
         "command": "Flag recent essay submissions where students may have used GPT",
-        "tools": ["google classroom", "writing authentication"],
-        "chat response": "Okay, I've used Google Classroom to find recent essay submissions and Writing Authentication to flag submissions where students may have used GPT. //P// Google Classroom: Find recent essay submissions... //P// Writing Authentication: Flag those where students may have used GPT...",
+        "tools": ["google classroom", 'writing integrity'],
+        "chat response": "Okay, I've used Google Classroom to find recent essay submissions and Writing Integrity to flag submissions where students may have used GPT. //P// Google Classroom: Find recent essay submissions... //P// Writing Authentication: Flag those where students may have used GPT...",
         "google classroom": "Retrieved 5 recent essay submissions",
-        "writing authentication": "Natasha spent 15 minutes editing her Romantacism essay in Google Docs. This is 93% shorter than other students. It's possible that she used GPT to write this essay.",
+        "writing integrity": "Natasha spent 15 minutes editing her Romantacism essay in Google Docs. This is 93% shorter than other students. It's possible that she used GPT to write this essay.",
         icon: faRobot
     },
     "Monitor Student Progress": {
