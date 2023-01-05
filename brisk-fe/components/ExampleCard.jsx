@@ -16,6 +16,7 @@ export default function ExampleCard(props) {
         "exampleMessage": props.description,
         "tools": props.tools,
       }
+      console.log(props.handleExampleClick);
       props.handleExampleClick(exampleDict);
     }
   }
@@ -35,7 +36,7 @@ export default function ExampleCard(props) {
             </div>
             <button className="outline-purple flex flex-row bg-slate-200 px-2 py-2 rounded-md my-2 justify-between hover:outline-2" onClick={handleExampleClick}>
               <div><b>Try this example</b></div>
-              <div className="flex flex-row gap-1">
+              <div className="flex flex-row gap-1 flex-wrap">
                 {props.tools.map(item => toolItem(item))}
               </div>
             </button>

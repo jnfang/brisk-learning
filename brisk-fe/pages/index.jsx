@@ -8,6 +8,8 @@ import TextAttachmentBox from '../components/TextAttachmentBox';
 import LinkAttachmentBox from '../components/LinkAttachmentBox';
 import ExampleContainer from '../components/ExampleContainer';
 import { useEffect } from 'react';
+import { exampleToolData } from "../components/utils";
+
 
 
 export default function Demo() {
@@ -18,6 +20,7 @@ export default function Demo() {
   const [showTextAttachmentBox, setShowTextAttachmentBox] = useState(false);
   const [showLinkAttachmentBox, setShowLinkAttachmentBox] = useState(false);
   const [exampleFlow, setExampleFlow] = useState(null);
+  const [defaultTab, setDefaultTab] = useState("Current Workflow");
 
   const handleGoSubmit = (e) =>  {
     e.preventDefault();
@@ -63,6 +66,37 @@ export default function Demo() {
     setShowLinkAttachmentBox(false);
   }
 
+  const handleExampleWorkflowClick = (exampleDict) => {
+    // Not sure why this isn't working...
+    // setFirstInput(exampleDict.exampleMessage);
+    // var input = document.getElementsByClassName('react-chatbot-kit-chat-input')[0];
+    // input.placeholder = exampleDict["exampleMessage"];
+
+    // This is a hacky way to get the workflow started without a user input
+    // Get the right tools from exampleToolData in Utils
+    const exampleToolDatahash = exampleToolData[exampleDict["exampleTitle"]]
+    console.log(exampleToolDatahash)
+
+    const tools = exampleToolDatahash["tools"];
+    const lastBotMessage = exampleToolDatahash["chat response"];
+    // const completedPrompts = tools.map((tool) => {return "//P// " + tool + ": " + exampleToolDatahash[tool] + " \n"})
+    // const lastBotMessage = exampleToolDatahash["exampleMessage"] + " " + completedPrompts.join("");
+    localStorage.setItem("lastBotMessage", lastBotMessage);
+    setDefaultTab("Current Workflow");
+    console.log("this shoudl reset the tab");
+    console.log(defaultTab);
+
+    var attachments = {};
+    if (exampleDict["text"]){
+      attachments["text"] = exampleDict["text"];
+    }
+    if (exampleDict["link"]){
+      attachments["link"] = exampleDict["link"];
+    }
+    setAttachments(attachments);
+
+  }
+
   const handleExampleClick = (exampleDict) => {
     setFirstInput(exampleDict.exampleMessage);
     var attachments = {};
@@ -70,6 +104,8 @@ export default function Demo() {
     // Need to do validation that we are in the example flow
     // Check whether exampleDict has a "tools" key and if it has a non-empty list
     // Check whether exampleDict has "exampeTitle" key and if it has a non-empty string
+
+    console.log(exampleDict);
 
     const inExampleFlow = exampleDict["exampleTitle"] && exampleDict["exampleTitle"].length > 0 &&
       exampleDict["tools"] && exampleDict["tools"].length > 0;
@@ -86,6 +122,8 @@ export default function Demo() {
     setAttachments(attachments);
     setSubmitted(true);
   }
+
+  // Use Hook to make
 
   const Dropdown = () => {
     if (showAttachmentDropdown){
@@ -138,7 +176,13 @@ export default function Demo() {
     <div>
       <NavBar></NavBar>
       {(submitted) ?
-        <Chat firstInput={firstInput} initialAttachments={attachments} exampleState={exampleFlow}></Chat>
+        <Chat firstInput={firstInput}
+          initialAttachments={attachments}
+          exampleState={exampleFlow}
+          onExampleClick={handleExampleWorkflowClick}
+          openTab={defaultTab}
+          setDefaultTab={setDefaultTab}
+        ></Chat>
         :
         <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20 ">
         <div className="max-w-5xl mx-auto">

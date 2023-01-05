@@ -6,14 +6,14 @@ import MessageParser from '../components/MessageParser';
 import CurrentWorkflow from '../components/CurrentWorkflow';
 import config from '../components/config';
 import { createClientMessage } from 'react-chatbot-kit';
-import { invokeChatResponse } from "./utils";
-
+import { invokeChatResponse, TOOLDESCRIPTIONS } from "./utils";
+import SectionTabs from './SectionTabs';
 import 'react-chatbot-kit/build/main.css';
 import { useEffect } from 'react';
+import ExampleContainer from './ExampleContainer';
 
 export default function Chat(props) {
 
-  const [showIntegrations, setShowIntegrations] = useState(true);
   const [botMessagesState, setBotMessagesState] = useState([]);
   const [lastBotMessageState, setLastBotMessagesState] = useState(null);
   const [initialMessages, setInitialMessages] = useState([createClientMessage(props.firstInput)]);
@@ -21,6 +21,11 @@ export default function Chat(props) {
   const [workflowAttachments, setWorkflowAttachments] = useState(props.initialAttachments);
   const [allMessagesState, setAllMessagesState] = useState([createClientMessage(props.firstInput)]);
   const [exampleState, setExampleState] = useState(props.exampleState);
+  const [tabs, setTabs] = useState(["Current Workflow", "Integrations", "Examples"]);
+
+  const handleTabClick = (tab) => {
+    props.setDefaultTab(tab);
+  }
 
   const saveMessages = (messages, HTMLString) => {
     localStorage.setItem('chat_messages', JSON.stringify(messages));
@@ -45,10 +50,6 @@ export default function Chat(props) {
     }
   };
 
-  const handleIntegrationClick = () => {
-    setShowIntegrations(!showIntegrations);
-  }
-
   useEffect(() => {
     loadMessages();
     try{
@@ -65,8 +66,8 @@ export default function Chat(props) {
               messageArray.push(lastMessage);
             }
             setBotMessagesState(messageArray);
-            setShowIntegrations(false);
             setLastBotMessagesState(lastMessage);
+            props.setDefaultTab("Current Workflow");
           }
         })
       }
@@ -75,40 +76,41 @@ export default function Chat(props) {
     }
   });
 
-  const IntegrationIcons = () => {
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+  const IntegrationPanel = () => {
     return (
-      <div className="grid grid-cols-9 current-integration-icons">
-        {CurrentWorkflow.tools().map(createIconImage)}
+      <div className="flex flex-row flex-wrap items-stretch current-integration-icons">
+        {shuffleArray(CurrentWorkflow.tools().map(createIconImage))}
       </div>
     )
   }
 
   const createIconImage = (tool) => {
     return (
-      <img 
-        className="integration-icon"
-        key={tool}
-        alt={tool}
-        title={tool}
-        src={CurrentWorkflow.toolDictionary()[tool]}
-      />
+      <div className='basis-1/3' >
+        <div className='flex m-3 grow flex-col bg-white border border-gray-300 rounded shadow-lg appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline'>
+          <img 
+            className="p-10 h-26"
+            key={tool}
+            alt={tool}
+            title={tool}
+            src={CurrentWorkflow.toolDictionary()[tool]}
+          />
+            <b>{TOOLDESCRIPTIONS[tool]['name']}</b>
+            <div className='text-left p-2 text-sm text-gray-600'>
+              {TOOLDESCRIPTIONS[tool]['description']}
+            </div>
+        </div>
+      </div>
     )
   }
 
-  const IntegrationPanel = () => {
-    // Default Content
-    const defaultContent = (
-      <div className="integration-container rounded-sm">
-        <div className="current-integration" onClick={() => handleIntegrationClick()}>
-          Current Integrations
-        </div>
-        {showIntegrations ?
-            <IntegrationIcons /> : null
-        }
-      </div>
-    )
-    return defaultContent;
-  }
 
   const ChatHeader = () => {
     return (
@@ -119,17 +121,28 @@ export default function Chat(props) {
     )
   }
 
+  const tabPanel = () => {
+    switch(props.openTab){
+      case "Integrations":
+        return <IntegrationPanel/>
+      case "Current Workflow":
+        return <CurrentWorkflow
+          messages={allMessagesState}
+          attachments={workflowAttachments}
+          exampleFlow={exampleState}
+        />
+      default:
+        return <ExampleContainer handleExampleClick={props.onExampleClick}/>
+    }
+  }
+
   return (
     <div className="App">
         <div className="flex flex-row extra-top-padding">
           <div className="basis-2/3">
             <ChatHeader></ChatHeader>
-            <IntegrationPanel></IntegrationPanel>
-            <CurrentWorkflow
-              messages={allMessagesState}
-              attachments={workflowAttachments}
-              exampleFlow={exampleState}
-            />
+            <SectionTabs tabs={tabs} openTab={props.openTab} onTabClick={handleTabClick} />
+            {tabPanel()}
           </div>
           <div className="basis-1/3">
             <Chatbot

@@ -1,15 +1,5 @@
 import ExampleCard from "./ExampleCard"
-import { faDiagramNext,
-    faLayerGroup,
-    faKeyboard,
-    faChartSimple,
-    faRobot, 
-    faBinoculars,
-    faFilePen,
-    faComment,
-    faPersonChalkboard,
-    faForwardFast
-} from "@fortawesome/free-solid-svg-icons"
+
 import { exampleToolData } from "./utils"
 
 export default function ExampleContainer(props){
@@ -31,7 +21,7 @@ export default function ExampleContainer(props){
     }
     )
     return (
-        <div className="container max-w-xl m-auto flex flex-wrap flex-col md:flex-row items-center justify-start">
+        <div className="container max-w-xl m-auto flex flex-wrap flex-col lg:flex-row items-center justify-start">
             {exampleCards}
         </div> 
     )
