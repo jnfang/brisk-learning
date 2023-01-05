@@ -7,7 +7,7 @@ import CurrentWorkflow from '../components/CurrentWorkflow';
 import config from '../components/config';
 import { createClientMessage } from 'react-chatbot-kit';
 import { invokeChatResponse, TOOLDESCRIPTIONS } from "./utils";
-import Tabs from './Tabs';
+import Tabs from './tabs.jsx';
 import 'react-chatbot-kit/build/main.css';
 import { useEffect } from 'react';
 import ExampleContainer from './ExampleContainer';
