@@ -7,7 +7,7 @@ import CurrentWorkflow from '../components/CurrentWorkflow';
 import config from '../components/config';
 import { createClientMessage } from 'react-chatbot-kit';
 import { invokeChatResponse, TOOLDESCRIPTIONS } from "./utils";
-import Tabs from './tabs.jsx';
+import SectionTabs from './SectionTabs';
 import 'react-chatbot-kit/build/main.css';
 import { useEffect } from 'react';
 import ExampleContainer from './ExampleContainer';
@@ -141,7 +141,7 @@ export default function Chat(props) {
         <div className="flex flex-row extra-top-padding">
           <div className="basis-2/3">
             <ChatHeader></ChatHeader>
-            <Tabs tabs={tabs} openTab={props.openTab} onTabClick={handleTabClick}></Tabs>
+            <SectionTabs tabs={tabs} openTab={props.openTab} onTabClick={handleTabClick} />
             {tabPanel()}
           </div>
           <div className="basis-1/3">
