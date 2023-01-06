@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import WorkflowElement from "./WorkflowElement";
+import { invokeTool } from "./utils";
 
 export const TOOLDICTIONARY = {
   'google classroom': "https://cdn.worldvectorlogo.com/logos/google-classroom.svg",
@@ -34,60 +35,105 @@ const PROMPTSEPERATOR = "//P//";
 export default function CurrentWorkflow(props) {
 
   const [lastBotMessageState, setLastBotMessageState] = useState(localStorage["lastBotMessage"]);
-  const [currentWorkflowComponents, setCurrentWorkflowComponents] = useState([]);
+  const [currentWorkflowRequestData, setCurrentWorkflowRequestData] = useState(CurrentWorkflow.generateRequestData(lastBotMessageState, props.attachments));
+  const [currentWorkflowResponseData, setCurrentWorkflowResponseData] = useState([]);
+  const [currentWorkflowComponents, setCurrentWorkflowComponents] = useState(CurrentWorkflow.jsxWorkflowArray(currentWorkflowRequestData, currentWorkflowResponseData));
+  const [mostRecentRequest, setMostRecentRequest] = useState(null);
 
   useEffect(() => {
-    setCurrentWorkflowComponents(
-      CurrentWorkflow.jsxWorkflowArray(
-        lastBotMessageState,
-        props.attachments,
-        props.exampleFlow
+    if (lastBotMessageState !== localStorage["lastBotMessage"]) {
+      setLastBotMessageState(localStorage["lastBotMessage"]);
+    }
+  }, [localStorage["lastBotMessage"]]);
+
+  useEffect(() => {
+    if (localStorage["lastBotMessage"] !== localStorage["prevLastBotMessage"]){
+      localStorage["prevLastBotMessage"] = localStorage["lastBotMessage"];
+      setCurrentWorkflowRequestData(CurrentWorkflow.generateRequestData(localStorage["lastBotMessage"], props.attachments));
+    }
+  }, []);
+
+  // This is the callback function that is passed to invokeTool
+  const workflowResponseCallback = (response) => {
+    setCurrentWorkflowResponseData([...currentWorkflowResponseData, response]);
+  };
+
+  useEffect(() => {
+    setCurrentWorkflowComponents(CurrentWorkflow.jsxWorkflowArray(currentWorkflowRequestData, currentWorkflowResponseData));
+  }, [currentWorkflowResponseData]);
+
+  // This looks at currentWorkflowRequestData and currentWorkflowResponseData to see if we need to make a request
+  // If currentWorkflowResponseData is not the same size, we know that it needs to make a request at the index of its size
+  useEffect(() => {
+    // Iterate through currentWorkflowReqestData and see which request we are at
+
+    // If currentWorflowRequestData is the same length as currentWorkflowResponseData, then we are done
+    if (currentWorkflowRequestData.length === currentWorkflowResponseData.length) {
+      return;
+    }
+    const requestHash = currentWorkflowRequestData[currentWorkflowResponseData.length];
+    if (requestHash === undefined || requestHash["prompt"] === mostRecentRequest) {
+      return;
+    }
+
+    // If we are not done, then we need to make a request
+    invokeTool(requestHash, workflowResponseCallback);
+
+    setMostRecentRequest(requestHash["prompt"])
+  }, [currentWorkflowRequestData, currentWorkflowResponseData]);
+
+  const rtnComponent = () => {
+    if (typeof window === 'undefined') {return (<div></div>)}
+    if (currentWorkflowComponents.every(e => e === null)) {return (<div></div>)}
+    if (lastBotMessageState.includes(PROMPTSEPERATOR)){
+      return (
+        <div>
+          {currentWorkflowComponents}
+        </div>
       )
-    );
-  }, [localStorage["lastBotMessage"], props.attachments]);
-  if (lastBotMessageState !== localStorage["lastBotMessage"]) {
-    setLastBotMessageState(localStorage["lastBotMessage"]);
+    }else{
+      return <div></div>
+    }
   }
-  if (typeof window === 'undefined') {return (<div></div>)}
-  if (currentWorkflowComponents.every(e => e === null)) {return (<div></div>)}
-  if (lastBotMessageState.includes(PROMPTSEPERATOR)){
-    return (
-      <div>
-        {currentWorkflowComponents}
-      </div>
-    )
-  }else{
-    return <div></div>
-  }
+
+  return rtnComponent();
 };
 
 // ExampleFlow is null when you are not in the example flow, otherwise it is the title of the example flow
-CurrentWorkflow.jsxWorkflowArray = (msg, attachments, exampleFlow) => {
+CurrentWorkflow.jsxWorkflowArray = (currentWorkflowRequestData, currentWorkflowResponseData) => {
   var workflowVisualizationArray = [];
-  const srcArrayHash = CurrentWorkflow.toolOptions(msg);
-
+  let workflowHash;
   // Hit am async function that takes srcArrayHash and makes requests
-  for (let i = 0; i < srcArrayHash.length; i++){
-    // Toolhash has three keys, "src", "prompt", and "tool" 
-    var toolHash = srcArrayHash[i]
-    const tool = toolHash["tool"];
-    const src = toolHash["src"];
-    const prompt = toolHash["prompt"];
-    let colonIndex = prompt.indexOf(":");
-    if (colonIndex > -1 && colonIndex < prompt.length) {prompt = prompt.substring(colonIndex +1, prompt.length).trim()}
-    const workflowElement = <WorkflowElement
-      src={src}
-      tool={tool}
-      prompt={prompt}
-      attachments={attachments}
-      exampleFlow={exampleFlow}
-    />;
+  for (let i = 0; i < currentWorkflowRequestData.length; i++){
+    workflowHash = currentWorkflowRequestData[i];
+    const workflowElement =
+      <WorkflowElement
+        src={workflowHash.src}
+        tool={workflowHash.tool}
+        prompt={workflowHash.prompt}
+        attachments={workflowHash.attachments}
+        currentWorkflowResponseData={currentWorkflowResponseData}
+      />;
     workflowVisualizationArray.push(workflowElement);
-
   }
   return workflowVisualizationArray;
 }
 
+// This will generate the data that is used to initialize currentWorkflowRequestData and will be 
+// used to simplify the jsxWorkflowArray function
+CurrentWorkflow.generateRequestData = (msg, attachments) => {
+  const srcArrayHash = CurrentWorkflow.toolOptions(msg);
+  var tempRequestData = [];
+  for (let i = 0; i < srcArrayHash.length; i++){
+    // Toolhash has three keys, "src", "prompt", and "tool" 
+    var toolHash = srcArrayHash[i]
+    const prompt = toolHash["prompt"];
+    let colonIndex = prompt.indexOf(":");
+    if (colonIndex > -1 && colonIndex < prompt.length) {prompt = prompt.substring(colonIndex +1, prompt.length).trim()}
+    tempRequestData.push({tool: toolHash["tool"], prompt: prompt, attachments: attachments, src: toolHash["src"]})
+  }
+  return tempRequestData;
+}
 
 // Function returns an array of dictionaries ordered by when they show up in GPT3
 // dictionary includes key for each tool in the sentence and the names referenced in
@@ -96,7 +142,7 @@ CurrentWorkflow.jsxWorkflowArray = (msg, attachments, exampleFlow) => {
 // If the most recent referenced tool is the same tool, we don't add it as part of the workflow
 CurrentWorkflow.toolOptions = (msg) => {
   // Split the message by sentence so we can get a rough ordering of the tools that are used
-  if (msg.indexOf(PROMPTSEPERATOR) === -1) {console.log("no prompts"); return []}
+  if (msg.indexOf(PROMPTSEPERATOR) === -1) {console.log("NO PROMPTS: " + msg); return []}
   var finalArrayHash = [];
   var msg_array = msg.split(PROMPTSEPERATOR).splice(1)
   for (let i = 0; i < msg_array.length; i++) {
