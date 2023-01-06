@@ -77,7 +77,7 @@ export default function CurrentWorkflow(props) {
     }
 
     // If we are not done, then we need to make a request
-    invokeTool(requestHash, workflowResponseCallback);
+    invokeTool(requestHash, workflowResponseCallback, currentWorkflowResponseData);
 
     setMostRecentRequest(requestHash["prompt"])
   }, [currentWorkflowRequestData, currentWorkflowResponseData]);
