@@ -147,9 +147,7 @@ def chat():
 def invoke_tool():
     try:
         result = "<s> default content <b> fjsailjfls"
-        print(request.json['prompt'])
-        print(request.json['attachments'])
-        print(request.json)
+        print(request.json['toolContext'])
         input = request.json['prompt']
         tool = request.json['tool']
         attachments = request.json['attachments']

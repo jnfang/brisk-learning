@@ -54,14 +54,11 @@ export async function invokeChatResponse(input, previous_context, setStateCallba
 }
 
 
-export async function invokeTool(requestHash, setResponseData) {
-    // Do validation on inputs - optional for now
-    // We only run this if toolRequestData is null to avoid a race condition, there's
-    // probably a better way to address this!
+export async function invokeTool(requestHash, setResponseData, prevResponseData) {
 
-    // If exampleFlowState is true and request prompt is a substring of the chat response in exampleToolData,
-    // then we know that we are in the example flow and we should return the exampleToolData of the tool that
-    // should be rendered. If that's not the case, go ahead and make the request to the backend.
+
+    // We use prevResponseData to create a concatanated string of previous prompts and responses which will be sent to the backend
+    const toolContext = prevResponseData.map((h) => { return h["prompt"] + " " + h.toolResponse.toolResponse}).join("\n");
 
     const request_tool = requestHash["tool"];
     const request_prompt = requestHash["prompt"];
@@ -89,11 +86,20 @@ export async function invokeTool(requestHash, setResponseData) {
         return null;
     }
 
+    // CASE 3: We haven't implemented a tool yet
+    const inactiveTools = ["google drive", "google caledar", "google sheets",
+    "google slides", "google docs", "remind", "clever", "zoom", "google meet", "youtube", "data", "curriculum"]
+    if (inactiveTools.includes(request_tool)) {
+        setToolRequestData("Default output");
+        return null;
+    }
+
     // CASE 3: We'll actually make the request to the backend
     const data = {
         tool: request_tool,
         prompt: request_prompt,
-        attachments: attachments
+        attachments: attachments,
+        toolContext: toolContext
     }
     const res = await fetch(invokeToolEndpoint, {
         body: JSON.stringify(data),

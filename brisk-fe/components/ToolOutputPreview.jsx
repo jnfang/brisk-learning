@@ -87,7 +87,7 @@ export default function ToolOutputPreview(props) {
                         >
                         </textarea>
                     </div>
-                    <button className="start-button float-right" type="submit" value="Submit">Send</button>
+                    <button className="start-button float-right rounded-md p-2" type="submit" value="Submit">Send</button>
                 </form>)
                 : (
                 <div className="flex loader-container">
