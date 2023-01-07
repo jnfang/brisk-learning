@@ -324,18 +324,8 @@ export default function ToolOutputPreview(props) {
         'lexile converter' : PreviewLexileConverter,
         'writing integrity' : PreviewWritingAuth,
         'lesson planner' : PreviewLessonPlanner,
+        'monitor': PreviewGeneric,
     }
-    // For a google doc action, generate a downloadable icon
-    // For a google calendar action, do what
-    // For a google slides action, generate a downloadable icon
-    // For a google sheets action, generate a downloadable icon
-    // For youtube action, show excerpt and link to full page
-    // For an SIS action, just show names. If the prompt would output names,
-    // we show one or more names
-    // For Google Classroom, Schoology or Canvas, I'm not sure what to do
-    // For curriculum action, generate / create / write -- OpenAI
-    // For curriculum translate or convert, open a textbox called input -- OpenAI
-    // 
 
     const realTool = props.tool;
     const realPrompt = props.prompt;
@@ -349,6 +339,5 @@ export default function ToolOutputPreview(props) {
     const result = previewFunction(realTool, realPrompt, realContext)
     // Each integrated app gets its own funciton. Tried to make static methods work
     // but alas, no luck. So we have to do this.
-
     return (<div>{result}</div>);
 }

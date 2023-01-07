@@ -34,24 +34,27 @@ const PROMPTSEPERATOR = "//P//";
 
 export default function CurrentWorkflow(props) {
 
+  const [exampleFlowState, setExampleFlowState] = useState(props.exampleFlow);
   const [lastBotMessageState, setLastBotMessageState] = useState(localStorage["lastBotMessage"]);
-  const [currentWorkflowRequestData, setCurrentWorkflowRequestData] = useState(CurrentWorkflow.generateRequestData(lastBotMessageState, props.attachments));
+  const [currentWorkflowRequestData, setCurrentWorkflowRequestData] = useState(CurrentWorkflow.generateRequestData(lastBotMessageState, props.attachments, exampleFlowState, setExampleFlowState));
   const [currentWorkflowResponseData, setCurrentWorkflowResponseData] = useState([]);
   const [currentWorkflowComponents, setCurrentWorkflowComponents] = useState(CurrentWorkflow.jsxWorkflowArray(currentWorkflowRequestData, currentWorkflowResponseData));
   const [mostRecentRequest, setMostRecentRequest] = useState(null);
 
-  useEffect(() => {
-    if (lastBotMessageState !== localStorage["lastBotMessage"]) {
-      setLastBotMessageState(localStorage["lastBotMessage"]);
-    }
-  }, [localStorage["lastBotMessage"]]);
 
   useEffect(() => {
-    if (localStorage["lastBotMessage"] !== localStorage["prevLastBotMessage"]){
-      localStorage["prevLastBotMessage"] = localStorage["lastBotMessage"];
-      setCurrentWorkflowRequestData(CurrentWorkflow.generateRequestData(localStorage["lastBotMessage"], props.attachments));
+    // This only gets called the first time the component is rendered and basically sets the initial state
+    if (lastBotMessageState !== localStorage["lastBotMessage"]) {
+      var tempExampleFlowState = exampleFlowState;
+      setLastBotMessageState(localStorage["lastBotMessage"]);
+      const tempRequestData = CurrentWorkflow.generateRequestData(localStorage["lastBotMessage"], props.attachments, tempExampleFlowState);
+      if (tempRequestData !==  currentWorkflowRequestData){
+        setCurrentWorkflowRequestData(tempRequestData);
+        setCurrentWorkflowResponseData([]);
+      }
+      setCurrentWorkflowComponents(CurrentWorkflow.jsxWorkflowArray(tempRequestData, currentWorkflowResponseData))
     }
-  }, []);
+  });
 
   // This is the callback function that is passed to invokeTool
   const workflowResponseCallback = (response) => {
@@ -60,14 +63,11 @@ export default function CurrentWorkflow(props) {
 
   useEffect(() => {
     setCurrentWorkflowComponents(CurrentWorkflow.jsxWorkflowArray(currentWorkflowRequestData, currentWorkflowResponseData));
-  }, [currentWorkflowResponseData]);
+  }, [currentWorkflowRequestData, currentWorkflowResponseData]);
 
   // This looks at currentWorkflowRequestData and currentWorkflowResponseData to see if we need to make a request
   // If currentWorkflowResponseData is not the same size, we know that it needs to make a request at the index of its size
   useEffect(() => {
-    // Iterate through currentWorkflowReqestData and see which request we are at
-
-    // If currentWorflowRequestData is the same length as currentWorkflowResponseData, then we are done
     if (currentWorkflowRequestData.length === currentWorkflowResponseData.length) {
       return;
     }
@@ -75,12 +75,9 @@ export default function CurrentWorkflow(props) {
     if (requestHash === undefined || requestHash["prompt"] === mostRecentRequest) {
       return;
     }
-
-    // If we are not done, then we need to make a request
     invokeTool(requestHash, workflowResponseCallback, currentWorkflowResponseData);
-
     setMostRecentRequest(requestHash["prompt"])
-  }, [currentWorkflowRequestData, currentWorkflowResponseData]);
+  }, [currentWorkflowResponseData, currentWorkflowRequestData]);
 
   const rtnComponent = () => {
     if (typeof window === 'undefined') {return (<div></div>)}
@@ -108,6 +105,7 @@ CurrentWorkflow.jsxWorkflowArray = (currentWorkflowRequestData, currentWorkflowR
     workflowHash = currentWorkflowRequestData[i];
     const workflowElement =
       <WorkflowElement
+        key={i}
         src={workflowHash.src}
         tool={workflowHash.tool}
         prompt={workflowHash.prompt}
@@ -121,8 +119,8 @@ CurrentWorkflow.jsxWorkflowArray = (currentWorkflowRequestData, currentWorkflowR
 
 // This will generate the data that is used to initialize currentWorkflowRequestData and will be 
 // used to simplify the jsxWorkflowArray function
-CurrentWorkflow.generateRequestData = (msg, attachments) => {
-  const srcArrayHash = CurrentWorkflow.toolOptions(msg);
+CurrentWorkflow.generateRequestData = (msg, attachments, exampleFlow) => {
+  const srcArrayHash = CurrentWorkflow.toolOptions(msg.replace(/<ex>/g, ''));
   var tempRequestData = [];
   for (let i = 0; i < srcArrayHash.length; i++){
     // Toolhash has three keys, "src", "prompt", and "tool" 
@@ -130,7 +128,8 @@ CurrentWorkflow.generateRequestData = (msg, attachments) => {
     const prompt = toolHash["prompt"];
     let colonIndex = prompt.indexOf(":");
     if (colonIndex > -1 && colonIndex < prompt.length) {prompt = prompt.substring(colonIndex +1, prompt.length).trim()}
-    tempRequestData.push({tool: toolHash["tool"], prompt: prompt, attachments: attachments, src: toolHash["src"]})
+    tempRequestData.push({tool: toolHash["tool"], prompt: prompt, attachments: attachments, src: toolHash["src"], exampleFlowState: exampleFlow})
+    // console.log({tool: toolHash["tool"], prompt: prompt, attachments: attachments, src: toolHash["src"], exampleFlowState: exampleFlow});
   }
   return tempRequestData;
 }

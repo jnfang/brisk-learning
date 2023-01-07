@@ -16,7 +16,6 @@ export default function ExampleCard(props) {
         "exampleMessage": props.description,
         "tools": props.tools,
       }
-      console.log(props.handleExampleClick);
       props.handleExampleClick(exampleDict);
     }
   }
