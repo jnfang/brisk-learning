@@ -39,7 +39,6 @@ export async function invokeChatResponse(input, previous_context, setStateCallba
         llmResponse = result.llmResponse;
     }
 
-
     // Need to update this to use chatbot's save message method
     localStorage["lastBotMessage"] = llmResponse;
     var firstPromptIndex = llmResponse.indexOf("//P//");
@@ -55,8 +54,7 @@ export async function invokeChatResponse(input, previous_context, setStateCallba
 
 
 export async function invokeTool(requestHash, setResponseData, prevResponseData) {
-
-    const toolContext = prevResponseData.map((h) => { return h["prompt"] + " " + h.toolResponse}).join("\n");
+    const toolContext = prevResponseData.map((h) => {return h["prompt"] + " " + h.toolResponse.toolResponse}).join("\n");
     const request_tool = requestHash["tool"];
     const request_prompt = requestHash["prompt"];
     const attachments = requestHash["attachments"];
@@ -65,8 +63,7 @@ export async function invokeTool(requestHash, setResponseData, prevResponseData)
     const data = {
         tool: request_tool,
         prompt: request_prompt,
-        attachments: attachments,
-        toolContext: toolContext
+        attachments: {...attachments, "toolContext": toolContext}
     }
     const res = await fetch(invokeToolEndpoint, {
         body: JSON.stringify(data),
@@ -165,7 +162,7 @@ export const exampleToolData = {
     "Automate Workflows": {
         "command": "Exempt absent students from today's worksheet and email their parents with a copy.",
         "tools": ["powerschool", "google classroom", "gmail"],
-        "chat response": "Okay, I've used Powerschool to find the students who are absent today and exempted today's worksheet in Google Classroom. I've drafted an email to their parents for your approval //P// Powerschool: Find students who were absent today... //P// Google Classroom: Exempt today's worksheet for... //P// Gmail: Draft email to parents for approval... ",
+        "chat response": "Okay, I've used Powerschool to find the students who are absent today and exempted today's worksheet in Google Classroom. I've drafted an email to their parents for your approval //P// Powerschool: Find students who were absent today... //P// Google Classroom: Exempt today's worksheet for... //P// Gmail: Draft email to parents of absent students with the worksheet their students missed...",
         "powerschool": "Natasha Ashai, Rohan Shah, and Jimmy Clay are absent today",
         "google classroom": "Will exempt Natasha Ashai, Rohan Shah, and Jimmy Clay from today's worksheet -- The Contrasting Themes of the Romantic Period",
         "gmail": "<s>Worksheet covered in class <b> Dear Parents, \n\nI hope this email finds you well. I wanted to let you know that your child was absent from class today, and as a result, missed the worksheet on The Contrasting Themes of the Romantic Period. \n\n I have attached the worksheet to this email, and although your child is exempt from completing it, I strongly encourage them to review the material covered. This will help ensure that they are fully caught up when they return to class. \n\n If you have any questions or concerns, please don't hesitate to reach out. \n\n Sincerely, \n\n Mr. Smith ",

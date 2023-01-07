@@ -491,8 +491,10 @@ class PromptEngine(object):
         Best,
         Arman Jaffer
 
-        Prompt: {input}
         {context}
+
+
+        Prompt: {input}
 
         Output:
         """

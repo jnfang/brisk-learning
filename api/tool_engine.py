@@ -8,11 +8,19 @@ import concurrent.futures
 class ToolEngine(object):
 
     @staticmethod
-    def processGoogleClassroom(input, attachments):
+    def generate_context(attachments):
+        print(attachments)
+        context = ""
         if "chat_context" in attachments:
-            context = attachments["chat_context"]
-        else:
-            context = ""
+            context += "\nHere is the original request from the user: " + attachments["chat_context"]
+        if "toolContext" in attachments:
+            context += "\nThis context may be helpful: \n" + attachments["toolContext"]
+        print(context)
+        return context
+
+    @staticmethod
+    def processGoogleClassroom(input, attachments):
+        context = ToolEngine.generate_context(attachments)
         prompt_template = PromptTemplate(
             input_variables=["input", "context"],
             template=PromptEngine.lms_prompt()
@@ -28,10 +36,7 @@ class ToolEngine(object):
     
     @staticmethod
     def processGmail(input, attachments):
-        if "chat_context" in attachments:
-            context = attachments["chat_context"]
-        else:
-            context = ""
+        context = ToolEngine.generate_context(attachments)
         prompt_template = PromptTemplate(
             input_variables=["input", "context"],
             template=PromptEngine.email_prompt()
@@ -75,10 +80,7 @@ class ToolEngine(object):
 
     @staticmethod
     def processSchoology(prompt, attachments):
-        if "chat_context" in attachments:
-            context = attachments["chat_context"]
-        else:
-            context = ""
+        context = ToolEngine.generate_context(attachments)
         prompt_template = PromptTemplate(
             input_variables=["input", "context"],
             template=PromptEngine.lms_prompt()
@@ -90,10 +92,7 @@ class ToolEngine(object):
 
     @staticmethod
     def processAries(prompt, attachments):
-        if "chat_context" in attachments:
-            context = attachments["chat_context"]
-        else:
-            context = ""
+        context = ToolEngine.generate_context(attachments)
         prompt_template = PromptTemplate(
             input_variables=["input", "context"],
             template=PromptEngine.sis_prompt()
@@ -105,10 +104,7 @@ class ToolEngine(object):
 
     @staticmethod
     def processCanvas(prompt, attachments):
-        if "chat_context" in attachments:
-            context = attachments["chat_context"]
-        else:
-            context = ""
+        context = ToolEngine.generate_context(attachments)
         prompt_template = PromptTemplate(
             input_variables=["input", "context"],
             template=PromptEngine.lms_prompt()
@@ -120,10 +116,7 @@ class ToolEngine(object):
 
     @staticmethod
     def processPowerSchool(prompt, attachments):
-        if "chat_context" in attachments:
-            context = attachments["chat_context"]
-        else:
-            context = ""
+        context = ToolEngine.generate_context(attachments)
         prompt_template = PromptTemplate(
             input_variables=["input", "context"],
             template=PromptEngine.sis_prompt()
@@ -182,7 +175,6 @@ class ToolEngine(object):
             return "This functionality is coming soon!"
         else:
             return "You need to attach a website or text to convert it!"
-        print(article)
 
         def parseLlmResponse(llm_response):
             print(llm_response)

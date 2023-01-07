@@ -134,7 +134,6 @@ def chat():
         llm = OpenAI(temperature=0.0)
         chain = LLMChain(llm=llm, prompt=prompt)
         response = chain.run(input)
-        print(response)
         return {"llmResponse": response}, 200
 
     except Exception as e:
@@ -144,8 +143,7 @@ def chat():
 @ app.route('/invoke_tool', methods=["POST"])
 def invoke_tool():
     try:
-        input = request.json['prompt']
-        tool = request.json['tool']
+        print(request.json)
         input = request.json['prompt']
         tool = request.json['tool']
         attachments = request.json['attachments']
@@ -154,8 +152,7 @@ def invoke_tool():
     
     except Exception as e:
         print(e)
-        abort(500)
-        return
+        return {"llmResponse": "OpenAI server is down. Please try again."}, 200
 
 port = int(os.environ.get('PORT', 8080))
 if __name__ == '__main__':
