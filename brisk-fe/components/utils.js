@@ -39,7 +39,6 @@ export async function invokeChatResponse(input, previous_context, setStateCallba
         llmResponse = result.llmResponse;
     }
 
-
     // Need to update this to use chatbot's save message method
     localStorage["lastBotMessage"] = llmResponse;
     var firstPromptIndex = llmResponse.indexOf("//P//");
@@ -55,51 +54,16 @@ export async function invokeChatResponse(input, previous_context, setStateCallba
 
 
 export async function invokeTool(requestHash, setResponseData, prevResponseData) {
-
-
-    // We use prevResponseData to create a concatanated string of previous prompts and responses which will be sent to the backend
-    const toolContext = prevResponseData.map((h) => { return h["prompt"] + " " + h.toolResponse.toolResponse}).join("\n");
-
+    const toolContext = prevResponseData.map((h) => {return h["prompt"] + " " + h.toolResponse.toolResponse}).join("\n");
     const request_tool = requestHash["tool"];
     const request_prompt = requestHash["prompt"];
     const attachments = requestHash["attachments"];
-    const exampleFlowState = requestHash["exampleFlowState"];
     const invokeToolEndpoint = envServerURL + "invoke_tool";
 
-
-    // CASE 1: We're in the example flow and the request prompt is a substring of the chat response in exampleToolData
-    const useExampleResponse = (
-        exampleFlowState !== null && 
-        exampleFlowState in exampleToolData &&
-        exampleToolData[exampleFlowState]["chat response"].includes(request_prompt)
-    )
-    if (useExampleResponse) {
-        const exampleToolResponse = exampleToolData[exampleFlowState][request_tool];
-        setResponseData({...requestHash, "toolResponse": exampleToolResponse});
-        return null;
-    }
-
-    // CASE 2: We've stashed the tool response in localStorage, so we'll just return that
-    if (!!sessionStorage[request_tool+request_prompt]) {
-        const toolResponse = JSON.parse(sessionStorage[request_tool+request_prompt]);
-        setResponseData({...requestHash, "toolResponse": toolResponse});
-        return null;
-    }
-
-    // CASE 3: We haven't implemented a tool yet
-    const inactiveTools = ["google drive", "google caledar", "google sheets",
-    "google slides", "google docs", "remind", "clever", "zoom", "google meet", "youtube", "data", "curriculum"]
-    if (inactiveTools.includes(request_tool)) {
-        setToolRequestData("Default output");
-        return null;
-    }
-
-    // CASE 3: We'll actually make the request to the backend
     const data = {
         tool: request_tool,
         prompt: request_prompt,
-        attachments: attachments,
-        toolContext: toolContext
+        attachments: {...attachments, "toolContext": toolContext}
     }
     const res = await fetch(invokeToolEndpoint, {
         body: JSON.stringify(data),
@@ -109,6 +73,7 @@ export async function invokeTool(requestHash, setResponseData, prevResponseData)
         method: 'POST',
     });
     const result = await res.json();
+
     setResponseData({...requestHash, "toolResponse": result});
     sessionStorage[request_tool+request_prompt] = JSON.stringify(result);
     return null;
@@ -197,10 +162,10 @@ export const exampleToolData = {
     "Automate Workflows": {
         "command": "Exempt absent students from today's worksheet and email their parents with a copy.",
         "tools": ["powerschool", "google classroom", "gmail"],
-        "chat response": "Okay, I've used Powerschool to find the students who are absent today and exempted today's worksheet in Google Classroom. I've drafted an email to their parents for your approval //P// Powerschool: Find students who were absent today... //P// Google Classroom: Exempt today's worksheet for ... //P// Gmail: Draft email to parents for approval...",
+        "chat response": "Okay, I've used Powerschool to find the students who are absent today and exempted today's worksheet in Google Classroom. I've drafted an email to their parents for your approval //P// Powerschool: Find students who were absent today... //P// Google Classroom: Exempt today's worksheet for... //P// Gmail: Draft email to parents of absent students with the worksheet their students missed...",
         "powerschool": "Natasha Ashai, Rohan Shah, and Jimmy Clay are absent today",
         "google classroom": "Will exempt Natasha Ashai, Rohan Shah, and Jimmy Clay from today's worksheet -- The Contrasting Themes of the Romantic Period",
-        "gmail": "<s>Worksheet covered in class <b> Dear Parents, \n\nI hope this email finds you well. I wanted to let you know that your child was absent from class today, and as a result, missed the worksheet on The Contrasting Themes of the Romantic Period. \n\n I have attached the worksheet to this email, and although your child is exempt from completing it, I strongly encourage them to review the material covered. This will help ensure that they are fully caught up when they return to class. \n\n If you have any questions or concerns, please don't hesitate to reach out. \n\n Sincerely, \n\n Mr. Smith",
+        "gmail": "<s>Worksheet covered in class <b> Dear Parents, \n\nI hope this email finds you well. I wanted to let you know that your child was absent from class today, and as a result, missed the worksheet on The Contrasting Themes of the Romantic Period. \n\n I have attached the worksheet to this email, and although your child is exempt from completing it, I strongly encourage them to review the material covered. This will help ensure that they are fully caught up when they return to class. \n\n If you have any questions or concerns, please don't hesitate to reach out. \n\n Sincerely, \n\n Mr. Smith ",
         icon: faDiagramNext,
     },
     "Rewrite News Articles": {
@@ -223,7 +188,7 @@ export const exampleToolData = {
     "Personalized Data Reports": {
         "command": "Create a chart of Charlie's performance on the last 4 assignments and email it to his parents.",
         "tools": ["aries", "data", "gmail"],
-        "chat response": "Okay, I've used Aries to create a chart of Charlie's performance on the last 4 assignments and emailed it to his parents. //P// Aries: Creating a chart of Charlie's performance on the last 4 assignments... //P// Data: Creating a chart of Charlie's performance on the last 4 assignments... //P// Gmail: Emailed it to his parents...",
+        "chat response": "Okay, I've used Aries to create a chart of Charlie's performance on the last 4 assignments and emailed it to his parents. //P// Aries: Creating a chart of Charlie's performance on the last 4 assignments... //P// Data: Creating a chart of Charlie's performance on the last 4 assignments... //P// Gmail: Emailed it to his parents... ",
         "aries": "Charlies performance on the last 4 assignments \nAssignment 1: 82% \nAssignment 2: 88% \nAssignment 3: 86% \nAssignment 4: 88%",
         "data": "Plotting performance data",
         "gmail": "Hi Elaine and Jeff, \n Following up on our conversation from last week, I've attached a chart of Charlie's performance on the last 4 assignments. \n\n If you have any questions or concerns, please don't hesitate to reach out. \n\n Sincerely, \n\n Mr. Smith",
@@ -232,7 +197,7 @@ export const exampleToolData = {
     "Detect AI Writing": {
         "command": "Flag recent essay submissions where students may have used GPT",
         "tools": ["google classroom", 'writing integrity'],
-        "chat response": "Okay, I've used Google Classroom to find recent essay submissions and Writing Integrity to flag submissions where students may have used GPT. //P// Google Classroom: Find recent essay submissions... //P// Writing Authentication: Flag those where students may have used GPT...",
+        "chat response": "Okay, I've used Google Classroom to find recent essay submissions and Writing Integrity to flag submissions where students may have used GPT. //P// Google Classroom: Find recent essay submissions... //P// Writing Authentication: Flag those where students may have used GPT... ",
         "google classroom": "Retrieved 5 recent essay submissions",
         "writing integrity": "Natasha spent 15 minutes editing her Romantacism essay in Google Docs. This is 93% shorter than other students. It's possible that she used GPT to write this essay.",
         icon: faRobot
@@ -240,7 +205,7 @@ export const exampleToolData = {
     "Monitor Student Progress": {
         "command": "Every week email me students who have not completed the last 3 assignments in the unit",
         "tools": ["google classroom", "monitor", "gmail"],
-        "chat response": "Okay, I've scheduled a monitor that checks Google Classroom every week and emails you a list of students who meet the criteria. //P// Monitor: Check Google Classroom Every Week... //P// Google Classroom: Find students who have not completed the last 3 assignments in the unit... //P// Gmail: Email you a list of students who meet the criteria...",
+        "chat response": "Okay, I've scheduled a monitor that checks Google Classroom every week and emails you a list of students who meet the criteria. //P// Monitor: Check Google Classroom Every Week... //P// Google Classroom: Find students who have not completed the last 3 assignments in the unit... //P// Gmail: Email you a list of students who meet the criteria... ",
         "google classroom": "Retrieved recent student submission data and found that Jimmy Clay has not completed the last 3 assignments in the unit",
         "monitor": "Scheduling a weekly monitor to check Google Classroom and email you an list of students who have not completed the last 3 assignments in the unit",
         "gmail": "<a Your Student Submissions Report <b> Jimmy Clay has not completed the last 3 assignments in the unit: https://classroom.google.com/u/0/w/MzExODE1NTAwMTMz/t/all",
@@ -249,7 +214,7 @@ export const exampleToolData = {
     "Create worksheets on any topic": {
         "command": "Generate a worksheet about the battle of gettysburg aligned with ca state standards.",
         "tools": ["curriculum", "google docs", "schoology"],
-        "chat response": "Okay, I've used Curriculum to generate a worksheet about the Battle of Gettysburg aligned with California State Standards. //P// Curriculum: Generate a worksheet about the Battle of Gettysburg aligned with CA State Standards... //P// Google Docs: Creating a doc with the content //P// Schoology: Attach it to the unit...",
+        "chat response": "Okay, I've used Curriculum to generate a worksheet about the Battle of Gettysburg aligned with California State Standards. //P// Curriculum: Generate a worksheet about the Battle of Gettysburg aligned with CA State Standards... //P// Google Docs: Creating a doc with the content //P// Schoology: Attach it to the unit... ",
         "curriculum": gettysburgWorksheetExample,
         "google docs": "https://docs.google.com/document/d/1ESlOcz8hJAD7RFvViNxcUoMskxZMmZaQSpvo0ZjA7MY/edit?usp=sharing",
         "schoology": "Uploaded the worksheet to the Civil War Unit",
@@ -258,7 +223,7 @@ export const exampleToolData = {
     "Automate the first round of feedback": {
         "command": "Give feedback on grammar, sentence structure, content on the Hamlet papers.",
         "tools": ["google classroom", "feedback"],
-        "chat response": "Okay, I've used Google Classroom to find the Hamlet papers and Feedback to give feedback on grammar, sentence structure, and content. //P// Google Classroom: Find the Hamlet papers... //P// Feedback: Give feedback on grammar, sentence structure, and content...",
+        "chat response": "Okay, I've used Google Classroom to find the Hamlet papers and Feedback to give feedback on grammar, sentence structure, and content. //P// Google Classroom: Find the Hamlet papers... //P// Feedback: Give feedback on grammar, sentence structure, and content... ",
         "google classroom": "Identifying the Hamlet papers \n\n Hamlet Paper 1: https://docs.google.com/document/d/1ESlOcz8hJAD7RFvViNxcUoMskxZMmZaQSpvo0ZjA7MY/edit?usp=sharing \n\n Hamlet Paper 2: https://docs.google.com/document/d/1ESlOcz8hJAD7RFvViNxcUoMskxZMmZaQSpvo0ZjA7MY/edit?usp=sharing \n\n Hamlet Paper 3: https://docs.google.com/document/d/1ESlOcz8hJAD7RFvViNxcUoMskxZMmZaQSpvo0ZjA7MY/edit?usp=sharing \n\n Hamlet Paper 4: https://docs.google.com/document/d/1ESlOcz8hJAD7RFvViNxcUoMskxZMmZaQSpvo0ZjA7MY/edit?usp=sharing  \n\n Hamlet Paper 5: https://docs.google.com/document/d/1ESlOcz8hJAD7RFvViNxcUoMskxZMmZaQSpvo0ZjA7MY/edit?usp=sharing",
         "feedback": "Provided feedback on grammar, sentence structure, and content on the Hamlet papers.",
         icon: faComment
@@ -266,9 +231,15 @@ export const exampleToolData = {
 
 };
 
-// Create a dictionary similar to TOOLDICTIONARY with the same keys, except the value is a dictionary with one key "imageUrl" and the value is the url of the image
-// The next key is "name" and the value is the name of the tool but every first character is capitalized
-// The next key is "description" and the value is a description of the tool
+export const getCachedResponse = (tool, command) => {
+  let singleExampleHash;
+  Object.keys(exampleToolData).forEach((key) => {
+    singleExampleHash = exampleToolData[key];
+    if (tool in singleExampleHash.tools &&  singleExampleHash["chat response"].includes(command)) {
+      return singleExampleHash[tool];
+    }
+  });
+}
 
 export const TOOLDESCRIPTIONS = {
     'youtube': {

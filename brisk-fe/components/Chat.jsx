@@ -29,6 +29,7 @@ export default function Chat(props) {
 
   const saveMessages = (messages, HTMLString) => {
     localStorage.setItem('chat_messages', JSON.stringify(messages));
+    // This is important because if we can set the state of messages here, we know at this point that we should look for the last bot message
     setAllMessagesState(messages);
   };
 
@@ -93,7 +94,7 @@ export default function Chat(props) {
 
   const createIconImage = (tool) => {
     return (
-      <div className='basis-1/3' >
+      <div key={tool} className='basis-1/3' >
         <div className='flex m-3 grow flex-col bg-white border border-gray-300 rounded shadow-lg appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline'>
           <img 
             className="p-10 h-26"

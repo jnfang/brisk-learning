@@ -21,6 +21,7 @@ export default function Demo() {
   const [showLinkAttachmentBox, setShowLinkAttachmentBox] = useState(false);
   const [exampleFlow, setExampleFlow] = useState(null);
   const [defaultTab, setDefaultTab] = useState("Current Workflow");
+  const [lastBotMessage, setLastBotMessage] = useState(null);
 
   const handleGoSubmit = (e) =>  {
     e.preventDefault();
@@ -66,49 +67,35 @@ export default function Demo() {
     setShowLinkAttachmentBox(false);
   }
 
-  const handleExampleWorkflowClick = (exampleDict) => {
-    // Not sure why this isn't working...
-    // setFirstInput(exampleDict.exampleMessage);
-    // var input = document.getElementsByClassName('react-chatbot-kit-chat-input')[0];
-    // input.placeholder = exampleDict["exampleMessage"];
-
-    // This is a hacky way to get the workflow started without a user input
-    // Get the right tools from exampleToolData in Utils
-    const exampleToolDatahash = exampleToolData[exampleDict["exampleTitle"]]
-    console.log(exampleToolDatahash)
-
-    const tools = exampleToolDatahash["tools"];
-    const lastBotMessage = exampleToolDatahash["chat response"];
-    // const completedPrompts = tools.map((tool) => {return "//P// " + tool + ": " + exampleToolDatahash[tool] + " \n"})
-    // const lastBotMessage = exampleToolDatahash["exampleMessage"] + " " + completedPrompts.join("");
-    localStorage.setItem("lastBotMessage", lastBotMessage);
-    setDefaultTab("Current Workflow");
-    console.log("this shoudl reset the tab");
-    console.log(defaultTab);
-
-    var attachments = {};
-    if (exampleDict["text"]){
-      attachments["text"] = exampleDict["text"];
+  useEffect(() => {
+    if (localStorage["lastBotMessage"] != lastBotMessage){
+      setLastBotMessage(localStorage["lastBotMessage"]);
+      setExampleFlow(null);
     }
-    if (exampleDict["link"]){
-      attachments["link"] = exampleDict["link"];
-    }
-    setAttachments(attachments);
-
-  }
+    });
 
   const handleExampleClick = (exampleDict) => {
+    const individualExampleHash = exampleToolData[exampleDict.exampleTitle];
+
+    // We want to set the localStorage to simulate the chat -> workflow flow
+    if (!individualExampleHash){
+      return null;
+    }
+    localStorage.setItem("lastBotMessage", individualExampleHash["chat response"]);
+    setLastBotMessage(individualExampleHash["chat response"]);
+
+
     setFirstInput(exampleDict.exampleMessage);
     var attachments = {};
 
-    // Need to do validation that we are in the example flow
-    // Check whether exampleDict has a "tools" key and if it has a non-empty list
-    // Check whether exampleDict has "exampeTitle" key and if it has a non-empty string
+    // We need to set the current default tab to "Current Workflow" because in workflow example flow
+    // We want to switch back to the workflow tab
+    setDefaultTab("Current Workflow");
 
-    console.log(exampleDict);
-
+    // This is just validation, we should be in the example flow if we are here
     const inExampleFlow = exampleDict["exampleTitle"] && exampleDict["exampleTitle"].length > 0 &&
       exampleDict["tools"] && exampleDict["tools"].length > 0;
+    
     if (inExampleFlow) {
       setExampleFlow(exampleDict.exampleTitle);
     }
@@ -176,10 +163,12 @@ export default function Demo() {
     <div>
       <NavBar></NavBar>
       {(submitted) ?
-        <Chat firstInput={firstInput}
+        <Chat 
+          key={exampleFlow} 
+          firstInput={firstInput}
           initialAttachments={attachments}
           exampleState={exampleFlow}
-          onExampleClick={handleExampleWorkflowClick}
+          onExampleClick={handleExampleClick}
           openTab={defaultTab}
           setDefaultTab={setDefaultTab}
         ></Chat>

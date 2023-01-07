@@ -18,6 +18,7 @@ from langchain import OpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 import time
+from examples import exampleCheck 
 
 # client = glogging.Client()
 # client.setup_logging()
@@ -119,10 +120,10 @@ async def create():
 def chat():
     try:
         response = """
-        Okay, I will send an email to absent students' parents with assignments in Google Classrom that were covered.
-        //P// Powerschool: Find students who were absent today... \n
-        //P// Google Classroom: Look for assignments that were assigned today... \n
-        //P// Google Drive: Draft an email to parents explaining the assignments that were covered today...\n
+        Okay, I will send an email to absent students' parents with assignments in Google Classroom that were covered.
+        //P// Powerschool: Find students who were absent today.... \n
+        //P// Google Classroom: Look for assignments that were assigned today.... \n
+        //P// Gmail: Draft an email to parents explaining the assignments that were covered today....\n
         """
         input = request.json['prompt']
         previous_context = request.json['previous_context']
@@ -133,34 +134,25 @@ def chat():
         llm = OpenAI(temperature=0.0)
         chain = LLMChain(llm=llm, prompt=prompt)
         response = chain.run(input)
-        print(response)
-        # time.sleep(1)
-
         return {"llmResponse": response}, 200
 
     except Exception as e:
         print(e)
-        abort(500)
-        return
+        return {"llmResponse": "OpenAI server is down. Please try again."}, 200
 
 @ app.route('/invoke_tool', methods=["POST"])
 def invoke_tool():
     try:
-        result = "<s> default content <b> fjsailjfls"
-        print(request.json['toolContext'])
+        print(request.json)
         input = request.json['prompt']
         tool = request.json['tool']
         attachments = request.json['attachments']
-        print(attachments)
-        result = ToolEngine.invokeTool(tool, input, attachments)
-        print(result)
-        # time.sleep(1)
+        result = exampleCheck(tool, input)  or ToolEngine.invokeTool(tool, input, attachments)
         return {"toolResponse": result}, 200
     
     except Exception as e:
         print(e)
-        abort(500)
-        return
+        return {"llmResponse": "OpenAI server is down. Please try again."}, 200
 
 port = int(os.environ.get('PORT', 8080))
 if __name__ == '__main__':
