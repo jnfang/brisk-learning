@@ -28,10 +28,10 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Nextly - Free Nextjs & TailwindCSS Landing Page Template</title>
+        <title>Transform Your Classroom with an AI Assistant</title>
         <meta
           name="description"
-          content="Nextly is a free landing page template built with next.js & Tailwind CSS"
+          content=""
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -40,9 +40,9 @@ export default function Home() {
       <SectionTitle
         pretitle="Nextly Benefits"
         title=" Why should you use this landing page">
-        Nextly is a free landing page & marketing website template for startups
-        and indie projects. Its built with Next.js & TailwindCSS. And its
-        completely open-source.
+        With our AI assistant, teachers can effortlessly automate their workflows, 
+        analyze and monitor student data, and create engaging curriculum. Say goodbye 
+        to time-consuming tasks and hello to more time spent on what really matters: your students.
       </SectionTitle>
       <Benefits data={benefitOne} />
       <Benefits imgPos="right" data={benefitTwo} />
