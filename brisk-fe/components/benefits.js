@@ -1,10 +1,9 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import React from "react";
 import Container from "./container";
 
 export default function Benefits(props) {
   const { data } = props;
-
   return (
     <>
       <Container className="flex flex-wrap mb-20 lg:gap-10 lg:flex-nowrap ">
@@ -56,7 +55,7 @@ export default function Benefits(props) {
 function Benefit(props) {
   return (
     <>
-      <div className="flex items-start mt-8 space-x-3">
+      <div className="flex items-start mb-8 space-x-3">
         {/* <div className="flex items-center justify-center flex-shrink-0 mt-1 bg-indigo-500 rounded-md w-11 h-11 ">
           {React.cloneElement(props.icon, {
             className: "w-7 h-7 text-indigo-50",

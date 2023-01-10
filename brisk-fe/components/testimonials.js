@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import React from "react";
 import Container from "./container";
 
@@ -13,42 +13,43 @@ export default function Testimonials() {
         <div className="lg:col-span-2 xl:col-auto">
           <div className="flex flex-col justify-between w-full h-full bg-gray-100 px-14 rounded-2xl py-14 dark:bg-trueGray-800">
             <p className="text-2xl leading-normal ">
-              Share a real <Mark>testimonial</Mark>
-              that hits some of your benefits from one of your popular customer.
+              Where has Brisk been my entire teaching career?
+              Brisk was <b><Mark>designed to make my life easier.</Mark></b> I love that
+              I can tell it what I want done and it figures out how to do it.
             </p>
 
             <Avatar
               image={userOneImg}
               name="Sarah Steiner"
-              title="VP Sales at Google"
+              title="Lead Math Teacher"
             />
           </div>
         </div>
         <div className="">
           <div className="flex flex-col justify-between w-full h-full bg-gray-100 px-14 rounded-2xl py-14 dark:bg-trueGray-800">
             <p className="text-2xl leading-normal ">
-              Make sure you only pick the <Mark>right sentence</Mark>
-              to keep it short and simple.
+              I used to waste valuable class and prep-time doing attendance, grading, and lesson planning. Now I get
+              that work done <b><Mark>5X faster</Mark></b> so I can be more intentional about my time.
             </p>
 
             <Avatar
               image={userTwoImg}
               name="Dylan Ambrose"
-              title="Lead marketer at Netflix"
+              title="11-12th Grade History Teacher"
             />
           </div>
         </div>
         <div className="">
           <div className="flex flex-col justify-between w-full h-full bg-gray-100 px-14 rounded-2xl py-14 dark:bg-trueGray-800">
             <p className="text-2xl leading-normal ">
-              This is an <Mark>awesome</Mark> landing page template I've seen. I
-              would use this for anything.
+              For years, I struggled to communicate out with parents. I used Brisk to schedule a weekly digest email to be sent to parents
+              based on my lesson plan and now I am <b><Mark>on top of my parent-teacher engagment.</Mark></b>
             </p>
 
-            <Avatar
+            <Avatar 
               image={userThreeImg}
               name="Gabrielle Winn"
-              title="Co-founder of Acme Inc"
+              title="7-8th Grade Science Teacher  "
             />
           </div>
         </div>

@@ -3,7 +3,7 @@ import Hero from "../components/hero";
 import Navbar from "../components/navbar";
 import SectionTitle from "../components/sectionTitle";
 
-import { benefitOne, benefitTwo } from "../components/data";
+import { benefitOne, benefitTwo, BenefitThree, benefitThree } from "../components/data";
 import Video from "../components/video";
 import Benefits from "../components/benefits";
 import Footer from "../components/footer";
@@ -38,27 +38,25 @@ export default function Home() {
       <Navbar />
       <Hero />
       <SectionTitle
-        pretitle="Nextly Benefits"
-        title=" Why should you use this landing page">
-        With our AI assistant, teachers can effortlessly automate their workflows, 
-        analyze and monitor student data, and create engaging curriculum. Say goodbye 
-        to time-consuming tasks and hello to more time spent on what really matters: your students.
+        pretitle="Benefits"
+        title="Brisk eliminates the busy work of teaching">
+        With Brisk, teachers can effortlessly automate their workflows, 
+        analyze and monitor student data, and create engaging curriculum.
       </SectionTitle>
       <Benefits data={benefitOne} />
       <Benefits imgPos="right" data={benefitTwo} />
-      <SectionTitle
+      <Benefits data={benefitThree} />
+      {/* <SectionTitle
         pretitle="Watch a video"
         title="Learn how to fullfil your needs">
         This section is to highlight a promo or demo video of your product.
         Analysts says a landing page with video has 3% more conversion rate. So,
         don't forget to add one. Just like this.
       </SectionTitle>
-      <Video />
+      <Video /> */}
       <SectionTitle
         pretitle="Testimonials"
-        title="Here's what our customers said">
-        Testimonails is a great way to increase the brand trust and awareness.
-        Use this section to highlight your popular customers.
+        title="Don't take our word for it">
       </SectionTitle>
       <Testimonials />
       <SectionTitle pretitle="FAQ" title="Frequently Asked Questions">

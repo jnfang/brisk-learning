@@ -9,51 +9,75 @@ import {
 
 import benefitOneImg from "../public/img/benefit-one.png";
 import benefitTwoImg from "../public/img/benefit-two.png";
+import benefitThreeImg from "../public/img/benefit-two.png";
 
 const benefitOne = {
-  title: "Highlight your benefits",
-  desc: "You can use this space to highlight your first benefit or a feature of your product. It can also contain an image or Illustration like in the example along with some bullet points.",
+  title: "Your Teacher's Assistant",
+  desc: "Our virtual assistant is designed specifically for teachers, to streamline your workflow. Connect to a wide range of tools and automate many of the tedious tasks that take up so much of your day.",
   image: benefitOneImg,
   bullets: [
     {
-      title: "Understand your customers",
-      desc: "Then explain the first point breifly in one or two lines.",
+      title: "Do multi-step tasks easily",
+      desc: "Jumping between your learning management system, a student information system, Google Drive, email, and other tools can be a pain. Brisk can do it all for you.",
       icon: <FaceSmileIcon />,
     },
     {
-      title: "Improve acquisition",
-      desc: "Here you can add the next benefit point.",
+      title: "Use tools faster",
+      desc: "Rather than navigating through and learning new tools, Brisk is a unified interface that allows you to use all of your tools in one place.",
       icon: <ChartBarSquareIcon />,
     },
     {
-      title: "Drive customer retention",
-      desc: "This will be your last bullet point in this section.",
+      title: "Schedule tasks to run automatically",
+      desc: "We know that you have a lot on your plate. Curate a workflow that you can run at any time, or schedule it to run automatically.",
       icon: <CursorArrowRaysIcon />,
     },
   ],
 };
 
 const benefitTwo = {
-  title: "Offer more benefits here",
-  desc: "You can use this same layout with a flip image to highlight your rest of the benefits of your product. It can also contain an image or Illustration as above section along with some bullet points.",
+  title: "Your Personal Data Analyst",
+  desc: "Don't let data analysis and monitoring take up all your time – just tell Brisk what you want to see and let it handle the rest. Easily analyze and monitor student data from student information systems, learning management systems, and more, all without any technical headaches.",
   image: benefitTwoImg,
   bullets: [
     {
-      title: "Mobile Responsive Template",
-      desc: "Nextly is designed as a mobile first responsive template.",
+      title: "No more exporting to Excel",
+      desc: "Use language to describe the data you want to use and how you want to visualize it (e.g. a chart, a table, etc.). Brisk will do the rest.",
       icon: <DevicePhoneMobileIcon />,
     },
     {
-      title: "Powered by Next.js & TailwindCSS",
-      desc: "This template is powered by latest technologies and tools.",
+      title: "Connect and visualize all of your data in one place",
+      desc: "The most powerful classroom insights are built on identifying patterns across different data sources. Brisk simplifies this.",
       icon: <AdjustmentsVerticalIcon />,
     },
     {
-      title: "Dark & Light Mode",
-      desc: "Nextly comes with a zero-config light & dark mode. ",
+      title: "Let Brisk highlight important insights",
+      desc: "Use Brisk's Monitoring tool to set up alerts for events that you want to be notified about.",
       icon: <SunIcon />,
     },
   ],
 };
 
-export { benefitOne, benefitTwo };
+const benefitThree = {
+  title: "Your Personal Curriculum Writer",
+  desc: "Effortlessly create, customize, and differentiate content, or source existing curriculum from the internet. Convert texts to lexile-appropriate versions, generate lesson plans and worksheets, and audit your curriculum for state standards.",
+  image: benefitThreeImg,
+  bullets: [
+    {
+      title: "Create and source worksheets, resources and exam questions",
+      desc: "Brisk uses proprietary data and technology to find and create learning content that is tailored to your classroom needs.",
+      icon: <DevicePhoneMobileIcon />,
+    },
+    {
+      title: "Customize curriculum for your teaching needs",
+      desc: "Brisk learns about your personal teaching style and preferences by ingesting curriculum you like to use and by responding to your feedback.",
+      icon: <AdjustmentsVerticalIcon />,
+    },
+    {
+      title: "Localize, personalize, and differentiate curriculum",
+      desc: "Brisk can help you personalize curriculum for individual students, groups of students, or entire classes.",
+      icon: <SunIcon />,
+    },
+  ],
+};
+
+export { benefitOne, benefitTwo, benefitThree };
