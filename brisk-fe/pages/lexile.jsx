@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link' 
 
-import NavBar from '../components/NavBar';
+import Navbar from '../components/navbar';
 
 export default function Home() {
 
@@ -83,7 +83,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-          <NavBar></NavBar>
+          <Navbar />
           <HeaderDetails></HeaderDetails>
           <div className="artboard artboard-demo my-2 min-h-screen">
             <form className="form-control w-full p-4" onSubmit={handleSubmit}>

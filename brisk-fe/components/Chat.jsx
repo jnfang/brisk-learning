@@ -139,9 +139,8 @@ export default function Chat(props) {
 
   return (
     <div className="App">
-        <div className="flex flex-row extra-top-padding">
+        <div className="flex flex-row">
           <div className="basis-2/3">
-            <ChatHeader></ChatHeader>
             <SectionTabs tabs={tabs} openTab={props.openTab} onTabClick={handleTabClick} />
             {tabPanel()}
           </div>
