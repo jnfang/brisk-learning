@@ -4,7 +4,7 @@ import { Disclosure } from "@headlessui/react";
 
 export default function Navbar() {
   // const navigation = ["Demo", "Integrations", "About Us", "Blog"];
-  const navigation = {"Demo": "/demo", "Integrations": "/integrations", "About Us": "/about-us", "Blog": "/blog"}
+  const navigation = {"Demo": "/demo", "Lexile Converter": "/lexile", "Integrations": "/integrations", "About Us": "/about-us", "Blog": "/blog"}
 
   return (
     <div className="w-full">

@@ -51,16 +51,18 @@ def root():
 def get_completion(prompt_and_token):
     try:
         prompt, tokens_left = prompt_and_token
-        app.logger.info("Calling Completion API...")
+        print (prompt, tokens_left)
+        # app.logger.info("Calling Completion API...")
         start = time.perf_counter()
         completion = openai.Completion.create(
             model=MODEL, prompt=prompt, temperature=TEMPERATURE, max_tokens=int(tokens_left), echo=False)
+        print("after completion")
         request_time = time.perf_counter() - start
-        app.logger.info(
-            "OpenAI Completion request completed in {:10.4f}s".format(request_time))
+        # app.logger.info(
+        #     "OpenAI Completion request completed in {:10.4f}s".format(request_time))
         created_article = completion.choices[0].text
-        app.logger.info(
-            f"Received completion used {completion.usage.total_tokens} total tokens")
+        # app.logger.info(
+        #     f"Received completion used {completion.usage.total_tokens} total tokens")
         return created_article
     except Exception as e:
         print(e)
@@ -74,11 +76,12 @@ def concurrent_completions(prompts_and_tokens):
         full_transformed_article = ""
         for article in created_articles:
             full_transformed_article += article
+        print(full_transformed_article)
     return full_transformed_article
 
 
 @app.route('/transform', methods=['POST'])
-async def create():
+def create():
     # Get data from the OpenAI API
     try:
         article = request.json['article']
@@ -92,25 +95,25 @@ async def create():
         return
 
     try:
-        firebase_start = time.perf_counter()
-        # Create records in Firebase DB
-        prompt_ref = db.reference('/promptArticles')
-        prompt_result = prompt_ref.push(
-            {"articleContent": article, "createdAt": datetime.utcnow().isoformat()})
+        # firebase_start = time.perf_counter()
+        # # Create records in Firebase DB
+        # prompt_ref = db.reference('/promptArticles')
+        # prompt_result = prompt_ref.push(
+        #     {"articleContent": article, "createdAt": datetime.utcnow().isoformat()})
+        created_result = {"articleContent": full_transformed_article, "createdAt": datetime.utcnow().isoformat()}
+        # created_ref = db.reference('/createdArticles')
+        # created_result = created_ref.push(
+        #     {"articleContent": full_transformed_article, "createdAt": datetime.utcnow().isoformat(), "promptId": prompt_result.key})
 
-        created_ref = db.reference('/createdArticles')
-        created_result = created_ref.push(
-            {"articleContent": full_transformed_article, "createdAt": datetime.utcnow().isoformat(), "promptId": prompt_result.key})
-
-        map_ref = db.reference('/articleMap')
-        map_result = map_ref.push(
-            {"promptId": prompt_result.key, "createdId": created_result.key})
-        firebase_time = time.perf_counter() - firebase_start
-        app.logger.info(
-            "Firebase Completion request completed in {:10.4f}s".format(firebase_time))
+        # map_ref = db.reference('/articleMap')
+        # map_result = map_ref.push(
+        #     {"promptId": prompt_result.key, "createdId": created_result.key})
+        # firebase_time = time.perf_counter() - firebase_start
+        # app.logger.info(
+        #     "Firebase Completion request completed in {:10.4f}s".format(firebase_time))
 
         # TODO: make a class for the return result
-        return jsonify(created_result.get()), 200
+        return jsonify(created_result), 200
     except Exception as e:
         print(f"An Error Occurred in Firebase: {e}")
         abort(500)
