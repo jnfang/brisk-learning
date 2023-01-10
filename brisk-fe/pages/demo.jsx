@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 import Chat from '../components/Chat';
-import NavBar from '../components/NavBar';
+import Navbar from '../components/navbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons'
 import TextAttachmentBox from '../components/TextAttachmentBox';
@@ -161,7 +161,7 @@ export default function Demo() {
 
   return (
     <div>
-      <NavBar></NavBar>
+      <Navbar />
       {(submitted) ?
         <Chat 
           key={exampleFlow} 
