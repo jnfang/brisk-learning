@@ -13,15 +13,12 @@ export default function Hero() {
               Transform Your Classroom with an AI Assistant
             </h1>
             <p className="py-5 text-xl leading-normal text-gray-500 lg:text-xl xl:text-2xl dark:text-gray-300">
-            Say goodbye to time-consuming tasks and hello to more time spent on what really matters: <b>your students.</b>
-
+              Say goodbye to time-consuming tasks and hello to more time spent on what really matters: <b>your students.</b>
             </p>
 
             <div className="flex flex-col my-10 pt-10">
               <a
                 href="https://github.com/web3templates"
-                target="_blank"
-                rel="noopener"
                 className="px-8 py-4 text-lg font-medium text-center text-white bg-indigo-600 rounded-md ">
                   Join Waitlist
               </a>

@@ -12,7 +12,7 @@ import benefitTwoImg from "../public/img/benefit-two.png";
 import benefitThreeImg from "../public/img/benefit-two.png";
 
 const benefitOne = {
-  title: "Your Teacher's Assistant",
+  title: "Your Personal TA",
   desc: "Our virtual assistant is designed specifically for teachers, to streamline your workflow. Connect to a wide range of tools and automate many of the tedious tasks that take up so much of your day.",
   image: benefitOneImg,
   bullets: [
@@ -28,7 +28,7 @@ const benefitOne = {
     },
     {
       title: "Schedule tasks to run automatically",
-      desc: "We know that you have a lot on your plate. Curate a workflow that you can run at any time, or schedule it to run automatically.",
+      desc: "We know that you have a lot on your plate. Beyond running a workflow at any time, you can schedule it to run periodically or set it to be triggered by an event (e.g. a student submission).",
       icon: <CursorArrowRaysIcon />,
     },
   ],
