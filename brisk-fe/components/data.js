@@ -12,7 +12,7 @@ import benefitTwoImg from "../public/img/benefit-two.png";
 import benefitThreeImg from "../public/img/benefit-two.png";
 
 const benefitOne = {
-  title: "Your Teacher's Assistant",
+  title: "Your Personal TA",
   desc: "Our virtual assistant is designed specifically for teachers, to streamline your workflow. Connect to a wide range of tools and automate many of the tedious tasks that take up so much of your day.",
   image: benefitOneImg,
   bullets: [
