@@ -146,6 +146,7 @@ export default function Chat(props) {
           </div>
           <div className="basis-1/3">
             <Chatbot
+              className="chatbot"
               config={config}
               key={initialMessages.length}
               actionProvider={ActionProvider}
