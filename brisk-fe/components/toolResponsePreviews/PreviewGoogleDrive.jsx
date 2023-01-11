@@ -1,3 +1,5 @@
+import { GoogleDocComponent, GoogleSlideComponent } from "./previewComponents"
+
 export default function PreviewGoogleDrive(props) {
     if (props.response === null) {
         return (
