@@ -1,16 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faXmark, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons'
 import ToolOutputPreview from './ToolOutputPreview';
 
 export default function WorkflowElement (props) {
 
     const [showStatus, setShowStatus] = useState(true);
     const [toolResponse, setToolResponse] = useState(null);
+    const [minimized, setMinimized] = useState(false);
 
     const handleCancel = () => {
         setShowStatus(false);
     }
+
+    const handleMinimize = () => {
+        setMinimized(true);
+
+    }
+
+    const handleExpand = () => {
+        setMinimized(false);
+    }
+
 
     const parseCurrentWorkflowResponseData = () => {
         // props.currentWorkflowResponseData is an array of dictionaries. Each dictionary will have a "tool" key, "prompt" key, "attachments" key,
@@ -46,21 +57,38 @@ export default function WorkflowElement (props) {
                         {props.prompt}
                     </div>
                     <div className="inline-flex options-container">
-                    <button onClick={handleCancel}>
-                    <FontAwesomeIcon
-                        className="box-border h-5 w-5 cancel-button"
-                        icon={faXmark}
-                    />
-                    </button>
+                        {minimized ? 
+                            <button onClick={handleExpand}>
+                                <FontAwesomeIcon
+                                    className="box-border h-4 w-4 cancel-button"
+                                    icon={faPlus}
+                                />
+                            </button>
+                            :
+                            <button onClick={handleMinimize}>
+                                <FontAwesomeIcon
+                                    className="box-border h-4 w-4 cancel-button"
+                                    icon={faMinus}
+                                />
+                            </button>
+                        }
+                        <button onClick={handleCancel}>
+                            <FontAwesomeIcon
+                                className="box-border h-3 w-3 cancel-button"
+                                icon={faXmark}
+                            />
+                        </button>
                     </div>
                 </div>
-                <ToolOutputPreview
-                    tool={props.tool}
-                    prompt={props.prompt}
-                    attachments={props.attachments}
-                    exampleFlow={props.exampleFlow}
-                    response={toolResponse}
-                />
+                {minimized ? null :
+                    <ToolOutputPreview
+                        tool={props.tool}
+                        prompt={props.prompt}
+                        attachments={props.attachments}
+                        exampleFlow={props.exampleFlow}
+                        response={toolResponse}
+                    />
+                }
             </div>
         )
     } else {
