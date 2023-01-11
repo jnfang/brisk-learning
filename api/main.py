@@ -147,7 +147,9 @@ def invoke_tool():
         input = request.json['prompt']
         tool = request.json['tool']
         attachments = request.json['attachments']
-        result = exampleCheck(tool, input)  or ToolEngine.invokeTool(tool, input, attachments)
+        result = exampleCheck(tool, input)
+        if result is None:
+            result = ToolEngine.invokeTool(tool, input, attachments)
         return {"toolResponse": result}, 200
     
     except Exception as e:

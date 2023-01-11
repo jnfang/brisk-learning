@@ -65,6 +65,8 @@ export async function invokeTool(requestHash, setResponseData, prevResponseData)
         prompt: request_prompt,
         attachments: {...attachments, "toolContext": toolContext}
     }
+    console.log("making request");
+    console.log(data);
     const res = await fetch(invokeToolEndpoint, {
         body: JSON.stringify(data),
         headers: {
@@ -197,7 +199,7 @@ export const exampleToolData = {
     "Detect AI Writing": {
         "command": "Flag recent essay submissions where students may have used GPT",
         "tools": ["google classroom", 'writing integrity'],
-        "chat response": "Okay, I've used Google Classroom to find recent essay submissions and Writing Integrity to flag submissions where students may have used GPT. //P// Google Classroom: Find recent essay submissions... //P// Writing Authentication: Flag those where students may have used GPT... ",
+        "chat response": "Okay, I've used Google Classroom to find recent essay submissions and Writing Integrity to flag submissions where students may have used GPT. //P// Google Classroom: Find recent essay submissions... //P// Writing Integrity: Flag those where students may have used GPT... ",
         "google classroom": "Retrieved 5 recent essay submissions",
         "writing integrity": "Natasha spent 15 minutes editing her Romantacism essay in Google Docs. This is 93% shorter than other students. It's possible that she used GPT to write this essay.",
         icon: faRobot

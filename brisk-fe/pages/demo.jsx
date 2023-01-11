@@ -116,12 +116,12 @@ export default function Demo() {
     if (showAttachmentDropdown){
       return (
         <div className=''>
-          <ul className='dropdown-attach border-2'>
+          <ul className='dropdown-attach border-2 rounded-lg'>
               <li className='menu-item'>
-                <button className='dropdown-button' onClick={onClickText}>Text</button>
+                <button className='dropdown-button px-4' onClick={onClickText}>Text</button>
               </li>
               <li className='menu-item'>
-                <button className='dropdown-button' onClick={onClickLink}>Link</button>
+                <button className='dropdown-button px-4' onClick={onClickLink}>Link</button>
               </li>
             </ul>
         </div>
@@ -209,8 +209,10 @@ export default function Demo() {
                   className="box-border h-5 w-5"
                   icon={faPaperclip}
                 />
-                  <Dropdown className="dropdown-attach"></Dropdown>
+                <Dropdown className="dropdown-attach"></Dropdown>
+
               </button>
+
               <button
                 type="submit"
                 className="start-button h-12 px-4 tracking-wide transition duration-200 rounded shadow-md md:w-auto focus:outline-none"

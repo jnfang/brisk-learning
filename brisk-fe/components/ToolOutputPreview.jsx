@@ -25,8 +25,6 @@ export default function ToolOutputPreview(props) {
         }
     }
     
-
-    // For a gmail or remind action
     const toolPreview = {
         'youtube': <PreviewYoutube response={props.response}/>,
         'gmail': <PreviewGmail response={props.response} />,
@@ -34,6 +32,7 @@ export default function ToolOutputPreview(props) {
         'google drive': <PreviewGoogleDrive response={props.response}/>,
         'curriculum': <PreviewCurriculum response={props.response}/>,
         'data' : <PreviewData response={props.response}/>,
+        'remind' : <PreviewGmail response={props.response}/>,
     }
 
     const realTool = props.tool;

@@ -71,8 +71,10 @@ export default function CurrentWorkflow(props) {
     if (currentWorkflowRequestData.length === currentWorkflowResponseData.length) {
       return;
     }
+
     const requestHash = currentWorkflowRequestData[currentWorkflowResponseData.length];
-    if (requestHash === undefined || requestHash["prompt"] === mostRecentRequest) {
+
+    if (requestHash === undefined) {
       return;
     }
     invokeTool(requestHash, workflowResponseCallback, currentWorkflowResponseData);
@@ -129,7 +131,6 @@ CurrentWorkflow.generateRequestData = (msg, attachments, exampleFlow) => {
     let colonIndex = prompt.indexOf(":");
     if (colonIndex > -1 && colonIndex < prompt.length) {prompt = prompt.substring(colonIndex +1, prompt.length).trim()}
     tempRequestData.push({tool: toolHash["tool"], prompt: prompt, attachments: attachments, src: toolHash["src"], exampleFlowState: exampleFlow})
-    // console.log({tool: toolHash["tool"], prompt: prompt, attachments: attachments, src: toolHash["src"], exampleFlowState: exampleFlow});
   }
   return tempRequestData;
 }

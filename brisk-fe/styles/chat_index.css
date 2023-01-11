@@ -154,6 +154,8 @@ body {
     position: absolute;
     top: 50px;
     left: 0px;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
     outline: #616161;
   }
   
