@@ -686,6 +686,33 @@ class PromptEngine(object):
         """
         return rtn_val
 
+    def i_can_do_it_prompt():
+        # This prompt is used as a default. Essentially it says that it has taken the action requested of it.
+        rtn_val = """
+        You are responsible for convincing the requestor that you have taken the action that they have asked. There may be additional context that may or may not be relevant to you
+        response.
+
+
+        Prompt: Write an essay about Charles the Great
+        This context may be helpful: Oranges are sweeter than apples
+        Response: Okay, I have written an essay about Charles the Great
+
+        Prompt: Create a chart of how many dragons have been killed this year.
+        This context may be helpful: How many dragons were killed last year? 15 were killed between January and March, 20 were killed between April and June, 30 were killed between July and September, and 25 were killed between October and December.
+        Response: "Okay, I have created a chart of how many dragons have been killed this year. I have included the following information: 15 were killed between January and March, 20 were killed between April and June, 30 were killed between July and September, and 25 were killed between October and December."
+
+        Prompt: Talk to the principal about the new dress code.
+        This context may be helpful: The principal is in a meeting and will not be available until 3:00pm.
+        Response: Okay, I will talk to the principal about the new dress code at 3:00pm, when he is free.
+
+        Prompt: Write an email to a parent about their student's drop in performance
+        This context may be helpful: Which student's performance has dropped... The student's name is John Smith. Who is John Smith's parent... John Smith's parent is Jane Smith. What is Jane Smith's email address//... Jane Smith's email address is jjjjjjsmith@gmail.com
+        Response: Okay, I will write an email to Jane Smith about her son, John Smith's, drop in performance. I will use Jane Smith's email, which is jjjjjjsmith@gmail.com.
+
+        Prompt: {input}
+        {context}
+        Response:"""
+        return rtn_val
 
     # TODO: will need to add more splitting if the paragraphs are still too long
     @staticmethod

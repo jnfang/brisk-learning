@@ -111,7 +111,7 @@ exampleToolData = {
         "Detect AI Writing": {
             "command": "Flag recent essay submissions where students may have used GPT",
             "tools": ["google classroom", 'writing integrity'],
-            "chat response": "Okay, I've used Google Classroom to find recent essay submissions and Writing Integrity to flag submissions where students may have used GPT. //P// Google Classroom: Find recent essay submissions... //P// Writing Authentication: Flag those where students may have used GPT... ",
+            "chat response": "Okay, I've used Google Classroom to find recent essay submissions and Writing Integrity to flag submissions where students may have used GPT. //P// Google Classroom: Find recent essay submissions... //P// Writing Integrity: Flag those where students may have used GPT... ",
             "google classroom": "Retrieved 5 recent essay submissions",
             "writing integrity": "Natasha spent 15 minutes editing her Romantacism essay in Google Docs. This is 93% shorter than other students. It's possible that she used GPT to write this essay.",
         },
@@ -141,9 +141,10 @@ exampleToolData = {
 }
 
 def exampleCheck(tool, prompt): 
-    print (tool, prompt)
     for tup in exampleToolData.items():
         dic = tup[1]
         if prompt in dic['chat response'] and tool in dic['tools']:
+            import time
+            time.sleep(1)
             return dic[tool]
     return None

@@ -5,17 +5,19 @@ from prompt_engine import PromptEngine
 import re
 import concurrent.futures
 
+from langchain.agents import load_tools
+from langchain.agents import initialize_agent
+from langchain.llms import OpenAI
+
 class ToolEngine(object):
 
     @staticmethod
     def generate_context(attachments):
-        print(attachments)
         context = ""
         if "chat_context" in attachments:
             context += "\nHere is the original request from the user: " + attachments["chat_context"]
         if "toolContext" in attachments:
-            context += "\nThis context may be helpful: \n" + attachments["toolContext"]
-        print(context)
+            context += "This context may be helpful:" + attachments["toolContext"]
         return context
 
     @staticmethod
@@ -27,12 +29,20 @@ class ToolEngine(object):
         )
         llm = OpenAI(temperature=0.0)
         chain = LLMChain(llm=llm, prompt=prompt_template)
-        response = chain.predict(input=input, context=context)
+        response = chain.run(input=input, context=context)
         return response 
     
     @staticmethod
     def processYoutube(prompt, attachments):
-        return
+        context = ToolEngine.generate_context(attachments)
+        prompt_template = PromptTemplate(
+            input_variables=["input", "context"],
+            template=PromptEngine.i_can_do_it_prompt()
+        )
+        llm = OpenAI(temperature=0.0)
+        chain = LLMChain(llm=llm, prompt=prompt_template)
+        response = chain.run(input=prompt, context=context)
+        return response 
     
     @staticmethod
     def processGmail(input, attachments):
@@ -43,40 +53,104 @@ class ToolEngine(object):
         )
         llm = OpenAI(temperature=0.0)
         chain = LLMChain(llm=llm, prompt=prompt_template)
-        response = chain.predict(input=input, context=context)
+        response = chain.run(input=input, context=context)
         return response
 
     @staticmethod
     def processGoogleMeet(prompt, attachments):
-        return
+        context = ToolEngine.generate_context(attachments)
+        prompt_template = PromptTemplate(
+            input_variables=["input", "context"],
+            template=PromptEngine.i_can_do_it_prompt()
+        )
+        llm = OpenAI(temperature=0.0)
+        chain = LLMChain(llm=llm, prompt=prompt_template)
+        response = chain.run(input=prompt, context=context)
+        return response 
 
     @staticmethod
     def processGoogleCalendar(prompt, attachments):
-        return
+        context = ToolEngine.generate_context(attachments)
+        prompt_template = PromptTemplate(
+            input_variables=["input", "context"],
+            template=PromptEngine.i_can_do_it_prompt()
+        )
+        llm = OpenAI(temperature=0.0)
+        chain = LLMChain(llm=llm, prompt=prompt_template)
+        response = chain.run(input=prompt, context=context)
+        return response 
 
     @staticmethod
     def processGoogleDocs(prompt, attachments):
-        return
+        context = ToolEngine.generate_context(attachments)
+        prompt_template = PromptTemplate(
+            input_variables=["input", "context"],
+            template=PromptEngine.i_can_do_it_prompt()
+        )
+        llm = OpenAI(temperature=0.0)
+        chain = LLMChain(llm=llm, prompt=prompt_template)
+        response = chain.run(input=prompt, context=context)
+        return response 
 
     @staticmethod
     def processGoogleSlides(prompt, attachments):
-        return
+        context = ToolEngine.generate_context(attachments)
+        prompt_template = PromptTemplate(
+            input_variables=["input", "context"],
+            template=PromptEngine.i_can_do_it_prompt()
+        )
+        llm = OpenAI(temperature=0.0)
+        chain = LLMChain(llm=llm, prompt=prompt_template)
+        response = chain.run(input=prompt, context=context)
+        return response 
 
     @staticmethod
     def processGoogleSheets(prompt, attachments):
-        return
+        context = ToolEngine.generate_context(attachments)
+        prompt_template = PromptTemplate(
+            input_variables=["input", "context"],
+            template=PromptEngine.i_can_do_it_prompt()
+        )
+        llm = OpenAI(temperature=0.0)
+        chain = LLMChain(llm=llm, prompt=prompt_template)
+        response = chain.run(input=prompt, context=context)
+        return response 
 
     @staticmethod
     def processZoom(prompt, attachments):
-        return
+        context = ToolEngine.generate_context(attachments)
+        prompt_template = PromptTemplate(
+            input_variables=["input", "context"],
+            template=PromptEngine.i_can_do_it_prompt()
+        )
+        llm = OpenAI(temperature=0.0)
+        chain = LLMChain(llm=llm, prompt=prompt_template)
+        response = chain.run(input=prompt, context=context)
+        return response 
 
     @staticmethod
     def processClever(prompt, attachments):
-        return
+        context = ToolEngine.generate_context(attachments)
+        prompt_template = PromptTemplate(
+            input_variables=["input", "context"],
+            template=PromptEngine.i_can_do_it_prompt()
+        )
+        llm = OpenAI(temperature=0.0)
+        chain = LLMChain(llm=llm, prompt=prompt_template)
+        response = chain.run(input=prompt, context=context)
+        return response 
 
     @staticmethod
     def processRemind(prompt, attachments):
-        return
+        context = ToolEngine.generate_context(attachments)
+        prompt_template = PromptTemplate(
+            input_variables=["input", "context"],
+            template=PromptEngine.i_can_do_it_prompt()
+        )
+        llm = OpenAI(temperature=0.0)
+        chain = LLMChain(llm=llm, prompt=prompt_template)
+        response = chain.run(input=prompt, context=context)
+        return response 
 
     @staticmethod
     def processSchoology(prompt, attachments):
@@ -87,7 +161,7 @@ class ToolEngine(object):
         )
         llm = OpenAI(temperature=0.0)
         chain = LLMChain(llm=llm, prompt=prompt_template)
-        response = chain.predict(input=prompt, context=context)
+        response = chain.run(input=prompt, context=context)
         return response 
 
     @staticmethod
@@ -99,7 +173,7 @@ class ToolEngine(object):
         )
         llm = OpenAI(temperature=0.0)
         chain = LLMChain(llm=llm, prompt=prompt_template)
-        response = chain.predict(input=prompt, context=context)
+        response = chain.run(input=prompt, context=context)
         return response 
 
     @staticmethod
@@ -111,7 +185,7 @@ class ToolEngine(object):
         )
         llm = OpenAI(temperature=0.0)
         chain = LLMChain(llm=llm, prompt=prompt_template)
-        response = chain.predict(input=prompt, context=context)
+        response = chain.run(input=prompt, context=context)
         return response 
 
     @staticmethod
@@ -123,30 +197,115 @@ class ToolEngine(object):
         )
         llm = OpenAI(temperature=0.0)
         chain = LLMChain(llm=llm, prompt=prompt_template)
-        response = chain.predict(input=prompt, context=context)
+        response = chain.run(input=prompt, context=context)
         return response 
 
     @staticmethod
     def processGoogleDrive(prompt, attachments):
-        return
+        context = ToolEngine.generate_context(attachments)
+        prompt_template = PromptTemplate(
+            input_variables=["input", "context"],
+            template=PromptEngine.sis_prompt()
+        )
+        llm = OpenAI(temperature=0.0)
+        chain = LLMChain(llm=llm, prompt=prompt_template)
+        response = chain.run(input=prompt, context=context)
+        return response 
 
     @staticmethod
     def processWikipedia(prompt, attachments):
-        return
+        llm = OpenAI(temperature=0)
+        tools = load_tools(["serpapi"], llm=llm)
+        agent = initialize_agent(tools, llm, agent="zero-shot-react-description", verbose=True)
+        response = agent.run(prompt)
+        # import requests
+        # language_code = 'en'
+        # search_query = 'solar system'
+        # number_of_results = 1
+        # headers = {
+        # # 'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
+        # 'User-Agent': 'YOUR_APP_NAME (YOUR_EMAIL_OR_CONTACT_PAGE)'
+        # }
+
+        # base_url = 'https://api.wikimedia.org/core/v1/wikipedia/'
+        # endpoint = '/search/page'
+        # url = base_url + language_code + endpoint
+        # parameters = {'q': search_query, 'limit': number_of_results}
+        # response = requests.get(url, headers=headers, params=parameters)
+        # print(response)
+        return response
 
     @staticmethod
     def processData(prompt, attachments):
-        return
+        context = ToolEngine.generate_context(attachments)
+        prompt_template = PromptTemplate(
+            input_variables=["input", "context"],
+            template=PromptEngine.i_can_do_it_prompt()
+        )
+        llm = OpenAI(temperature=0.0)
+        chain = LLMChain(llm=llm, prompt=prompt_template)
+        response = chain.run(input=prompt, context=context)
+        return response 
 
     @staticmethod
     def processCurriculum(prompt, attachments):
-        return
+        context = ToolEngine.generate_context(attachments)
+        prompt_template = PromptTemplate(
+            input_variables=["input", "context"],
+            template=PromptEngine.i_can_do_it_prompt()
+        )
+        llm = OpenAI(temperature=0.0)
+        chain = LLMChain(llm=llm, prompt=prompt_template)
+        response = chain.run(input=prompt, context=context)
+        return response 
 
+    def processMonitor(prompt, attachments):
+        context = ToolEngine.generate_context(attachments)
+        prompt_template = PromptTemplate(
+            input_variables=["input", "context"],
+            template=PromptEngine.i_can_do_it_prompt()
+        )
+        llm = OpenAI(temperature=0.0)
+        chain = LLMChain(llm=llm, prompt=prompt_template)
+        response = chain.run(input=prompt, context=context)
+        return response
+    
+    def processFeedback(prompt, attachments):
+        context = ToolEngine.generate_context(attachments)
+        prompt_template = PromptTemplate(
+            input_variables=["input", "context"],
+            template=PromptEngine.i_can_do_it_prompt()
+        )
+        llm = OpenAI(temperature=0.0)
+        chain = LLMChain(llm=llm, prompt=prompt_template)
+        response = chain.run(input=prompt, context=context)
+        return response
+
+    def processWritingIntegrity(prompt, attachments):
+        context = ToolEngine.generate_context(attachments)
+        prompt_template = PromptTemplate(
+            input_variables=["input", "context"],
+            template=PromptEngine.i_can_do_it_prompt()
+        )
+        llm = OpenAI(temperature=0.0)
+        chain = LLMChain(llm=llm, prompt=prompt_template)
+        response = chain.run(input=prompt, context=context)
+        return response
+    
+    def processLessonPlanner(prompt, attachments):
+        context = ToolEngine.generate_context(attachments)
+        prompt_template = PromptTemplate(
+            input_variables=["input", "context"],
+            template=PromptEngine.i_can_do_it_prompt()
+        )
+        llm = OpenAI(temperature=0.0)
+        chain = LLMChain(llm=llm, prompt=prompt_template)
+        response = chain.run(input=prompt, context=context)
+        return response
+    
     @staticmethod
     def get_completion(prompt_and_token):
         prompt, tokens_left = prompt_and_token
-        print(prompt)
-        print(tokens_left)
         try:
             llm = OpenAI(temperature=0.0, max_tokens=tokens_left)
             created_article = llm(prompt)
@@ -216,7 +375,7 @@ class ToolEngine(object):
         'google sheets': processGoogleSheets,
         'zoom': processZoom,
         'clever': processClever,
-        'remind': processRemind,
+        'remind': processGmail,
         'schoology': processSchoology,
         'aries': processAries,
         'canvas': processCanvas,
@@ -225,7 +384,11 @@ class ToolEngine(object):
         'wikipedia': processWikipedia,
         'data': processData,
         'curriculum': processCurriculum,
-        'lexile converter': processLexileConversion
+        'lexile converter': processLexileConversion,
+        'monitor': processMonitor,
+        'feedback': processFeedback,
+        'writing integrity': processWritingIntegrity,
+        'lesson planner': processLessonPlanner
     }
 
     @staticmethod

@@ -43,7 +43,11 @@ export default function WorkflowElement (props) {
     }
 
     useEffect(() => {
-        setToolResponse(parseCurrentWorkflowResponseData());
+        var workFlowResponseData = parseCurrentWorkflowResponseData();
+        if (typeof workFlowResponseData === 'string' || workFlowResponseData instanceof String) {
+            workFlowResponseData.trim();
+        }
+        setToolResponse(workFlowResponseData);
     }, [props.currentWorkflowResponseData]);
 
     if (showStatus) {
