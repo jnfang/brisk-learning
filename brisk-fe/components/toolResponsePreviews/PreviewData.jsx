@@ -7,7 +7,7 @@ export default function PreviewData(props) {
         }
         if (props.response.includes("Charlie")){
             imgComponent = <img src="https://i.ibb.co/BgT5NdN/Charlie-Guo-Scores-and-Charlie-Guo-Absences.png"></img>;
-            if (props.response.includes("axes")){
+            if (props.response.includes("axes") || props.response.includes("axis")){
                 imgComponent = <img src="https://i.ibb.co/f1ppLBk/Charlie-Guo-Scores-and-Charlie-Guo-Absences-1.png"></img>;
             }
             if (props.response.includes("time")){

@@ -7,7 +7,7 @@ import {
   SunIcon,
 } from "@heroicons/react/outline";
 
-import benefitOneImg from "../public/img/benefit-one.png";
+import benefitOneImg from "../public/img/exemptstudents.gif";
 import benefitTwoImg from "../public/img/benefit-two.png";
 import benefitThreeImg from "../public/img/benefit-two.png";
 
