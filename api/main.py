@@ -140,9 +140,39 @@ def chat():
         print(e)
         return {"llmResponse": "OpenAI server is down. Please try again."}, 200
 
+
+@ app.route('/chat_response', methods=['POST'])
+# This method is different than /chat because it uses a different prompt, one which takes in the existing workflow
+# context and modifies the existing workflow
+def chat_response():
+    try:
+        response = """
+        Okay, I will send an email to absent students' parents with assignments in Google Classroom that were covered.
+        //P// Powerschool: Find students who were absent today.... \n
+        //P// Google Classroom: Look for assignments that were assigned today.... \n
+        //P// Gmail: Draft an email to parents explaining the assignments that were covered today....\n
+        """
+        input = request.json['prompt']
+        previous_context = request.json['previous_context']
+
+        # We need to split out the workflow from the existing prompt.
+        prompt = PromptTemplate(
+            input_variables=["input", "workflow"],
+            template=PromptEngine.response_ta_prompt()
+        )
+        llm = OpenAI(temperature=0.0)
+        chain = LLMChain(llm=llm, prompt=prompt)
+        response = chain.run(input=input, workflow=previous_context)
+        return {"llmResponse": response}, 200
+
+    except Exception as e:
+        print(e)
+        return {"llmResponse": "OpenAI server is down. Please try again."}, 200
+
 @ app.route('/invoke_tool', methods=["POST"])
 def invoke_tool():
     try:
+        result = "HELLO DEMO RESPONSE"
         print(request.json)
         input = request.json['prompt']
         tool = request.json['tool']

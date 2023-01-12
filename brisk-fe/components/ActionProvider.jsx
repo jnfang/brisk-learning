@@ -1,4 +1,4 @@
-import { invokeChatResponse } from "./utils";
+import { invokeChat } from "./utils";
 
 // ActionProvider starter code
 class ActionProvider {
@@ -22,15 +22,29 @@ class ActionProvider {
  // TODO We don't have access to attachments here, so will need 
  // to use local storage or some other method to store them
 
- // exampleState is set to null because in invokeChatResponse because
- // this is only called on the second message
+  inResponseMode = () => {
+    if (!!this.stateRef && "messages" in this.stateRef && this.stateRef.messages.length > 0) {
+      const messageArray  = this.stateRef
+      for (const message of messageArray.messages) {
+        if (message.type === "bot" && localStorage["lastBotMessage"].includes(message.message)) {
+          // We need to check if localStorage matches one of the recent messages because we need to use
+          // localStorage to grab the prompts
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   invokeAutomation = async (input) => {
     const setChatBotState = (cleanedLlmResponse) => {
       const message = this.createChatBotMessage(cleanedLlmResponse);
       this.updateChatBotState([message]);
     }
-    
-    invokeChatResponse(input, "", setChatBotState, {}, null);
+
+    const previousContext = this.inResponseMode() ? localStorage["lastBotMessage"] : "";
+    // Send lastBotMessage as previousContext to use for the chat_response
+    invokeChat(input, previousContext, setChatBotState, {}, null);
   }
 
   updateChatBotState = (message) => {

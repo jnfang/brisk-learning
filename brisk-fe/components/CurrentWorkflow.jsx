@@ -102,6 +102,9 @@ export default function CurrentWorkflow(props) {
 CurrentWorkflow.jsxWorkflowArray = (currentWorkflowRequestData, currentWorkflowResponseData) => {
   var workflowVisualizationArray = [];
   let workflowHash;
+  if (!currentWorkflowRequestData) {
+    return [];
+  }
   // Hit am async function that takes srcArrayHash and makes requests
   for (let i = 0; i < currentWorkflowRequestData.length; i++){
     workflowHash = currentWorkflowRequestData[i];
@@ -122,6 +125,9 @@ CurrentWorkflow.jsxWorkflowArray = (currentWorkflowRequestData, currentWorkflowR
 // This will generate the data that is used to initialize currentWorkflowRequestData and will be 
 // used to simplify the jsxWorkflowArray function
 CurrentWorkflow.generateRequestData = (msg, attachments, exampleFlow) => {
+  if (!msg) {
+    return [];
+  }
   const srcArrayHash = CurrentWorkflow.toolOptions(msg.replace(/<ex>/g, ''));
   var tempRequestData = [];
   for (let i = 0; i < srcArrayHash.length; i++){

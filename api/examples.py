@@ -105,7 +105,7 @@ exampleToolData = {
             "tools": ["aries", "data", "gmail"],
             "chat response": "Okay, I've used Aries to create a chart of Charlie's performance on the last 4 assignments and emailed it to his parents. //P// Aries: Creating a chart of Charlie's performance on the last 4 assignments... //P// Data: Creating a chart of Charlie's performance on the last 4 assignments... //P// Gmail: Emailed it to his parents... ",
             "aries": "Charlies performance on the last 4 assignments \nAssignment 1: 82% \nAssignment 2: 88% \nAssignment 3: 86% \nAssignment 4: 88%",
-            "data": "Plotting performance data",
+            "data": "Creating a chart of Charlie's performance on the last 4 assignments...",
             "gmail": "Hi Elaine and Jeff, \n Following up on our conversation from last week, I've attached a chart of Charlie's performance on the last 4 assignments. \n\n If you have any questions or concerns, please don't hesitate to reach out. \n\n Sincerely, \n\n Mr. Smith",
         },
         "Detect AI Writing": {

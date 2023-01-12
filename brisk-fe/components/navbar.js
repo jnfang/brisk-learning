@@ -8,14 +8,14 @@ export default function Navbar() {
 
   return (
     <div className="w-full">
-      <nav className="container relative flex flex-wrap items-center justify-between p-8 mx-auto lg:justify-between xl:px-0 w-full">
+      <nav className=" relative flex flex-wrap items-center justify-between p-8 mx-auto lg:justify-between xl:px-0 w-full">
         {/* Logo  */}
         <Disclosure>
           {({ open }) => (
             <>
               {/* <div className="flex flex-wrap items-center w-full"> */}
                 <Link legacyBehavior href="/">
-                  <a className="flex space-x-2 text-2xl font-medium text-indigo-500 dark:text-gray-100 w-100">
+                  <a className="px-4 flex space-x-2 text-2xl font-medium text-indigo-500 dark:text-gray-100 w-100">
                     Brisk
                   </a>
                 </Link>
