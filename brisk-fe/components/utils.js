@@ -13,41 +13,51 @@ import { faDiagramNext,
 
 export const envServerURL = process.env.NEXT_PUBLIC_SERVER || "https://brisk-edu.onrender.com/"
 
+const isContinuedChat = (previousContext) => {
+  return !!previousContext
+}
+
+const makeChatRequest = (data, chatEndpoint) => {
+  const res = fetch(chatEndpoint, {
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+  });
+  return res;
+}
+
+const parseChatResposne = (llmResponse) => {
+    var firstPromptIndex = llmResponse.indexOf("//P//");
+    if (firstPromptIndex > -1) {
+        return llmResponse.substring(0, firstPromptIndex);
+    }else{
+        return llmResponse;
+    }
+}
+
 // Returns the cleaned up LLM response that will be displayed in chat
-export async function invokeChatResponse(input, previous_context, setStateCallback, attachments, exampleState) {
-    const chatEndpoint = envServerURL+ "chat";
+export async function invokeChat(input, previousContext, setStateCallback, attachments, exampleState) {
     let llmResponse;
     if (exampleState) {
-        // Based on the title of the tool, get the chat response
-        llmResponse = exampleToolData[exampleState]["chat response"];
-
+      // Based on the title of the tool, get the chat response
+      llmResponse = exampleToolData[exampleState]["chat response"];
     } else {
-        localStorage["lastBotMessage"] = null;
-        const data = {
-            prompt: input,
-            previous_context: ""
-        }
-        const res = await fetch(chatEndpoint, {
-            body: JSON.stringify(data),
-            headers: {
-            'Content-Type': 'application/json',
-            },
-            method: 'POST',
-        });
+      // We only set previous context when this is a continuation of an existing chat
+      const data = {
+        prompt: input,
+        previous_context: previousContext,
+      }
+      localStorage["lastBotMessage"] = "";
 
-        const result = await res.json();
-        llmResponse = result.llmResponse;
+      const chatEndpoint = isContinuedChat(previousContext) ? envServerURL + "chat_response" : envServerURL + "chat";
+      const result = await (await makeChatRequest(data, chatEndpoint)).json();
+      llmResponse = result.llmResponse;
     }
-
     // Need to update this to use chatbot's save message method
     localStorage["lastBotMessage"] = llmResponse;
-    var firstPromptIndex = llmResponse.indexOf("//P//");
-    let cleanedLlmResponse;
-    if (firstPromptIndex > -1) {
-        cleanedLlmResponse = llmResponse.substring(0, firstPromptIndex);
-    }else{
-        cleanedLlmResponse = llmResponse;
-    }
+    const cleanedLlmResponse = parseChatResposne(llmResponse);
     setStateCallback(cleanedLlmResponse);
     return cleanedLlmResponse;
 }
@@ -65,8 +75,6 @@ export async function invokeTool(requestHash, setResponseData, prevResponseData)
         prompt: request_prompt,
         attachments: {...attachments, "toolContext": toolContext}
     }
-    console.log("making request");
-    console.log(data);
     const res = await fetch(invokeToolEndpoint, {
         body: JSON.stringify(data),
         headers: {
@@ -192,7 +200,7 @@ export const exampleToolData = {
         "tools": ["aries", "data", "gmail"],
         "chat response": "Okay, I've used Aries to create a chart of Charlie's performance on the last 4 assignments and emailed it to his parents. //P// Aries: Creating a chart of Charlie's performance on the last 4 assignments... //P// Data: Creating a chart of Charlie's performance on the last 4 assignments... //P// Gmail: Emailed it to his parents... ",
         "aries": "Charlies performance on the last 4 assignments \nAssignment 1: 82% \nAssignment 2: 88% \nAssignment 3: 86% \nAssignment 4: 88%",
-        "data": "Plotting performance data",
+        "data": "Created a chart of Charlie's performance on the last 4 assignments",
         "gmail": "Hi Elaine and Jeff, \n Following up on our conversation from last week, I've attached a chart of Charlie's performance on the last 4 assignments. \n\n If you have any questions or concerns, please don't hesitate to reach out. \n\n Sincerely, \n\n Mr. Smith",
         icon: faChartSimple
     },

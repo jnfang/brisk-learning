@@ -6,11 +6,13 @@ import MessageParser from '../components/MessageParser';
 import CurrentWorkflow from '../components/CurrentWorkflow';
 import config from '../components/config';
 import { createClientMessage } from 'react-chatbot-kit';
-import { invokeChatResponse, TOOLDESCRIPTIONS } from "./utils";
+import { invokeChat, TOOLDESCRIPTIONS } from "./utils";
 import SectionTabs from './SectionTabs';
 import 'react-chatbot-kit/build/main.css';
 import { useEffect } from 'react';
 import ExampleContainer from './ExampleContainer';
+import WorkflowOptions from './WorkflowOptions';
+
 
 export default function Chat(props) {
 
@@ -41,7 +43,7 @@ export default function Chat(props) {
     // Okay so we're going to have to call the action provider method here to create the chatbot message
     if (!madeInitialRequest) {
       setMadeInitialRequest(true);
-      invokeChatResponse(
+      invokeChat(
         props.firstInput,
         "",
         setInitialMessagesCallback,
@@ -137,11 +139,57 @@ export default function Chat(props) {
     }
   }
 
+  const handleSave = () => {
+    // Use local storage to find lastBotMessage and savedWorkflowsKey
+    var lastBotMessage = localStorage.getItem("lastBotMessage");
+    const savedWorkflowsKey = "savedWorkflows";
+    var savedWorkflows = localStorage.getItem(savedWorkflowsKey);
+    let savedWorkflowsArray;
+    if (savedWorkflows === null || savedWorkflows == undefined){
+      savedWorkflowsArray = [];
+    } else {
+      savedWorkflowsArray = JSON.parse(savedWorkflows);
+    }
+
+    savedWorkflowsArray.push(lastBotMessage);
+    localStorage.setItem(savedWorkflowsKey, JSON.stringify(savedWorkflowsArray));
+  }
+
+  const handleSchedule = () => {
+    // Use local storage to find lastBotMessage and savedWorkflowsKey
+    var lastBotMessage = localStorage.getItem("lastBotMessage");
+    const savedWorkflowsKey = "scheduledWorkflows";
+    var savedWorkflows = localStorage.getItem(savedWorkflowsKey);
+    let savedWorkflowsArray;
+    if (savedWorkflows === null || savedWorkflows == undefined){
+      savedWorkflowsArray = [];
+    } else {
+      savedWorkflowsArray = JSON.parse(savedWorkflows);
+    }
+
+    savedWorkflowsArray.push(lastBotMessage);
+    localStorage.setItem(savedWorkflowsKey, JSON.stringify(savedWorkflowsArray));
+  }
+
+  const handleReset = () => {
+    // Clear localStorage["lastBotMessage"]
+    localStorage.removeItem('lastBotMessage');
+    // Clear localStorage["savedWorkflows"]
+    props.onResetClick();
+  }
+
+  useEffect(() => {
+    loadMessages();
+  }, [props.firstInput]);
+
   return (
     <div className="App">
         <div className="flex flex-row">
           <div className="basis-2/3">
-            <SectionTabs tabs={tabs} openTab={props.openTab} onTabClick={handleTabClick} />
+            <div className="flex flex-row justify-between	">
+              <SectionTabs tabs={tabs} openTab={props.openTab} onTabClick={handleTabClick} />
+              <WorkflowOptions onSave={handleSave} onReset={handleReset} onSchedule={handleSchedule}/>
+            </div>
             {tabPanel()}
           </div>
           <div className="basis-1/3">
