@@ -21,13 +21,39 @@ export default function PreviewGmail (props){
         return a
     }
 
+    const getAttachments = (str) => {
+        if (str == null) return null;
+        if (str.indexOf("<a>") == -1) return null;
+        const a = str.substring(
+            str.indexOf("<a>") + 3, 
+            str.lastIndexOf("<a>") - 1
+        ).trim();
+        const attachmentStringArray = a.split("%");
+        var attachmentDictArray = []
+        let tempArray;
+        for (let i = 0; i < attachmentStringArray.length; i++){
+            tempArray = attachmentStringArray[i].split("|");
+            if (tempArray.length != 3) continue;
+            attachmentDictArray.push(
+                {
+                    "type": tempArray[0].trim(),
+                    "title": tempArray[1].trim(),
+                    "url": tempArray[2].trim()
+                }
+            )
+        }
+        return attachmentDictArray
+    }
+
     const [emailDraft , setEmailDraft] = useState(body(props.response || " "));
     const [emailDraftSubject , setEmailDraftSubject] = useState(subject(props.response  || " "));
     const [sentStatus, setSentStatus] = useState(false);
+    const [emailAttachments, setEmailAttachments] = useState(null);
 
     useEffect(() => {
         setEmailDraft(body(props.response || " "));
         setEmailDraftSubject(subject(props.response  || " "));
+        setEmailAttachments(getAttachments(props.response));
     }, [props.response])
 
     const emailForm = (
@@ -47,10 +73,13 @@ export default function PreviewGmail (props){
                 </textarea>
             </div>
             <div className="flex flex-row flex-wrap">
-                <div
-                    className="mx-1 px-1 py-1 grow border-2 border-slate-300 flex flex-row justify-between items-center align-middle"
-                >
-                    <GoogleDocComponent docUrl="https://docs.google.com/document/d/1SyqxM7VHj3sSwfObuQoLaDoCtC9UX6DeLqNpbHf4MCc/edit?usp=sharing" title="The Contrasting Themes of the Romantic Period" />
+                <div className="mx-1 px-1 py-1 grow border-2flex flex-row justify-between items-center align-middle">
+                    {!!emailAttachments || emailAttachments === []? 
+                        <GoogleDocComponent docUrl="https://docs.google.com/document/d/1SyqxM7VHj3sSwfObuQoLaDoCtC9UX6DeLqNpbHf4MCc/edit?usp=sharing" title="The Contrasting Themes of the Romantic Period" />
+
+                        : null
+                
+                    }
                     <button>
                         <FontAwesomeIcon
                             style={{ color: "#580cfc" }}
